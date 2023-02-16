@@ -1,0 +1,23 @@
+{
+  "name": "nina.fm-website",
+  "version": "0.3.2",
+  "description": "The official Nina.fm website",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxtjs/svg": "^0.4.0",
+    "@pinia/nuxt": "^0.4.6",
+    "@vueuse/nuxt": "^9.12.0",
+    "nuxt": "^3.2.0",
+    "pinia": "^2.0.30",
+    "sass": "^1.58.1",
+    "sass-loader": "^13.2.0"
+  }
+}
