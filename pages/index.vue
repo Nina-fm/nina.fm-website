@@ -1,9 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
-  <div>
-    Page: foo
-  </div>
+    <ThemePage name="index" />
 </template>
-
-<style scoped></style>

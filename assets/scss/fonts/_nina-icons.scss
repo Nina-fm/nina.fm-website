@@ -1,10 +1,10 @@
 @font-face {
-  font-family: 'nina-icons';
-  src: url($fonts-path + 'nina-icons/nina-icons.eot?fzb4uy');
-  src: url($fonts-path + 'nina-icons/nina-icons.eot?fzb4uy#iefix') format('embedded-opentype'),
-    url($fonts-path + 'nina-icons/nina-icons.ttf?fzb4uy') format('truetype'),
-    url($fonts-path + 'nina-icons/nina-icons.woff?fzb4uy') format('woff'),
-    url($fonts-path + 'nina-icons/nina-icons.svg?fzb4uy#nina-icons') format('svg');
+  font-family: "nina-icons";
+  src: url("/fonts/nina-icons/nina-icons.eot?fzb4uy");
+  src: url("/fonts/nina-icons/nina-icons.eot?fzb4uy#iefix") format("embedded-opentype"),
+    url("/fonts/nina-icons/nina-icons.ttf?fzb4uy") format("truetype"),
+    url("/fonts/nina-icons/nina-icons.woff?fzb4uy") format("woff"),
+    url("/fonts/nina-icons/nina-icons.svg?fzb4uy#nina-icons") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -12,7 +12,7 @@
 
 i {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'nina-icons' !important;
+  font-family: "nina-icons" !important;
   speak: never;
   font-style: normal;
   font-weight: normal;

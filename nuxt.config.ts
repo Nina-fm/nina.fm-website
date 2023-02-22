@@ -1,11 +1,13 @@
-const sitename = "Nina.fm";
+import vuetify from "vite-plugin-vuetify"
+
+const sitename = "Nina.fm"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
     // head
     head: {
-      title: sitename,
+      title: `${sitename} - H24 Musical - Ø Pub`,
       meta: [
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
@@ -22,20 +24,39 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       sitename,
+      streamUrl: process.env.NUXT_PUBLIC_STREAM_URL,
+      streamApiUrl: process.env.NUXT_PUBLIC_STREAM_API_URL,
+      streamApiUrlFallback: process.env.NUXT_PUBLIC_STREAM_API_URL_FALLBACK,
+      streamMountPoint: process.env.NUXT_PUBLIC_STREAM_MOUNT_POINT,
+      streamRefreshTime: process.env.NUXT_PUBLIC_STREAM_REFRESH_TIME,
+      stramMetadataUrl: process.env.NUXT_PUBLIC_STREAM_METADATA_URL,
+      apiUrl: process.env.NUXT_PUBLIC_API_URL,
+      apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
     },
   },
+
+  devServerHandlers: [],
 
   typescript: {
     strict: true,
     shim: false,
   },
 
-  css: [
-    "assets/scss/_variables.scss",
-    "assets/scss/main.scss",
-  ],
+  css: ["@mdi/font/css/materialdesignicons.min.css", "assets/scss/main.scss"],
+
+  // plugins: [{ src: "~/plugins/vuekonva", mode: "client" }],
+
+  build: {
+    transpile: [
+      // "konva",
+      "vuetify",
+    ],
+  },
 
   vite: {
+    ssr: {
+      noExternal: ["vuetify"], // add the vuetify vite plugin
+    },
     define: {
       "process.env.DEBUG": false,
     },
@@ -50,6 +71,12 @@ export default defineNuxtConfig({
         autoImports: ["defineStore", "storeToRefs", "acceptHMRUpdate"],
       },
     ],
+    async (options, nuxt) => {
+      nuxt.hooks.hook("vite:extendConfig", (config) =>
+        // @ts-ignore
+        config.plugins.push(vuetify())
+      )
+    },
   ],
 
   imports: {
@@ -62,10 +89,14 @@ export default defineNuxtConfig({
       path: "~/components/",
       pathPrefix: false,
     },
+    {
+      path: "~/themes/",
+      pathPrefix: false,
+    },
   ],
 
   // vueuse
   vueuse: {
     ssrHandlers: true,
   },
-});
+})

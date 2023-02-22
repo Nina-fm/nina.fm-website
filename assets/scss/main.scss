@@ -1,0 +1,24 @@
+// @use "vuetify/lib/styles/main.sass" with (
+//   $color-pack: false,
+//   $utilities: false,
+//   $reset: false
+// );
+
+@import "./fonts";
+
+html,
+body,
+#__nuxt {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: currentColor;
+}
+
+.v-application {
+  font-family: "Avenir Next", sans-serif;
+}
