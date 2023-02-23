@@ -22,6 +22,8 @@ interface FetchData {
   liveQuery: Query | null
 }
 
+const refreshDelay = 60000
+
 export const useMetadataStore = defineStore("metadata", () => {
   const config = useRuntimeConfig()
   const metadata = ref<Obj | null>(null)
@@ -64,7 +66,7 @@ export const useMetadataStore = defineStore("metadata", () => {
 
   onNuxtReady(() => {
     fetch()
-    intervalId.value = setInterval(() => fetch(), 10000)
+    intervalId.value = setInterval(() => fetch(), refreshDelay)
   })
 
   return {
