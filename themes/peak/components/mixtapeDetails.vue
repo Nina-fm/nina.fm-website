@@ -16,7 +16,7 @@ const tracks = computed(
     <div class="track-details">
       <div class="container">
         <div v-if="metadata?.cover_url" class="track-details-cover">
-          <v-img :src="`${metadata?.cover_url}`" />
+          <img :src="`${metadata?.cover_url}`" />
         </div>
         <div class="track-details-type">
           <v-progress-linear :model-value="`${progress}`" :height="2" />
@@ -53,7 +53,7 @@ const tracks = computed(
 .details {
   /*z-index: 10;*/
   @include prefix(transition, $animation-nobg);
-  width: 50%;
+  width: calc(50% - $margin-global);
   position: absolute;
   top: $margin-global;
   bottom: $margin-global;
@@ -109,7 +109,7 @@ const tracks = computed(
     }
   }
   :deep(.v-progress-linear) {
-    margin-bottom: $margin-global/2;
+    margin-bottom: 1em;
   }
 }
 .track-details-text {
@@ -135,14 +135,15 @@ const tracks = computed(
   }
   .tracklist {
     font-size: 1em;
-    line-height: 1em;
+    line-height: 0.9em;
     color: $color-info-text;
+    padding-top: 0;
 
     :deep(.v-list-item) {
       padding-left: 1em;
       padding-right: 0;
       font-size: 1em;
-      min-height: 20px !important;
+      min-height: 18px !important;
     }
     :deep(.v-list-item__prepend) {
       width: 0.2em;
@@ -154,11 +155,10 @@ const tracks = computed(
 .track-details-cover {
   z-index: 10000000000;
   position: relative;
-  margin-bottom: $margin-global/3;
+  margin-bottom: 0;
 
   :deep(img) {
     margin: auto;
-    margin-bottom: 1em;
     width: 100%;
   }
 }
