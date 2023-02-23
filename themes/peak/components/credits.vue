@@ -9,9 +9,9 @@
 .credits {
   z-index: 0;
   position: absolute;
-  bottom: 16px;
-  left: 18px;
-  font-size: 0.45em;
+  bottom: 18px;
+  left: 20px;
+  font-size: 0.5em;
   font-weight: 500;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -23,7 +23,7 @@
   }
   @include prefix(transition, $animation-nobg);
   @include respond-to(tablet) {
-    font-size: 0.25em;
+    font-size: 0.3em;
     #app.show-posts &,
     #app.show-details & {
       opacity: 0;

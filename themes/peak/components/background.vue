@@ -41,7 +41,7 @@ const bg = computed(() => (isPlaying.value ? animated : img))
     top: 0;
     bottom: 0;
     background-repeat: no-repeat;
-    background-position: bottom left;
+    background-position: left center;
     background-size: cover;
   }
 

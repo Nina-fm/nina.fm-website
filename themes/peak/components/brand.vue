@@ -47,7 +47,7 @@ $anim-out: exit 3s 7s linear infinite forwards;
   padding-top: 0;
   z-index: 0;
   position: absolute;
-  top: 30%;
+  top: 31%;
   left: 50%;
   @include prefix(transform, translate(-50%, -50%));
   @include prefix(transition, $animation);
