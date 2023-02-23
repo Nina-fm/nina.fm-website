@@ -1,0 +1,294 @@
+.noSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@mixin prefix($property, $value) {
+  -webkit-#{$property}: $value; /* Safari 4+ */
+  -moz-#{$property}: $value; /* Fx 5+ */
+  -o-#{$property}: $value; /* Opera 12+ */
+  #{$property}: $value; /* IE 10+, Fx 29+ */
+}
+
+@mixin dropShadow($value) {
+  -webkit-filter: drop-shadow($value);
+  filter: drop-shadow($value);
+}
+
+// keyframes mixin
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+/**
+ * Responsive mixin. The media breakpoints are as defined
+ * in the twitter bootstrap framework:
+ *
+ * - phone
+ * - tablet-portrait
+ * - tablet-landscape-desktop
+ * - large-desktop
+ *
+ * Additional parameters for tagetting retina and non-retina
+ * devices
+ *
+ * - retina
+ * - non-retina
+ *
+ * Moreover, a specific value in px can be passed which is
+ * used to generate a max-width media query.
+ */
+@mixin respond-to($media) {
+  @if $media == small-height {
+    @media (max-height: 400px) {
+      @content;
+    }
+  }
+
+  /* Landscape phones and down */
+  @if $media == phone {
+    @media (max-width: 480px) {
+      @content;
+    }
+  }
+  /* Landscape phone to portrait tablet */
+  @else if $media == tablet-portrait {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+
+  /* Landscape phone to portrait tablet */
+  @else if $media == tablet {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+
+  /* Portrait tablet to landscape and desktop */
+  @else if $media == tablet-landscape-desktop {
+    @media (min-width: 768px) and (max-width: 979px) {
+      @content;
+    }
+  }
+  /* Large desktop */
+  @else if $media == large-desktop {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  }
+  // Non-Retina
+  @else if $media == non-retina {
+    @media screen and (-webkit-max-device-pixel-ratio: 1) {
+      @content;
+    }
+  }
+  // Retina Only
+  @else if $media == retina {
+    @media screen and (-webkit-min-device-pixel-ratio: 2) {
+      @content;
+    }
+  }
+  // Specific max width
+  @else {
+    @media only screen and (max-width: #{$media}px) {
+      @content;
+    }
+  }
+}
+/*
+  MIXIN(S)
+  =================
+ /chriscoyier/pen/FwJux
+
+
+  (TEXT) PARAMS
+  =================
+  1. Namespace
+  2. Intensity
+  3. Text color
+  4. Background color (flat)
+  5. Highlight #1 color
+  6. Highlight #2 color
+  7. Width (px)
+  8. Height (px)
+*/
+@mixin textGlitch($name, $intensity, $textColor, $background, $highlightColor1, $highlightColor2, $width, $height) {
+  color: $textColor;
+  position: relative;
+  $steps: $intensity;
+
+  // Ensure the @keyframes are generated at the root level
+  @at-root {
+    // We need two different ones
+    @for $i from 1 through 2 {
+      @keyframes #{$name}-anim-#{$i} {
+        @for $i from 0 through $steps {
+          #{percentage($i*(calc(1/$steps)))} {
+            clip: rect(random($height) + px, $width + px, random($height) + px, 0);
+          }
+        }
+      }
+    }
+  }
+  &:before,
+  &:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: $background;
+    clip: rect(0, 0, 0, 0);
+  }
+  &:after {
+    left: 2px;
+    text-shadow: -1px 0 $highlightColor1;
+    animation: #{$name}-anim-1 2s infinite linear alternate-reverse;
+  }
+  &:before {
+    left: -2px;
+    text-shadow: 2px 0 $highlightColor2;
+    animation: #{$name}-anim-2 3s infinite linear alternate-reverse;
+  }
+}
+
+/*
+  (IMAGE) PARAMS
+  =================
+  @mixin imgGlitch($name, $intensity, $width, $height, $top, $left)
+  =================
+  1. Namespace
+  2. Intensity
+  3. Width (px)
+  4. Height (px)
+  5. Top (px, abs pos)
+  6. Left (px, abs pos)
+*/
+
+@mixin imgGlitch($name, $intensity, $width, $height, $top, $left) {
+  $steps: $intensity;
+
+  // Ensure the @keyframes are generated at the root level
+  @at-root {
+    // We need two different ones
+    @for $i from 1 through 2 {
+      @keyframes #{$name}-anim-#{$i} {
+        @for $i from 0 through $steps {
+          #{percentage($i*(calc(1/$steps)))} {
+            clip: rect(random($height) + px, $width + px, random($height) + px, 0);
+          }
+        }
+      }
+    }
+  }
+
+  > img {
+    position: absolute;
+    top: $top + px;
+    left: $left + px;
+  }
+  > img:nth-child(2),
+  > img:nth-child(3) {
+    clip: rect(0, 0, 0, 0);
+  }
+  > img:nth-child(2) {
+    left: ($left + 2) + px;
+    animation: #{$name}-anim-1 2s infinite linear alternate-reverse;
+  }
+  > img:nth-child(3) {
+    left: ($left - 2) + px;
+    animation: #{$name}-anim-2 3s infinite linear alternate-reverse;
+  }
+}
+
+/*
+  (SVG) PARAMS
+  =================
+  @mixin svgGlitch($name, $intensity, $fillColor, $background, $width, $height, $top, $left)
+  =================
+  1. Namespace
+  2. Intensity
+  3. Fill Color
+  4. Background
+  5. Width (px)
+  6. Height (px)
+  5. Top (px, abs pos)
+  6. Left (px, abs pos)
+*/
+
+@mixin svgGlitch(
+  $name,
+  $intensity,
+  $fillColor,
+  $background,
+  $fillHighlight1,
+  $fillHighlight2,
+  $width,
+  $height,
+  $top,
+  $left
+) {
+  $steps: $intensity;
+
+  // Ensure the @keyframes are generated at the root level
+  @at-root {
+    // We need two different ones
+    @for $i from 1 through 2 {
+      @keyframes #{$name}-anim-#{$i} {
+        @for $i from 0 through $steps {
+          #{percentage($i*(calc(1/$steps)))} {
+            clip: rect((random($height)-20) + px, $width + px, (random($height) + 20) + px, 0);
+          }
+        }
+      }
+    }
+  }
+
+  svg {
+    position: absolute;
+    top: $top + px;
+    left: $left + px;
+    fill: $fillColor;
+    background: $background;
+    width: $width + px;
+    height: $height + px;
+  }
+  svg:nth-child(2),
+  svg:nth-child(3) {
+    clip: rect(0, 0, 0, 0);
+  }
+  svg:nth-child(2) {
+    fill: $fillHighlight1;
+    left: ($left - 2) + px;
+    animation: #{$name}-anim-1 2s infinite linear alternate-reverse;
+  }
+  svg:nth-child(3) {
+    fill: $fillHighlight2;
+    left: ($left + 2) + px;
+    animation: #{$name}-anim-2 3s infinite linear alternate-reverse;
+  }
+}
+.svg-wrapper {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  width: 557px;
+  height: 659px;
+  @include svgGlitch("svg-wrapper", 30, white, #1c2d35, red, red, 557, 659, 0, 0);
+}

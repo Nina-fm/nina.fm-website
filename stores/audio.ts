@@ -1,11 +1,6 @@
 import { Howl, Howler } from "howler"
 
 import { defineStore } from "pinia"
-import { render } from "vue"
-
-interface Monitor {
-  dataArray: Uint8Array | null
-}
 
 export const useAudioStore = defineStore("audio", () => {
   const config = useRuntimeConfig()
@@ -15,12 +10,12 @@ export const useAudioStore = defineStore("audio", () => {
   const isMuted = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const status = ref<"unloaded" | "loading" | "loaded" | undefined>()
-  const audioContext = ref<AudioContext>()
   let stream: Howl | undefined
 
   Howler.autoSuspend = false
   Howler.html5PoolSize = 1
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const load = () => {
     console.log("load")
     isLoading.value = true
@@ -73,11 +68,6 @@ export const useAudioStore = defineStore("audio", () => {
     isPlaying.value = stream?.playing() ?? false
   }
 
-  const updateContext = () => {
-    console.log("set context")
-    audioContext.value = Howler.ctx
-  }
-
   onNuxtReady(() => {
     stream = new Howl({
       src: [streamUrl],
@@ -86,7 +76,6 @@ export const useAudioStore = defineStore("audio", () => {
 
     stream.on("load", () => {
       console.log("on stream load")
-      updateContext()
       isLoading.value = false
       update()
     })
@@ -115,7 +104,7 @@ export const useAudioStore = defineStore("audio", () => {
     stream.on("unlock", () => {
       console.log("on stream unlock")
       isLocked.value = false
-      // play();
+      play()
       update()
     })
   })
@@ -132,7 +121,6 @@ export const useAudioStore = defineStore("audio", () => {
     mute,
     togglePlay,
     toggleMute,
-    audioContext,
   }
 })
 

@@ -18,6 +18,10 @@ export const peakDark: ThemeExt = {
   ...peak,
   definition: {
     ...peak.definition,
+    colors: {
+      ...peak.definition?.colors,
+      background: "#444444",
+    },
     dark: true,
   },
 }

@@ -1,4 +1,3 @@
-import { DateTime } from "luxon"
 import { defineStore } from "pinia"
 
 interface Query {
@@ -9,32 +8,35 @@ interface Query {
 interface Info {
   current: {
     name: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
 }
 
 interface FetchData {
-  metadata: Record<string, any> | null
+  metadata: Obj | null
   liveInfo: Info | null
-  liveQuery: Query | null
-}
-interface Data {
-  metadata: Record<string, any> | null
+  flux: Obj | null
   liveQuery: Query | null
 }
 
 export const useMetadataStore = defineStore("metadata", () => {
   const config = useRuntimeConfig()
-  const metadata = ref<Record<string, any> | null>(null)
+  const metadata = ref<Obj | null>(null)
   const liveQuery = ref<Query | null>(null)
   const progress = ref<number | null>(null)
+  const listeners = ref<number>(0)
   const intervalId = ref<NodeJS.Timer | null>(null)
 
   const fetch = async () => {
     const fetchLiveInfo: FetchData = await $fetch(`${config.public.apiUrl}/metadata-live`)
 
     if (fetchLiveInfo) {
+      if (fetchLiveInfo?.flux) {
+        listeners.value = fetchLiveInfo.flux.listeners as number
+      }
       if (fetchLiveInfo?.metadata) {
         metadata.value = fetchLiveInfo.metadata
       }
@@ -65,6 +67,7 @@ export const useMetadataStore = defineStore("metadata", () => {
     metadata,
     liveQuery,
     progress,
+    listeners,
     fetch,
   }
 })

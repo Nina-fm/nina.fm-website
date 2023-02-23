@@ -19,10 +19,8 @@ export const useDaylightStore = defineStore("daylight", () => {
     daylight.value = isDay.value ? DaylightMode.DAY : DaylightMode.NIGHT
   }
 
-  onNuxtReady(() => {
-    updateDaylight()
-    intervalId.value = setInterval(() => updateDaylight(), 10000)
-  })
+  updateDaylight()
+  intervalId.value = setInterval(() => updateDaylight(), 10000)
 
   return {
     daylight,
