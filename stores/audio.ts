@@ -2,6 +2,8 @@ import { Howl, Howler } from "howler"
 
 import { defineStore } from "pinia"
 
+const debug = false
+
 export const useAudioStore = defineStore("audio", () => {
   const config = useRuntimeConfig()
   const { streamUrl } = config.public
@@ -15,55 +17,62 @@ export const useAudioStore = defineStore("audio", () => {
   Howler.autoSuspend = false
   Howler.html5PoolSize = 1
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const log = (...params: any[]) => {
+    if (debug) {
+      console.log(...params)
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const load = () => {
-    console.log("load")
+    log("load")
     isLoading.value = true
     stream?.load()
   }
 
   const unmute = () => {
-    console.log("unmute")
+    log("unmute")
     stream?.mute(false)
     isMuted.value = false
   }
 
   const mute = () => {
-    console.log("mute")
+    log("mute")
     stream?.mute(true)
     isMuted.value = true
   }
 
   const toggleMute = () => {
-    console.log("toggleMute")
+    log("toggleMute")
     if (isMuted.value) unmute()
     else mute()
   }
 
   const play = () => {
-    console.log("play")
+    log("play")
     isLoading.value = true
     stream?.play()
   }
 
   const pause = () => {
-    console.log("pause")
+    log("pause")
     stream?.pause()
   }
 
   const stop = () => {
-    console.log("stop")
+    log("stop")
     stream?.stop()
   }
 
   const togglePlay = () => {
-    console.log("togglePlay")
+    log("togglePlay")
     if (isPlaying.value) stop()
     else play()
   }
 
   const update = () => {
-    console.log("update")
+    log("update")
     status.value = stream?.state()
     isPlaying.value = stream?.playing() ?? false
   }
@@ -75,34 +84,34 @@ export const useAudioStore = defineStore("audio", () => {
     })
 
     stream.on("load", () => {
-      console.log("on stream load")
+      log("on stream load")
       isLoading.value = false
       update()
     })
     stream.on("loaderror", () => {
-      console.log("on stream loaderror")
+      log("on stream loaderror")
       update()
     })
     stream.on("pause", () => {
-      console.log("on stream pause")
+      log("on stream pause")
       update()
     })
     stream.on("play", () => {
-      console.log("on stream play")
+      log("on stream play")
       isLoading.value = false
       update()
     })
     stream.on("playerror", () => {
-      console.log("on stream playerror")
+      log("on stream playerror")
       stream?.once("unlock", play)
       update()
     })
     stream.on("stop", () => {
-      console.log("on stream stop")
+      log("on stream stop")
       update()
     })
     stream.on("unlock", () => {
-      console.log("on stream unlock")
+      log("on stream unlock")
       isLocked.value = false
       play()
       update()
