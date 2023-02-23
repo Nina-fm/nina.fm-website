@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import IconButton from "./IconButton.vue"
+
 defineEmits<{
   (e: "click"): void
 }>()
@@ -9,6 +11,8 @@ const msg = {
   mixtape: "Une mixtape Nina.fm",
   listening: "À l'écoute sur Nina.fm",
 }
+const { detailsOpen } = useAppStoreRefs()
+const { toggleDetails } = useAppStore()
 const { isLocked, isLoading, isMuted, isPlaying } = useAudioStoreRefs()
 const { toggleMute } = useAudioStore()
 const { isNight } = useDaylightStoreRefs()
@@ -61,15 +65,15 @@ onMounted(() => {
             <div class="track-type" data-append="tracktype">{{ typeText }}</div>
           </div>
         </div>
-        <!-- <IconButton
-        v-if="hasDetails"
-        id="player-toggle"
-        :size="10"
-        :active="open"
-        icon-active="nina-icon-remove_circle_outline"
-        icon-inactive="nina-icon-add_circle_outline"
-        @click="toggleDetails"
-      /> -->
+        <IconButton
+          v-if="isMixtape && (shouldPlay || isPlaying)"
+          class="player-toggle"
+          :size="10"
+          :active="detailsOpen"
+          icon-active="nina-icon-remove_circle_outline"
+          icon-inactive="nina-icon-add_circle_outline"
+          @click="toggleDetails"
+        />
       </div>
     </div>
   </client-only>

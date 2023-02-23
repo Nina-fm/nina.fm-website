@@ -15,6 +15,7 @@ export const useAppStore = defineStore("app", () => {
 
   return {
     classes,
+    detailsOpen,
     toggleDetails,
   }
 })

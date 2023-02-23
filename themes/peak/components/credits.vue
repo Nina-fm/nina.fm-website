@@ -9,8 +9,8 @@
 .credits {
   z-index: 0;
   position: absolute;
-  bottom: 18px;
-  left: 20px;
+  bottom: 20px;
+  left: 22px;
   font-size: 0.5em;
   font-weight: 500;
   letter-spacing: 0.11em;

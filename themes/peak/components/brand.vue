@@ -141,7 +141,9 @@ $anim-out: exit 3s 7s linear infinite forwards;
     }
   }
   .v-application:not(.loading):not(.muted) &:hover {
-    :deep(.letter-a-bar, .letter-i-dot, .sub-word) {
+    :deep(.letter-a-bar),
+    :deep(.letter-i-dot),
+    :deep(.sub-word) {
       opacity: 0;
     }
     :deep(.letter-n),
@@ -156,7 +158,7 @@ $anim-out: exit 3s 7s linear infinite forwards;
     }
   }
 
-  .v-application.show-posts & {
+  .v-application.posts & {
     left: 25% !important;
 
     @include respond-to(tablet) {
@@ -164,7 +166,7 @@ $anim-out: exit 3s 7s linear infinite forwards;
       left: 50% !important;
     }
   }
-  .v-application.show-details & {
+  .v-application.details & {
     left: 75% !important;
   }
 }
