@@ -29,6 +29,7 @@ export const useMetadataStore = defineStore("metadata", () => {
   const progress = ref<number | null>(null)
   const listeners = ref<number>(0)
   const intervalId = ref<NodeJS.Timer | null>(null)
+  const isMixtape = ref<boolean>(false)
 
   const fetch = async () => {
     const fetchLiveInfo: FetchData = await $fetch(`${config.public.apiUrl}/metadata-live`)
@@ -39,6 +40,9 @@ export const useMetadataStore = defineStore("metadata", () => {
       }
       if (fetchLiveInfo?.metadata) {
         metadata.value = fetchLiveInfo.metadata
+        isMixtape.value = true
+      } else {
+        isMixtape.value = false
       }
       if (fetchLiveInfo?.liveInfo) {
         const response = fetchLiveInfo.liveInfo
@@ -68,6 +72,7 @@ export const useMetadataStore = defineStore("metadata", () => {
     liveQuery,
     progress,
     listeners,
+    isMixtape,
     fetch,
   }
 })
