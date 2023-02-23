@@ -2,13 +2,10 @@
 useLoadingStore()
 useDaylightStore()
 useMetadataStore()
-const { isMuted } = useAudioStoreRefs()
+useAudioStoreRefs()
 const { snackbars } = useSnackbarStoreRefs()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
-const classes = reactive({
-  dark: themeVariant.value.definition?.dark,
-  muted: isMuted.value,
-})
+const { classes } = useAppStoreRefs()
 </script>
 
 <template>
