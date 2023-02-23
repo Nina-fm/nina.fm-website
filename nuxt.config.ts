@@ -1,3 +1,4 @@
+import svgLoader from "vite-svg-loader"
 import vuetify from "vite-plugin-vuetify"
 
 const sitename = "Nina.fm"
@@ -60,6 +61,9 @@ export default defineNuxtConfig({
     define: {
       "process.env.DEBUG": false,
     },
+    plugins: [
+      svgLoader(), // https://github.com/jpkleemans/vite-svg-loader#readme
+    ],
   },
 
   // build modules
@@ -73,6 +77,7 @@ export default defineNuxtConfig({
     ],
     async (options, nuxt) => {
       nuxt.hooks.hook("vite:extendConfig", (config) =>
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         config.plugins.push(vuetify())
       )
@@ -87,10 +92,6 @@ export default defineNuxtConfig({
   components: [
     {
       path: "~/components/",
-      pathPrefix: false,
-    },
-    {
-      path: "~/themes/",
       pathPrefix: false,
     },
   ],
