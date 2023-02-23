@@ -14,7 +14,7 @@ const toggleAnimation = () => {
   </div>
 </template>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @import "../assets/scss/base";
 $stroke-color: $color-main-bg;
 $main-word-stroke-w: 6.4px;
@@ -55,8 +55,8 @@ $anim-out: exit 3s 7s linear infinite forwards;
     opacity: 0;
   }
 
-  img,
-  svg {
+  :deep(img),
+  :deep(svg) {
     pointer-events: auto;
     transition: all 0.2s ease-out;
     width: 200px;
@@ -64,7 +64,7 @@ $anim-out: exit 3s 7s linear infinite forwards;
       width: 150px;
     }
   }
-  .line {
+  :deep(.line) {
     fill: none;
     stroke: $stroke-color;
     stroke-linecap: round;
@@ -74,80 +74,80 @@ $anim-out: exit 3s 7s linear infinite forwards;
     stroke-width: 1px;
     transition: all 3s ease-out, stroke-dasharray 0s, stroke-dashoffset 0s;
   }
-  &.init .line {
-    stroke-dashoffset: 1000;
-    @include prefix(animation, dash 1s 0s linear 1 forwards);
+  &.init {
+    :deep(.line) {
+      stroke-dashoffset: 1000;
+      @include prefix(animation, dash 1s 0s linear 1 forwards);
+    }
   }
-  .letter-n {
+  :deep(.letter-n) {
     @include prefix(animation-duration, 1.8s !important);
     @include prefix(animation-delay, #{$delay-before + 0ms} !important);
     stroke-width: $main-word-stroke-w;
   }
-  .letter-i {
+  :deep(.letter-i) {
     @include prefix(animation-duration, 2.2s !important);
     @include prefix(animation-delay, #{$delay-before + 400ms} !important);
     stroke-width: $main-word-stroke-w;
   }
-  .letter-i-dot {
+  :deep(.letter-i-dot) {
     @include prefix(animation-duration, 1s !important);
     @include prefix(animation-delay, #{$delay-before + 600ms} !important);
     stroke-width: $main-word-stroke-w * 1.25;
   }
-  .letter-n2 {
+  :deep(.letter-n2) {
     @include prefix(animation-duration, 1.8s !important);
     @include prefix(animation-delay, #{$delay-before + 800ms} !important);
     stroke-width: $main-word-stroke-w;
   }
-  .letter-a {
+  :deep(.letter-a) {
     @include prefix(animation-duration, 1.8s !important);
     @include prefix(animation-delay, #{$delay-before + 1200ms} !important);
     stroke-width: $main-word-stroke-w;
   }
-  .letter-a-bar {
+  :deep(.letter-a-bar) {
     @include prefix(animation-duration, 1.5s !important);
     @include prefix(animation-delay, #{$delay-before + 1400ms} !important);
     stroke-width: $main-word-stroke-w;
   }
-  .dot-fm {
+  :deep(.dot-fm) {
     @include prefix(animation-duration, 1.8s !important);
     @include prefix(animation-delay, #{$delay-before + 2000ms} !important);
     stroke-width: $sub-word-stroke-w * 1.25;
   }
-  .letter-f {
+  :deep(.letter-f) {
     @include prefix(animation-duration, 1.2s !important);
     @include prefix(animation-delay, #{$delay-before + 2100ms} !important);
     stroke-width: $sub-word-stroke-w;
   }
-  .letter-f-bar {
+  :deep(.letter-f-bar) {
     @include prefix(animation-duration, 1.6s !important);
     @include prefix(animation-delay, #{$delay-before + 2100ms} !important);
     stroke-width: $sub-word-stroke-w;
   }
-  .letter-m {
+  :deep(.letter-m) {
     @include prefix(animation-duration, 1s !important);
     @include prefix(animation-delay, #{$delay-before + 2200ms} !important);
     stroke-width: $sub-word-stroke-w;
   }
-  .letter-a-bar,
-  .letter-i-dot,
-  .sub-word {
+  :deep(.letter-a-bar),
+  :deep(.letter-i-dot),
+  :deep(.sub-word) {
     transition: opacity 0.3s;
   }
   &:hover {
-    svg {
+    :deep(svg) {
       opacity: 0.2;
     }
   }
   .v-application:not(.loading):not(.muted) &:hover {
-    .letter-a-bar,
-    .letter-i-dot,
-    .sub-word {
+    :deep(.letter-a-bar, .letter-i-dot, .sub-word) {
       opacity: 0;
     }
-    .letter-n,
-    .letter-i,
-    .letter-n2,
-    .letter-a {
+    :deep(.letter-n),
+    :deep(.letter-i),
+    :deep(.letter-n2),
+    :deep(.letter-a) {
       transition: stroke-dasharray 0s;
       stroke-dashoffset: 0;
       @include prefix(animation, dash2 5s 0s linear infinite forwards);
