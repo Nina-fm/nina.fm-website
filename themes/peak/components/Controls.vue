@@ -1,9 +1,16 @@
 <script lang="ts" setup>
+const props = defineProps<{
+  rainbowMode?: boolean
+}>()
+const emit = defineEmits<{
+  (e: "toggleRainbowMode"): void
+}>()
+
 const { isFullscreen } = useAppStoreRefs()
 const { toggleFullscreen } = useAppStore()
 const { toggleDarkMode } = useThemeStore()
 const { darkMode } = useThemeStoreRefs()
-const isRainbow = ref<boolean>(false)
+const { rainbowMode } = toRefs(props)
 const darkModeTooltip = computed(() => {
   if (darkMode.value === "auto") return "<b>Mode lumière automatique</b><br/>Cliquer pour passer en mode nuit"
   else if (darkMode.value === true) return "<b>Mode nuit actif</b><br/>Cliquer pour passer en mode jour"
@@ -14,14 +21,13 @@ const darkModeIcon = computed(() => {
   else if (darkMode.value === true) return "$ninaSunny"
   return "$ninaBright4"
 })
-// const rainbow = ["red", "yellow", "green", "aqua", "blue", "dodgerblue", "fuchsia"]
 
 const handleToggleFullScreen = async () => {
   await toggleFullscreen()
 }
 
 const toggleRainbowMode = () => {
-  isRainbow.value = !isRainbow.value
+  emit("toggleRainbowMode")
 }
 </script>
 
@@ -29,7 +35,7 @@ const toggleRainbowMode = () => {
   <div class="controls">
     <TipIcon
       class="mt-5"
-      :class="{ spin: isRainbow }"
+      :class="{ spin: rainbowMode }"
       :icon="'$ninaSpiral'"
       :size="15"
       location="left"
