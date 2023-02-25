@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import Audience from "../components/audience.vue"
-import Background from "../components/background.vue"
-import Brand from "../components/brand.vue"
-import Credits from "../components/credits.vue"
-import MixtapeDetails from "../components/mixtapeDetails.vue"
-import Player from "../components/player.vue"
+import Audience from "../components/Audience.vue"
+import Background from "../components/Background.vue"
+import Brand from "../components/Brand.vue"
+import Controls from "../components/Controls.vue"
+import Credits from "../components/Credits.vue"
+import MixtapeDetails from "../components/MixtapeDetails.vue"
+import Player from "../components/Player.vue"
 </script>
 
 <template>
@@ -13,6 +14,7 @@ import Player from "../components/player.vue"
   <Credits />
   <Player />
   <Brand />
+  <Controls />
   <MixtapeDetails />
 </template>
 

@@ -3,6 +3,7 @@ import { defineStore } from "pinia"
 export const useAppStore = defineStore("app", () => {
   const { isMuted } = useAudioStoreRefs()
   const { themeVariant } = useThemeStoreRefs()
+  const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
   const detailsOpen = ref<boolean>(false)
 
   const classes = computed(() => ({
@@ -17,6 +18,8 @@ export const useAppStore = defineStore("app", () => {
     classes,
     detailsOpen,
     toggleDetails,
+    isFullscreen,
+    toggleFullscreen,
   }
 })
 

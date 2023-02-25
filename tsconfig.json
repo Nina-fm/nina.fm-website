@@ -2,6 +2,7 @@
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "types": ["@vueuse/nuxt"]
+    "typeRoots": ["./node_modules/@types", "./node_modules/vuetify/types"],
+    "types": ["@vueuse/nuxt", "vuetify"]
   }
 }

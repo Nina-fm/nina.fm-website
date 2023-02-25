@@ -13,12 +13,12 @@ const animatedLight = (await import(`../assets/images/animated-background.gif`))
 // @ts-nocheck
 const animatedDark = (await import(`../assets/images/animated-background-night.gif`)).default
 
-const { isNight } = useDaylightStoreRefs()
+const { isDarkModeActive } = useThemeStoreRefs()
 const { isPlaying } = useAudioStoreRefs()
 
-const mask = computed(() => (isNight.value ? maskDark : maskLight))
-const img = computed(() => (isNight.value ? imgDark : imgLight))
-const animated = computed(() => (isNight.value ? animatedDark : animatedLight))
+const mask = computed(() => (isDarkModeActive.value ? maskDark : maskLight))
+const img = computed(() => (isDarkModeActive.value ? imgDark : imgLight))
+const animated = computed(() => (isDarkModeActive.value ? animatedDark : animatedLight))
 const bg = computed(() => (isPlaying.value ? animated : img))
 </script>
 

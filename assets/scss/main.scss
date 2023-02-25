@@ -4,6 +4,7 @@
 //   $reset: false
 // );
 
+@import "./mixins";
 @import "./fonts";
 
 html,
@@ -19,4 +20,11 @@ a {
 
 .v-application {
   font-family: "Avenir Next", sans-serif;
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }

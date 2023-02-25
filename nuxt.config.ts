@@ -23,6 +23,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    env: process.env.NODE_ENV,
     public: {
       sitename,
       streamUrl: process.env.NUXT_PUBLIC_STREAM_URL,

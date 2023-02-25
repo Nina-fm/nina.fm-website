@@ -18,24 +18,15 @@ const emit = defineEmits<{
 const { id, active, iconActive, iconInactive, iconActiveAnimated, iconInactiveAnimated, infoText, size, circle } =
   toRefs(props)
 
-const iconClasses = computed(() => {
-  const classes = []
-  if (active.value) {
-    classes.push(iconActiveAnimated?.value || iconActive?.value)
-  } else {
-    classes.push(iconInactiveAnimated?.value || iconInactive?.value)
-  }
-  if ((active.value && iconActiveAnimated?.value) || (!active.value && iconInactiveAnimated?.value)) {
-    classes.push("animated")
-  }
-  return classes
-})
-const styles = computed(() => {
-  return { height: size?.value, width: size?.value }
-})
-const iconStyles = computed(() => {
-  return { fontSize: (size?.value ?? 10) / 10 + "em" }
-})
+const activeIcon = computed(() => iconActiveAnimated?.value || iconActive?.value)
+const inactiveIcon = computed(() => iconInactiveAnimated?.value || iconInactive?.value)
+const iconClasses = computed(() => ({
+  ...(activeIcon.value ? { [activeIcon.value]: [true, undefined].includes(active.value) } : {}),
+  ...(inactiveIcon.value ? { [inactiveIcon.value]: [false].includes(active.value) } : {}),
+  animated: !!iconActiveAnimated?.value || !!iconInactiveAnimated?.value,
+}))
+const styles = computed(() => ({ height: `${size?.value}px`, width: `${size?.value}px` }))
+const iconStyles = computed(() => ({ fontSize: (size?.value ?? 10) / 10 + "em" }))
 
 const handleClick = (event: Event) => {
   emit("click", event)
@@ -44,7 +35,7 @@ const handleClick = (event: Event) => {
 
 <template>
   <button
-    :id="id"
+    :id="id ?? ''"
     :class="{ iconButton: true, circle: circle }"
     :title="infoText"
     :style="styles"
@@ -74,7 +65,7 @@ const handleClick = (event: Event) => {
   display: inline-block;
   font-size: 1em;
   z-index: 10;
-  position: absolute;
+  position: relative;
   color: $color-info-text;
   @include prefix(transition, $animation);
   .v-application.dark & {

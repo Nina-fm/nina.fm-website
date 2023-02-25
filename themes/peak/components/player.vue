@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import IconButton from "./IconButton.vue"
-
 defineEmits<{
   (e: "click"): void
 }>()
@@ -15,7 +13,7 @@ const { detailsOpen } = useAppStoreRefs()
 const { toggleDetails } = useAppStore()
 const { isLocked, isLoading, isMuted, isPlaying } = useAudioStoreRefs()
 const { toggleMute } = useAudioStore()
-const { isNight } = useDaylightStoreRefs()
+const { isDarkModeActive } = useThemeStoreRefs()
 const { isMixtape, liveQuery } = useMetadataStoreRefs()
 
 const shouldPlay = computed(() => !isLocked.value || isLoading.value)
@@ -30,11 +28,13 @@ const equalizerPath = ref<string | null>(null)
 
 const updateEqualizer = async () => {
   equalizerPath.value = (
-    await import(`../assets/images/equalizer${!isPlaying.value ? "-loader" : ""}${isNight.value ? "-night" : ""}.gif`)
+    await import(
+      `../assets/images/equalizer${!isPlaying.value ? "-loader" : ""}${isDarkModeActive.value ? "-night" : ""}.gif`
+    )
   ).default
 }
 
-watch([isPlaying, isNight], () => {
+watch([isPlaying, isDarkModeActive], () => {
   updateEqualizer()
 })
 
@@ -65,13 +65,11 @@ onMounted(() => {
             <div class="track-type" data-append="tracktype">{{ typeText }}</div>
           </div>
         </div>
-        <IconButton
+        <v-icon
           v-if="isMixtape && (shouldPlay || isPlaying)"
-          class="player-toggle"
-          :size="10"
-          :active="detailsOpen"
-          icon-active="nina-icon-remove_circle_outline"
-          icon-inactive="nina-icon-add_circle_outline"
+          :icon="detailsOpen ? 'mdi:mdi-minus-circle-outline' : 'mdi:mdi-plus-circle-outline'"
+          :size="16"
+          class="plus-btn ml-4"
           @click="toggleDetails"
         />
       </div>
@@ -125,7 +123,10 @@ onMounted(() => {
   height: 40px;
   padding: 15px 40px 0 20px;
   color: $color-main-text;
-  background-color: rgba($color-main-bg, 0);
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   .v-application.dark & {
     color: $night-color-main-text;
     background-color: rgba($night-color-main-bg, 0);
@@ -134,9 +135,8 @@ onMounted(() => {
   overflow: hidden;
   font-size: 1.1em;
   font-family: $font-condensed;
-  i {
-    position: relative;
-    top: 0.1em;
+  .plus-btn {
+    margin-top: -0.05em;
   }
   @include respond-to(phone) {
     max-width: calc(100% - #{$margin-global * 3});
@@ -185,15 +185,6 @@ onMounted(() => {
   height: 20px;
   white-space: nowrap;
 }
-.player-toggle {
-  right: 10px;
-  top: 50%;
-  @include prefix(transform, translateY(-50%));
-  margin-top: 0.25em;
-  @include respond-to(tablet) {
-    /*margin-top: 0;*/
-  }
-}
 .equalizer {
   z-index: 10;
   width: $equalizer-size;
@@ -204,7 +195,7 @@ onMounted(() => {
   position: absolute;
   top: 50%;
   @include prefix(transform, translateY(-50%));
-  margin-top: 0.05em;
+  margin-top: 0.24em;
   cursor: pointer;
   .v-application.muted & {
     opacity: 0.2;

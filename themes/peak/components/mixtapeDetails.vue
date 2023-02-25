@@ -34,10 +34,8 @@ const tracks = computed(
                   <template #prepend>
                     <span class="num">{{ i + 1 }}</span>
                   </template>
-                  <v-list-item-text>
-                    <span class="artist">{{ track.artist }}</span> –
-                    <span class="title">{{ track.title }}</span>
-                  </v-list-item-text>
+                  <span class="artist">{{ track.artist }}</span> –
+                  <span class="title">{{ track.title }}</span>
                 </v-list-item>
               </v-list>
             </div>
@@ -149,6 +147,10 @@ const tracks = computed(
       width: 0.2em;
       justify-content: flex-end;
       margin-right: 1em;
+    }
+    .v-application.dark & {
+      background-color: $night-color-main-bg;
+      color: currentColor;
     }
   }
 }

@@ -18,7 +18,8 @@
   line-height: $line-height;
 
   .theme-toggler {
-    top: $margin-global;
-    right: $margin-global;
+    .v-btn--size-small {
+      line-height: 2.65em;
+    }
   }
 }

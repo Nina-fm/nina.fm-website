@@ -3,8 +3,11 @@ import "vuetify/styles"
 import * as components from "vuetify/components"
 import * as directives from "vuetify/directives"
 
+import { aliases, nina } from "~/components/iconsets/nina"
+
 import { createVuetify } from "vuetify"
 import { fr } from "vuetify/locale"
+import { mdi } from "vuetify/iconsets/mdi"
 
 export default defineNuxtPlugin((nuxtApp) => {
   const { current } = useThemeStoreRefs()
@@ -25,6 +28,14 @@ export default defineNuxtPlugin((nuxtApp) => {
           }),
           {}
         ),
+      },
+    },
+    icons: {
+      defaultSet: "nina",
+      aliases,
+      sets: {
+        mdi,
+        nina,
       },
     },
     components: {

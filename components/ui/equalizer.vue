@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import AudioMotionAnalyzer from 'audiomotion-analyzer';
+import AudioMotionAnalyzer from "audiomotion-analyzer"
 
 const { audioContext, stream } = useAudioStoreRefs()
-const container = ref<HTMLDivElement | null>(null);
-const audioMotion = ref<AudioMotionAnalyzer>();
+const container = ref<HTMLDivElement | null>(null)
+const audioMotion = ref<AudioMotionAnalyzer>()
 
 const options = {
   mode: 5,
   barSpace: 0.25,
-  gradient: 'rainbow',
+  gradient: "rainbow",
   ledBars: false,
   lumiBars: false,
   radial: false,
@@ -25,8 +25,8 @@ onMounted(() => {
   audioMotion.value = new AudioMotionAnalyzer(container.value ?? undefined, {
     width: 200,
     height: 150,
-    source: audioContext.value?.destination
-  });
+    source: audioContext.value?.destination,
+  })
 })
 </script>
 
