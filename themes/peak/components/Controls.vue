@@ -50,6 +50,7 @@ const darkModeIcon = computed(() => {
 <style lang="scss" scoped>
 @import "../assets/scss/base";
 .controls {
+  z-index: 10;
   position: absolute;
   bottom: $margin-global * 2;
   right: $margin-global * 2;

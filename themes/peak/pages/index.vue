@@ -16,9 +16,9 @@ import Rainbow from "../components/Rainbow.vue"
   <Credits />
   <Player />
   <Brand />
-  <Controls />
   <MixtapeDetails />
   <ContentPage />
+  <Controls />
   <Rainbow />
 </template>
 
