@@ -9,12 +9,12 @@ const msg = {
   mixtape: "Une mixtape Nina.fm",
   listening: "À l'écoute sur Nina.fm",
 }
-const { detailsOpen } = useAppStoreRefs()
-const { toggleDetails } = useAppStore()
 const { isLocked, isLoading, isMuted, isPlaying } = useAudioStoreRefs()
 const { toggleMute } = useAudioStore()
 const { isDarkModeActive } = useThemeStoreRefs()
 const { isMixtape, liveQuery } = useMetadataStoreRefs()
+const { toggleDetails } = usePeakThemeStore()
+const { isDetailsOpen } = usePeakThemeStoreRefs()
 
 const shouldPlay = computed(() => !isLocked.value || isLoading.value)
 const initMsg = computed(() => (shouldPlay.value ? msg.loading : msg.locked))
@@ -67,7 +67,7 @@ onMounted(() => {
         </div>
         <v-icon
           v-if="isMixtape && (shouldPlay || isPlaying)"
-          :icon="detailsOpen ? 'mdi:mdi-minus-circle-outline' : 'mdi:mdi-plus-circle-outline'"
+          :icon="isDetailsOpen ? 'mdi:mdi-minus-circle-outline' : 'mdi:mdi-plus-circle-outline'"
           :size="16"
           class="plus-btn ml-4"
           @click="toggleDetails"

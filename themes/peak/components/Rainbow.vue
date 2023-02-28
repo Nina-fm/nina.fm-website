@@ -1,12 +1,8 @@
 <script lang="ts" setup>
-const props = defineProps<{
-  active?: boolean
-}>()
-
-const { active } = toRefs(props)
 const rainbow = ["red", "yellow", "green", "aqua", "blue", "dodgerblue", "fuchsia"]
 const delay = 10500
 
+const { isRainbowMode } = usePeakThemeStoreRefs()
 const interval = ref<NodeJS.Timer>()
 const current = ref<number>(0)
 const count = ref<number>(0)
@@ -38,7 +34,7 @@ onUnmounted(() => {
 
 <template>
   <v-fade-transition>
-    <v-sheet :class="{ rainbow: true, active }">
+    <v-sheet class="rainbow" :class="{ active: isRainbowMode }">
       <v-sheet :style="styles" class="rainbow-content" />
     </v-sheet>
   </v-fade-transition>

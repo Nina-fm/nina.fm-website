@@ -8,16 +8,6 @@ import Credits from "../components/Credits.vue"
 import MixtapeDetails from "../components/MixtapeDetails.vue"
 import Player from "../components/Player.vue"
 import Rainbow from "../components/Rainbow.vue"
-
-const rainbowMode = useCookie("nina-user-rainbowMode", { default: () => false })
-const { setClasses } = useAppStore()
-
-const handleToggleRainbowMode = () => {
-  rainbowMode.value = !rainbowMode.value
-  setClasses({
-    rainbow: rainbowMode.value,
-  })
-}
 </script>
 
 <template>
@@ -26,10 +16,10 @@ const handleToggleRainbowMode = () => {
   <Credits />
   <Player />
   <Brand />
-  <Controls @toggle-rainbow-mode="handleToggleRainbowMode" />
+  <Controls />
   <MixtapeDetails />
   <ContentPage />
-  <Rainbow :active="rainbowMode" />
+  <Rainbow />
 </template>
 
 <style scoped></style>

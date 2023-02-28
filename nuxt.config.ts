@@ -86,7 +86,7 @@ export default defineNuxtConfig({
   ],
 
   imports: {
-    dirs: ["stores"],
+    dirs: ["stores", "themes/**/stores/*.{ts,js,mjs,mts}"],
   },
 
   // auto import components

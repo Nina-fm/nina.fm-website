@@ -16,6 +16,31 @@
   <div class="block">
     <p class="centered spaced">PROJET RADIOPHONIQUE À LONGUE PORTÉE</p>
   </div>
+  <div class="footer">
+    <v-btn
+      href="https://www.facebook.com/nina.webradio/"
+      target="_blank"
+      rel="noopener noreferrer"
+      icon="mdi:mdi-facebook"
+      variant="outlined"
+      color="grey-darken-3"
+    />
+    <v-btn
+      href="mailto:infos@nina.fm"
+      rel="noopener noreferrer"
+      icon="mdi:mdi-email-fast-outline"
+      variant="outlined"
+      color="grey-darken-3"
+    />
+    <v-btn
+      href="https://www.mixcloud.com/Nina_fm/"
+      target="_blank"
+      rel="noopener noreferrer"
+      icon="mdi:mdi-soundcloud"
+      variant="outlined"
+      color="grey-darken-3"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -28,7 +53,7 @@
     color: $night-color-info-text;
   }
   padding: $margin-global;
-  margin-bottom: $margin-global/2;
+  margin-bottom: calc($margin-global/2);
   @include prefix(border-radius, 3px);
 
   &:last-child {
@@ -54,7 +79,7 @@ h6 {
     color: $night-color-info-text;
   }
   padding: $margin-global;
-  margin-bottom: $margin-global/2;
+  margin-bottom: calc($margin-global/2);
 
   &:first-child {
     padding-top: 0 !important;
@@ -86,6 +111,7 @@ h6 {
   }
   strong {
     letter-spacing: 0;
+    font-weight: bold;
   }
 }
 
@@ -140,6 +166,14 @@ blockquote {
     text-align: right;
     display: block;
     color: inherit;
+  }
+}
+.footer {
+  padding-top: $margin-global;
+  text-align: center;
+  :deep(.v-btn) {
+    margin-left: 6px;
+    margin-right: 6px;
   }
 }
 </style>

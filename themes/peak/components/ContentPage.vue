@@ -1,53 +1,21 @@
 <script lang="ts" setup>
 const Content = defineAsyncComponent(() => import("../contents/About.vue"))
 
-const { setClasses } = useAppStore()
-const open = ref<boolean>(false)
-
-const toggleContentPage = () => {
-  open.value = !open.value
-  setClasses({
-    content: open.value,
-  })
-}
+const { toggleContent } = usePeakThemeStore()
+const { isContentOpen } = usePeakThemeStoreRefs()
 </script>
 
 <template>
   <div class="content-page">
     <v-icon
       class="content-page-toggler"
-      :icon="open ? '$ninaClose' : '$ninaMenu'"
-      size="small"
-      @click="toggleContentPage"
+      :icon="isContentOpen ? '$ninaClose' : '$ninaReorder'"
+      :size="22"
+      @click="toggleContent"
     />
     <div class="content-page-box">
       <div class="container">
         <Content />
-        <div class="footer">
-          <v-btn
-            href="https://www.facebook.com/nina.webradio/"
-            target="_blank"
-            rel="noopener noreferrer"
-            prepend-icon="mdi:mdi-facebook"
-            variant="flat"
-            >Nina sur Facebook</v-btn
-          >
-          <v-btn
-            href="mailto:infos@nina.fm"
-            rel="noopener noreferrer"
-            prepend-icon="mdi:mdi-email-fast-outline"
-            variant="flat"
-            >Contacter Nina</v-btn
-          >
-          <v-btn
-            href="https://www.mixcloud.com/Nina_fm/"
-            target="_blank"
-            rel="noopener noreferrer"
-            prepend-icon="mdi:mdi-soundcloud"
-            variant="flat"
-            >Podcasts</v-btn
-          >
-        </div>
       </div>
     </div>
   </div>
@@ -55,6 +23,8 @@ const toggleContentPage = () => {
 
 <style lang="scss" scoped>
 @import "../assets/scss/base";
+$half-margin: calc($margin-global / 2);
+
 .content-page {
   pointer-events: none;
   position: absolute;
@@ -76,8 +46,8 @@ const toggleContentPage = () => {
 
 .content-page-toggler {
   position: absolute;
-  top: #{$margin-global + 3};
-  right: #{$margin-global + 5};
+  top: calc($half-margin + 3px);
+  right: calc($half-margin + 5px);
   @include prefix(transition, $animation-nobg);
   @include respond-to(small-height) {
     opacity: 0;
@@ -135,14 +105,6 @@ const toggleContentPage = () => {
 
     @include respond-to(tablet) {
       left: 100% !important;
-    }
-  }
-  .footer {
-    padding-top: $margin-global;
-    text-align: center;
-    :deep(.v-btn) {
-      margin-left: 6px;
-      margin-right: 6px;
     }
   }
 }

@@ -158,7 +158,7 @@ $anim-out: exit 3s 7s linear infinite forwards;
     }
   }
 
-  .v-application.posts & {
+  .v-application.content & {
     left: 25% !important;
 
     @include respond-to(tablet) {

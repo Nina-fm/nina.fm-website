@@ -22,7 +22,7 @@ interface FetchData {
   liveQuery: Query | null
 }
 
-const refreshDelay = 60000
+const refreshDelay = 10500
 
 export const useMetadataStore = defineStore("metadata", () => {
   const config = useRuntimeConfig()
@@ -31,21 +31,15 @@ export const useMetadataStore = defineStore("metadata", () => {
   const progress = ref<number | null>(null)
   const listeners = ref<number>(0)
   const intervalId = ref<NodeJS.Timer | null>(null)
-  const isMixtape = ref<boolean>(false)
+  const isMixtape = computed(() => !!metadata.value)
 
   const fetch = async () => {
     const fetchLiveInfo: FetchData = await $fetch(`${config.public.apiUrl}/metadata-live`)
 
     if (fetchLiveInfo) {
-      if (fetchLiveInfo?.flux) {
-        listeners.value = fetchLiveInfo.flux.listeners as number
-      }
-      if (fetchLiveInfo?.metadata) {
-        metadata.value = fetchLiveInfo.metadata
-        isMixtape.value = true
-      } else {
-        isMixtape.value = false
-      }
+      metadata.value = fetchLiveInfo.metadata
+      listeners.value = fetchLiveInfo?.flux ? (fetchLiveInfo.flux.listeners as number) : 0
+
       if (fetchLiveInfo?.liveInfo) {
         const response = fetchLiveInfo.liveInfo
         // Infos
@@ -60,6 +54,9 @@ export const useMetadataStore = defineStore("metadata", () => {
         const timeElapsed = schedulerTime.diff(currentStarts, "milliseconds").milliseconds - timezoneOffset * 1000
         const trackLength = currentEnds.diff(currentStarts, "milliseconds").milliseconds
         progress.value = (timeElapsed * 100) / trackLength
+      } else {
+        liveQuery.value = {}
+        progress.value = 0
       }
     }
   }

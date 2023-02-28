@@ -12,38 +12,40 @@ const tracks = computed(
 </script>
 
 <template>
-  <div class="details">
-    <div class="track-details">
-      <div class="container">
-        <div v-if="metadata?.cover_url" class="track-details-cover">
-          <img :src="`${metadata?.cover_url}`" />
-        </div>
-        <div class="track-details-type">
-          <v-progress-linear :model-value="`${progress}`" :height="2" />
-          Une Mixtape proposée par
-          <span class="artist">{{ metadata?.authors_text }}</span>
-        </div>
-        <div class="track-details-text">
-          <div data-append="tracklist">
-            <div v-if="!tracks.length" class="text-tracks">
-              {{ metadata?.tracks_text }}
-            </div>
-            <div v-else>
-              <v-list class="tracklist">
-                <v-list-item v-for="(track, i) in tracks" :key="track.key">
-                  <template #prepend>
-                    <span class="num">{{ i + 1 }}</span>
-                  </template>
-                  <span class="artist">{{ track.artist }}</span> –
-                  <span class="title">{{ track.title }}</span>
-                </v-list-item>
-              </v-list>
+  <client-only>
+    <div class="details">
+      <div class="track-details">
+        <div class="container">
+          <div v-if="metadata?.cover_url" class="track-details-cover">
+            <img :src="`${metadata?.cover_url}`" />
+          </div>
+          <div class="track-details-type">
+            <v-progress-linear :model-value="`${progress}`" :height="2" />
+            Une Mixtape proposée par
+            <span class="artist">{{ metadata?.authors_text }}</span>
+          </div>
+          <div class="track-details-text">
+            <div data-append="tracklist">
+              <div v-if="!tracks.length" class="text-tracks">
+                {{ metadata?.tracks_text }}
+              </div>
+              <div v-else>
+                <v-list class="tracklist">
+                  <v-list-item v-for="(track, i) in tracks" :key="track.key">
+                    <template #prepend>
+                      <span class="num">{{ i + 1 }}</span>
+                    </template>
+                    <span class="artist">{{ track.artist }}</span> –
+                    <span class="title">{{ track.title }}</span>
+                  </v-list-item>
+                </v-list>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </client-only>
 </template>
 
 <style lang="scss" scoped>
