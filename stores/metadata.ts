@@ -22,10 +22,9 @@ interface FetchData {
   liveQuery: Query | null
 }
 
-const refreshDelay = 10500
-
 export const useMetadataStore = defineStore("metadata", () => {
   const config = useRuntimeConfig()
+  const refreshDelay = config.public.streamRefreshTime
   const metadata = ref<Obj | null>(null)
   const liveQuery = ref<Query | null>(null)
   const progress = ref<number | null>(null)
@@ -34,7 +33,7 @@ export const useMetadataStore = defineStore("metadata", () => {
   const isMixtape = computed(() => !!metadata.value)
 
   const fetch = async () => {
-    const fetchLiveInfo: FetchData = await $fetch(`${config.public.apiUrl}/metadata-live`)
+    const fetchLiveInfo: FetchData = await $fetch(`${config.public.apiUrl}${config.public.apiMetadataEndpoint}`)
 
     if (fetchLiveInfo) {
       metadata.value = fetchLiveInfo.metadata

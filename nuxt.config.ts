@@ -27,11 +27,7 @@ export default defineNuxtConfig({
     public: {
       sitename,
       streamUrl: process.env.NUXT_PUBLIC_STREAM_URL,
-      streamApiUrl: process.env.NUXT_PUBLIC_STREAM_API_URL,
-      streamApiUrlFallback: process.env.NUXT_PUBLIC_STREAM_API_URL_FALLBACK,
-      streamMountPoint: process.env.NUXT_PUBLIC_STREAM_MOUNT_POINT,
-      streamRefreshTime: process.env.NUXT_PUBLIC_STREAM_REFRESH_TIME,
-      stramMetadataUrl: process.env.NUXT_PUBLIC_STREAM_METADATA_URL,
+      streamRefreshTime: parseInt(process.env.NUXT_PUBLIC_STREAM_REFRESH_TIME ?? "1000", 10),
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
       apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
     },
