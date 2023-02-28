@@ -4,6 +4,9 @@ export const vinyl: ThemeExt = {
   description: "The vinyl Nina theme",
   definition: {
     dark: false,
+    colors: {
+      primary: "#FFB300",
+    },
   },
 }
 

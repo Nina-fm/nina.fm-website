@@ -1,13 +1,13 @@
 <script lang="ts" setup>
+import Vinyl from "../components/Vinyl.vue"
 
-const { isPlaying, isMuted } = useAudioStoreRefs()
-const { togglePlay, toggleMute } = useAudioStore()
-const { metadata, liveQuery, progress } = useMetadataStoreRefs();
+const { liveQuery } = useMetadataStoreRefs()
+const artist = computed(() => liveQuery.value?.authors)
+const title = computed(() => liveQuery.value?.name)
 </script>
 
 <template>
-    <h1>Nina.fm</h1>
-    Vinyl…
+  <Vinyl :artist="artist" :title="title" />
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>
