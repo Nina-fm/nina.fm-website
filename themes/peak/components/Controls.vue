@@ -5,7 +5,7 @@ const { toggleFullscreen, toggleRainbowMode } = usePeakThemeStore()
 const { isFullscreen, isRainbowMode } = usePeakThemeStoreRefs()
 
 const darkModeTooltip = computed(() => {
-  if (darkMode.value === "auto") return "<b>Mode lumière automatique</b><br/>Cliquer pour passer en mode nuit"
+  if (darkMode.value === "auto") return "<b>Mode lumière automatique actif</b><br/>Cliquer pour passer en mode nuit"
   else if (darkMode.value === true) return "<b>Mode nuit actif</b><br/>Cliquer pour passer en mode jour"
   return "<b>Mode jour actif</b><br/>Cliquer pour passer en mode lumière automatique"
 })
