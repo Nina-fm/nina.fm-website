@@ -1,5 +1,5 @@
 <template>
-  <div id="edito">
+  <div class="edito">
     <h2>
       <small>Saison 4</small><br />
       <strong>Un avenir radio</strong>
@@ -14,7 +14,7 @@
     </blockquote>
   </div>
   <div class="block">
-    <p class="centered spaced">PROJET RADIOPHONIQUE À LONGUE PORTÉE</p>
+    <p class="text-center spaced">PROJET RADIOPHONIQUE À LONGUE PORTÉE</p>
   </div>
   <div class="footer">
     <v-btn
@@ -23,14 +23,14 @@
       rel="noopener noreferrer"
       icon="mdi:mdi-facebook"
       variant="outlined"
-      color="grey-darken-3"
+      class="social-icon"
     />
     <v-btn
       href="mailto:infos@nina.fm"
       rel="noopener noreferrer"
       icon="mdi:mdi-email-fast-outline"
       variant="outlined"
-      color="grey-darken-3"
+      class="social-icon"
     />
     <v-btn
       href="https://www.mixcloud.com/Nina_fm/"
@@ -38,13 +38,14 @@
       rel="noopener noreferrer"
       icon="mdi:mdi-soundcloud"
       variant="outlined"
-      color="grey-darken-3"
+      class="social-icon"
     />
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "../assets/scss/base";
+@import url("https://fonts.googleapis.com/css?family=Caveat:400,700");
 .block {
   background: rgba($color-info-bg, $opacity-info-bg);
   color: $color-info-text;
@@ -72,7 +73,10 @@ h6 {
   }
   font-weight: 700;
 }
-#edito {
+.spaced {
+  letter-spacing: 0.1em !important;
+}
+.edito {
   background: transparent;
   color: $color-info-text;
   .v-application.dark & {
@@ -127,6 +131,8 @@ blockquote {
   p {
     position: relative;
     z-index: 1;
+    font-family: "Caveat", cursive;
+    font-size: 2vw;
     line-height: 1.2em;
     @include respond-to(tablet) {
       font-size: 4vw;
