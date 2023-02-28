@@ -81,6 +81,7 @@ export const useAudioStore = defineStore("audio", () => {
     stream = new Howl({
       src: [streamUrl],
       html5: true,
+      autoplay: true,
     })
 
     stream.on("load", () => {
@@ -98,6 +99,7 @@ export const useAudioStore = defineStore("audio", () => {
     })
     stream.on("play", () => {
       log("on stream play")
+      isLocked.value = false
       isLoading.value = false
       update()
     })
@@ -113,7 +115,6 @@ export const useAudioStore = defineStore("audio", () => {
     stream.on("unlock", () => {
       log("on stream unlock")
       isLocked.value = false
-      play()
       update()
     })
   })
