@@ -8,8 +8,10 @@ export const usePeakThemeStore = defineStore("peakTheme", () => {
 
   const toggleRainbowMode = () => (isRainbowMode.value = !isRainbowMode.value)
   const toggleDetails = () => (isDetailsOpen.value = !isDetailsOpen.value)
+  const openDetails = () => (isDetailsOpen.value = true)
   const closeDetails = () => (isDetailsOpen.value = false)
   const toggleContent = () => (isContentOpen.value = !isContentOpen.value)
+  const openContent = () => (isContentOpen.value = true)
   const closeContent = () => (isContentOpen.value = false)
   const toggleFullscreen = async () => await toggleFs()
 
@@ -48,8 +50,10 @@ export const usePeakThemeStore = defineStore("peakTheme", () => {
     toggleRainbowMode,
     toggleFullscreen,
     toggleDetails,
+    openDetails,
     closeDetails,
     toggleContent,
+    openContent,
     closeContent,
   }
 })

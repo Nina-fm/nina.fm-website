@@ -15,6 +15,12 @@ export const useThemeStore = defineStore("theme", () => {
     current.value = key
   }
 
+  const toggleTheme = () => {
+    const index = themeNames.indexOf(current.value)
+    const next = index >= themeNames.length - 1 ? 0 : index + 1
+    switchTheme(themeNames[next])
+  }
+
   const toggleDarkMode = () => {
     if (darkMode.value === "auto") darkMode.value = true
     else if (darkMode.value === true) darkMode.value = false
@@ -33,6 +39,7 @@ export const useThemeStore = defineStore("theme", () => {
     darkMode,
     isDarkModeActive,
     switchTheme,
+    toggleTheme,
     toggleDarkMode,
   }
 })
