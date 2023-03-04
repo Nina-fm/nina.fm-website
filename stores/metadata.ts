@@ -27,7 +27,7 @@ export const useMetadataStore = defineStore("metadata", () => {
   const refreshDelay = config.public.streamRefreshTime
   const metadata = ref<Obj | null>(null)
   const liveQuery = ref<Query | null>(null)
-  const progress = ref<number | null>(null)
+  const progress = ref<number>(0)
   const listeners = ref<number>(0)
   const intervalId = ref<NodeJS.Timer | null>(null)
   const isMixtape = computed(() => !!metadata.value)

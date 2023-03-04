@@ -1,48 +1,163 @@
 <script lang="ts" setup>
-const LogoSvg = defineAsyncComponent(() => import("~/assets/svg/logo-stroke.svg"))
+import HalfCircleTextWrapper from "./HalfCircleTextWrapper.vue"
 
 const props = defineProps<{
   title?: string
   artist?: string
+  cover?: string
+  rotate?: boolean
 }>()
 
-const { title, artist } = toRefs(props)
+const { title, artist, rotate, cover } = toRefs(props)
 const config = useRuntimeConfig()
+const { theme } = useThemeStoreRefs()
 </script>
 
 <template>
-  <v-container class="d-flex h-100 align-center">
-    <v-row align-content="center">
-      <v-col class="d-flex justify-center">
-        <v-avatar color="primary" :size="300">
-          <div class="rotate d-flex flex-column align-center">
-            <h1>{{ config.public.sitename }}</h1>
-            <!-- <LogoSvg /> -->
-            <v-avatar color="background" :size="30" class="my-5" />
-            <b>{{ title ?? " " }}</b>
-            <p>{{ artist ?? " " }}</p>
-          </div>
-        </v-avatar>
-      </v-col>
-    </v-row>
-  </v-container>
+  <ClientOnly>
+    <div class="vinyl">
+      <v-sheet color="transparent" class="sticker" :class="{ rotate }">
+        <v-avatar color="primary" :size="300" class="sticker-background" />
+        <v-sheet color="primary" rounded="circle" class="sticker-content">
+          <HalfCircleTextWrapper :radius="300" :padding="20" position="top">
+            <div class="sticker-top">
+              <!-- <h1 class="mt-4">Nina.fm</h1> -->
+              <BrandLogo class="logo" />
+            </div>
+          </HalfCircleTextWrapper>
+          <HalfCircleTextWrapper :radius="300" :padding="40" position="bottom">
+            <div class="sticker-bottom">
+              <!-- In magna anim Lorem exercitation anim enim qui dolore et in dolor veniam elit labore. Incididunt irure eu
+              non ullamco. Adipisicing dolor consequat in aute sit tempor sint ex non. Est est voluptate proident. -->
+              <div class="title">{{ title ?? "" }}</div>
+              <div class="artist mt-2">{{ artist ?? "" }}</div>
+            </div>
+          </HalfCircleTextWrapper>
+        </v-sheet>
+      </v-sheet>
+      <div class="sharp" />
+    </div>
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>
 @import "../assets/scss/theme.scss";
-:deep(svg) {
-  width: 120px;
+
+.vinyl {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(var(--v-theme-background));
+    // border: 1px solid rgb(var(--v-theme-on-surface-variant));
+    height: 1000px;
+    width: 1000px;
+    border-radius: 50%;
+  }
+
+  .sharp {
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: rgb(var(--v-theme-background));
+    &::before {
+      content: "";
+      z-index: 1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-60%, -60%) rotate(45deg);
+      height: 70%;
+      width: 60%;
+      border-radius: 50%;
+      // border: 1px solid rgb(var(--v-theme-primary));
+      background-color: rgba(var(--v-theme-primary), 0.15);
+    }
+    &::after {
+      content: "";
+      z-index: 2;
+      position: absolute;
+      top: calc(50% - 3px);
+      left: calc(50% - 5px);
+      background-color: rgb(var(--v-theme-primary));
+      height: 5px;
+      width: 5px;
+      display: flex;
+      border-radius: 50%;
+      transform-origin: center;
+      transform: translate(-50%, -50%);
+    }
+  }
 }
-:deep(.line) {
-  fill: none;
-  stroke: cur;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1000 1000;
-  stroke-dashoffset: 0;
-  stroke-width: 2px;
-  transition: all 3s ease-out, stroke-dasharray 0s, stroke-dashoffset 0s;
+.sticker {
+  width: 300px;
+  height: 300px;
+  position: relative;
 }
+
+.sticker-background {
+  position: absolute;
+  z-index: 1;
+  background-image: url(v-bind(cover));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.sticker-content {
+  position: absolute;
+  z-index: 2;
+  color: currentColor;
+  width: 100%;
+  height: 100%;
+}
+:deep(.half-circle-wrapper) {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgb(var(--v-theme-surface));
+}
+.sticker-bottom {
+  transform: translateY(30px);
+  line-height: 1em;
+}
+.sticker-top {
+  text-align: center;
+  transform: translateY(15px);
+  line-height: 1em;
+}
+:deep(h1) {
+  font-family: $font-family-cursive;
+  font-size: 3rem;
+}
+.logo {
+  position: relative;
+  display: inline-block;
+  width: 140px;
+}
+.title {
+  font-size: 1.2em;
+  line-height: 1.1em;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+.artist {
+  font-size: 0.8em;
+}
+
 .rotate {
   animation: rotation 8s infinite linear;
 }

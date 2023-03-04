@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 const { current } = useThemeStoreRefs()
-const { themeNames, switchTheme } = useThemeStore()
+const { publicThemes, switchTheme } = useThemeStore()
 </script>
 
 <template>
   <client-only>
-    <div v-if="themeNames.length" class="theme-toggler">
-      <v-btn-toggle :model-value="current" density="compact" divided>
-        <v-btn v-for="t in themeNames" :key="t" size="small" :active="t === current" @click="switchTheme(t)">
+    <div v-if="publicThemes.length" class="theme-toggler">
+      <v-btn-toggle :model-value="current" density="compact" divided variant="flat">
+        <v-btn v-for="t in publicThemes" :key="t" size="small" :active="t === current" @click="switchTheme(t)">
           {{ t }}
         </v-btn>
       </v-btn-toggle>

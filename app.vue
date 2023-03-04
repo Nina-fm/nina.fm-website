@@ -19,7 +19,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
       toggleMute()
       break
     default:
-      e.preventDefault()
+      // e.preventDefault()
       break
   }
 }
@@ -36,7 +36,6 @@ onBeforeUnmount(() => {
 <template>
   <v-app :theme="currentVariant" :class="classes">
     <NuxtLoadingIndicator :color="themeVariant.definition?.colors?.primary" />
-    <ThemeToggler />
     <Theme :name="current" />
     <Notifier v-model="snackbars" />
   </v-app>

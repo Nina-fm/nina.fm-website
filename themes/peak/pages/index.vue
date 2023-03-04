@@ -7,7 +7,6 @@ import Controls from "../components/Controls.vue"
 import Credits from "../components/Credits.vue"
 import MixtapeDetails from "../components/MixtapeDetails.vue"
 import Player from "../components/Player.vue"
-import Rainbow from "../components/Rainbow.vue"
 
 const { toggleDetails, closeContent, closeDetails } = usePeakThemeStore()
 

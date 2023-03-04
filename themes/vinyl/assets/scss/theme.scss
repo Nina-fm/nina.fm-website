@@ -1,7 +1,17 @@
+@import "./airbnb-cereal";
 @import url("https://fonts.cdnfonts.com/css/circular-std");
+@import url("https://fonts.cdnfonts.com/css/ralietta");
+@import url("https://fonts.cdnfonts.com/css/fonlog");
+@import url("https://fonts.cdnfonts.com/css/primer-preschoolers");
+@import url("https://fonts.cdnfonts.com/css/monstera-jam");
+@import url("https://fonts.cdnfonts.com/css/alpukat-kocok");
 
-$text-color: #fff;
+@import "./base";
 
-.v-application.v-theme--vinyl {
-  font-family: "Circular Std";
+.v-application[class*="v-theme--vinyl"] {
+  font-family: "Airbnb Cereal";
+
+  .theme-toggler {
+    // color: rgb(var(--v-theme-primary));
+  }
 }

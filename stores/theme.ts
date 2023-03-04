@@ -10,15 +10,16 @@ export const useThemeStore = defineStore("theme", () => {
   const currentVariant = computed<ThemeVariantKey>(() => `${current.value}${isDarkModeActive.value ? "Dark" : ""}`)
   const theme = computed(() => themes[current.value])
   const themeVariant = computed(() => themesWithVariants[currentVariant.value])
+  const publicThemes = computed(() => themeNames.filter((t) => t !== "base"))
 
   const switchTheme = (key: ThemeKey) => {
     current.value = key
   }
 
   const toggleTheme = () => {
-    const index = themeNames.indexOf(current.value)
-    const next = index >= themeNames.length - 1 ? 0 : index + 1
-    switchTheme(themeNames[next])
+    const index = publicThemes.value.indexOf(current.value)
+    const next = index >= publicThemes.value.length - 1 ? 0 : index + 1
+    switchTheme(publicThemes.value[next])
   }
 
   const toggleDarkMode = () => {
@@ -31,6 +32,7 @@ export const useThemeStore = defineStore("theme", () => {
     themes,
     themesWithVariants,
     themeNames,
+    publicThemes,
     themeVariantsNames,
     current,
     currentVariant,

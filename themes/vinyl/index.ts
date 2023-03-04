@@ -3,7 +3,7 @@ export const vinyl: ThemeExt = {
   name: "Vinyl",
   description: "The vinyl Nina theme",
   definition: {
-    dark: false,
+    dark: true,
     colors: {
       primary: "#FFB300",
     },
@@ -12,8 +12,4 @@ export const vinyl: ThemeExt = {
 
 export const vinylDark: ThemeExt = {
   ...vinyl,
-  definition: {
-    ...vinyl.definition,
-    dark: true,
-  },
 }
