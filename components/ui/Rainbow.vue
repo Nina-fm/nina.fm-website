@@ -2,7 +2,7 @@
 const rainbow = ["red", "yellow", "green", "aqua", "blue", "dodgerblue", "fuchsia"]
 const delay = 10500
 
-const { isRainbowMode } = usePeakThemeStoreRefs()
+const { isRainbowMode } = useThemeStoreRefs()
 const interval = ref<NodeJS.Timer>()
 const current = ref<number>(0)
 const count = ref<number>(0)

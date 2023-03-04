@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 const { toggleDarkMode } = useThemeStore()
 const { darkMode } = useThemeStoreRefs()
-const { toggleFullscreen, toggleRainbowMode } = usePeakThemeStore()
-const { isFullscreen, isRainbowMode } = usePeakThemeStoreRefs()
+const { toggleFullscreen, toggleRainbowMode } = useThemeStore()
+const { isFullscreen, isRainbowMode } = useThemeStoreRefs()
 
 const darkModeTooltip = computed(() => {
   if (darkMode.value === "auto") return "<b>Mode lumière automatique actif</b><br/>Cliquer pour passer en mode nuit"

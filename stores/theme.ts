@@ -6,6 +6,8 @@ export const useThemeStore = defineStore("theme", () => {
   const themeVariantsNames = Object.keys(themesWithVariants) as ThemeVariantKey[]
   const darkMode = useCookie<boolean | "auto">("ninafm-user-darkMode", { default: () => "auto" })
   const isDarkModeActive = computed(() => (isNight.value && !!darkMode.value) || darkMode.value === true)
+  const isRainbowMode = useCookie("ninafm-user-rainbowMode", { default: () => false })
+  const { isFullscreen, toggle: toggleFs } = useFullscreen()
   const current = useCookie<ThemeKey>("ninafm-user-theme", { default: () => "peak" })
   const currentVariant = computed<ThemeVariantKey>(() => `${current.value}${isDarkModeActive.value ? "Dark" : ""}`)
   const theme = computed(() => themes[current.value])
@@ -28,6 +30,10 @@ export const useThemeStore = defineStore("theme", () => {
     else darkMode.value = "auto"
   }
 
+  const toggleRainbowMode = () => (isRainbowMode.value = !isRainbowMode.value)
+
+  const toggleFullscreen = async () => await toggleFs()
+
   return {
     themes,
     themesWithVariants,
@@ -40,9 +46,13 @@ export const useThemeStore = defineStore("theme", () => {
     themeVariant,
     darkMode,
     isDarkModeActive,
+    isRainbowMode,
+    isFullscreen,
     switchTheme,
     toggleTheme,
     toggleDarkMode,
+    toggleRainbowMode,
+    toggleFullscreen,
   }
 })
 

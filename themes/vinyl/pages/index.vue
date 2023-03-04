@@ -5,6 +5,7 @@ import Vinyl from "../components/Vinyl.vue"
 
 const { isPlaying } = useAudioStoreRefs()
 const { liveQuery, progress, metadata } = useMetadataStoreRefs()
+const { isRainbowMode } = useThemeStoreRefs()
 const artist = computed(() => liveQuery.value?.authors)
 const title = computed(() => liveQuery.value?.name)
 const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
@@ -15,7 +16,7 @@ const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
     <Vinyl :artist="artist" :title="title" :rotate="isPlaying" :cover="cover" />
     <ToneArm :progress="progress" />
     <Controls />
-    <Rainbow />
+    <Rainbow v-if="isRainbowMode" />
   </v-sheet>
 </template>
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-const { toggleFullscreen, toggleRainbowMode } = usePeakThemeStore()
-const { isFullscreen, isRainbowMode } = usePeakThemeStoreRefs()
+const { toggleFullscreen, toggleRainbowMode } = useThemeStore()
+const { isFullscreen, isRainbowMode } = useThemeStoreRefs()
 </script>
 
 <template>
