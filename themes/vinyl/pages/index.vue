@@ -12,7 +12,7 @@ const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
 </script>
 
 <template>
-  <v-sheet color="primary" class="h-100 w-100">
+  <v-sheet color="primary" class="h-100 w-100 overflow-hidden position-relative">
     <Vinyl :artist="artist" :title="title" :rotate="isPlaying" :cover="cover" />
     <ToneArm :progress="progress" />
     <Controls />

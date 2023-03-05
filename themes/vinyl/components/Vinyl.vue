@@ -9,8 +9,6 @@ const props = defineProps<{
 }>()
 
 const { title, artist, rotate, cover } = toRefs(props)
-const config = useRuntimeConfig()
-const { theme } = useThemeStoreRefs()
 </script>
 
 <template>
@@ -26,14 +24,11 @@ const { theme } = useThemeStoreRefs()
         <v-sheet color="primary" rounded="circle" class="sticker-content">
           <HalfCircleTextWrapper :radius="300" :padding="20" position="top">
             <div class="sticker-top">
-              <!-- <h1 class="mt-4">Nina.fm</h1> -->
               <BrandLogo class="logo" />
             </div>
           </HalfCircleTextWrapper>
           <HalfCircleTextWrapper :radius="300" :padding="40" position="bottom">
             <div class="sticker-bottom">
-              <!-- In magna anim Lorem exercitation anim enim qui dolore et in dolor veniam elit labore. Incididunt irure eu
-              non ullamco. Adipisicing dolor consequat in aute sit tempor sint ex non. Est est voluptate proident. -->
               <div class="title">{{ title ?? "" }}</div>
               <div class="artist mt-2">{{ artist ?? "" }}</div>
             </div>
@@ -61,7 +56,6 @@ const { theme } = useThemeStoreRefs()
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: rgb(var(--v-theme-background));
-    // border: 1px solid rgb(var(--v-theme-on-surface-variant));
     height: 1000px;
     width: 1000px;
     border-radius: 50%;
@@ -87,7 +81,6 @@ const { theme } = useThemeStoreRefs()
       height: 70%;
       width: 60%;
       border-radius: 50%;
-      // border: 1px solid rgb(var(--v-theme-primary));
       background-color: rgba(var(--v-theme-primary), 0.15);
     }
     &::after {
