@@ -17,7 +17,12 @@ const { theme } = useThemeStoreRefs()
   <ClientOnly>
     <div class="vinyl">
       <v-sheet color="transparent" class="sticker" :class="{ rotate }">
-        <v-avatar color="primary" :size="300" class="sticker-background" />
+        <v-avatar
+          color="primary"
+          :size="300"
+          class="sticker-background"
+          :style="{ backgroundImage: `url(${cover})` }"
+        />
         <v-sheet color="primary" rounded="circle" class="sticker-content">
           <HalfCircleTextWrapper :radius="300" :padding="20" position="top">
             <div class="sticker-top">
@@ -110,7 +115,6 @@ const { theme } = useThemeStoreRefs()
 .sticker-background {
   position: absolute;
   z-index: 1;
-  background-image: url(v-bind(cover));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
