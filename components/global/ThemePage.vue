@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 const props = defineProps<{
-    name: string,
+  name: string
 }>()
 const { current } = useThemeStoreRefs()
-const { name } = toRefs(props);
-const page = computed(() => defineAsyncComponent(() => import(`../../themes/${current.value}/pages/${name?.value}.vue`)));
+const { name } = toRefs(props)
+const page = computed(() =>
+  defineAsyncComponent(() => import(`../../themes/${current.value}/pages/${name?.value}.vue`))
+)
 </script>
 
 <template>
-    <component :key="`${current}-${name}`" :is="page">
-        <slot />
-</component>
+  <component :is="page" :key="`${current}-${name}`">
+    <slot />
+  </component>
 </template>
-

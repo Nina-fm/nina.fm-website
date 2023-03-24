@@ -15,13 +15,8 @@ const { title, artist, rotate, cover } = toRefs(props)
   <ClientOnly>
     <div class="vinyl">
       <v-sheet color="transparent" class="sticker" :class="{ rotate }">
-        <v-avatar
-          color="primary"
-          :size="300"
-          class="sticker-background"
-          :style="{ backgroundImage: `url(${cover})` }"
-        />
-        <v-sheet color="primary" rounded="circle" class="sticker-content">
+        <v-avatar color="primary" :size="300" class="sticker-background" />
+        <v-sheet rounded="circle" class="sticker-content">
           <HalfCircleTextWrapper :radius="300" :padding="20" position="top">
             <div class="sticker-top">
               <BrandLogo class="logo" />
@@ -108,14 +103,14 @@ const { title, artist, rotate, cover } = toRefs(props)
 .sticker-background {
   position: absolute;
   z-index: 1;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 100%;
 }
 .sticker-content {
   position: absolute;
   z-index: 2;
   color: currentColor;
+  background: transparent;
   width: 100%;
   height: 100%;
 }
