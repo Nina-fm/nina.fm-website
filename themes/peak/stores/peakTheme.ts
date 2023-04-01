@@ -1,8 +1,6 @@
 export const usePeakThemeStore = defineStore("peakTheme", () => {
   const { isMixtape } = useMetadataStoreRefs()
   const { setClasses } = useAppStore()
-  const isRainbowMode = useCookie("ninafm-user-rainbowMode", { default: () => false })
-  const { isFullscreen, toggle: toggleFs } = useFullscreen()
   const isDetailsOpen = ref<boolean>(false)
   const isContentOpen = ref<boolean>(false)
 
@@ -30,12 +28,6 @@ export const usePeakThemeStore = defineStore("peakTheme", () => {
   })
   watch(isDetailsOpen, (value) => {
     setClasses({ details: value })
-  })
-  watch(isFullscreen, (value) => {
-    setClasses({ fullscreen: value })
-  })
-  watch(isRainbowMode, (value) => {
-    setClasses({ rainbow: value })
   })
 
   return {
