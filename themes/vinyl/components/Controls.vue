@@ -31,8 +31,8 @@ const { isFullscreen, isRainbowMode } = useThemeStoreRefs()
 .controls {
   z-index: 10;
   position: absolute;
-  bottom: calc($margin-global / 2);
-  right: calc($margin-global / 2);
+  bottom: calc($margin-global);
+  right: calc($margin-global);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
