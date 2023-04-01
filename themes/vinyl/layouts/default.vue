@@ -4,7 +4,7 @@
   <v-container fluid class="h-100 pa-5">
     <slot />
   </v-container>
-  <ThemeToggler class="theme-toggler" />
+  <!-- <ThemeToggler class="theme-toggler" /> -->
 </template>
 
 <style lang="scss" scoped>
