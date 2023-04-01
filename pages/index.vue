@@ -1,3 +1,3 @@
 <template>
-    <ThemePage name="index" />
+  <ThemePage name="index" />
 </template>
