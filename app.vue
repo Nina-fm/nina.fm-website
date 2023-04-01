@@ -4,7 +4,7 @@ useDaylightStore()
 useMetadataStore()
 useAudioStoreRefs()
 const { snackbars } = useSnackbarStoreRefs()
-const { toggleTheme } = useThemeStore()
+// const { toggleTheme } = useThemeStore()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
 const { classes } = useAppStoreRefs()
 const { toggleMute } = useAudioStore()
@@ -13,7 +13,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
   switch (e.key) {
     case "Tab":
       e.preventDefault()
-      toggleTheme()
+      // toggleTheme()
       break
     case " ":
       toggleMute()
