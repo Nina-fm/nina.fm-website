@@ -16,6 +16,7 @@ export const useAudioStore = defineStore("audio", () => {
 
   Howler.autoSuspend = false
   Howler.html5PoolSize = 1
+  Howler.autoSuspend = false
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
