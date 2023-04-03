@@ -22,4 +22,32 @@
       line-height: 2.65em;
     }
   }
+
+  &.mobile:not(.playing) {
+    &:after {
+      pointer-events: none;
+      content: "\e039";
+      font-family: "nina-icons" !important;
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      font-size: 50vmin;
+      color: $color-main-text;
+      opacity: 0.5;
+      z-index: 0;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      @include prefix(transform, translate(-50%, -50%));
+      /* Better Font Rendering =========== */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    &.dark:after {
+      color: $night-color-main-text;
+    }
+  }
 }
