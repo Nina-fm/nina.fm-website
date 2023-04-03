@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useDisplay } from "vuetify"
+
 const { toggleDarkMode } = useThemeStore()
 const { darkMode } = useThemeStoreRefs()
 const { toggleFullscreen, toggleRainbowMode } = useThemeStore()
@@ -59,6 +61,10 @@ const darkModeIcon = computed(() => {
   justify-content: flex-end;
   align-items: center;
   color: $color-main-text;
+  @include respond-to(phone) {
+    bottom: $margin-global * 1.5;
+    right: $margin-global * 1.5;
+  }
   .v-application.dark & {
     color: $night-color-main-text;
   }
