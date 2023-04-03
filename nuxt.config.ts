@@ -15,6 +15,7 @@ export default defineNuxtConfig({
           content:
             "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
         },
+        { name: "theme-color", content: "#ffdd67" },
         {
           hid: "fb:app_id",
           name: "fb:app_id",
@@ -43,7 +44,26 @@ export default defineNuxtConfig({
         },
       ],
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
-      script: [],
+      script: [
+        {
+          children: `var sc_project = 11548035
+        var sc_invisible = 1
+        var sc_security = "d39f401e"
+        var scJsHost = "https:" == document.location.protocol ? "https://secure." : "http://www."
+        document.write(
+          "<sc" + "ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></" + "script>"
+        )`,
+        },
+      ],
+      noscript: [
+        {
+          children: `<div class="statcounter">
+          <a title="web stats" href="http://statcounter.com/" target="_blank">
+            <img class="statcounter" src="//c.statcounter.com/11548035/0/d39f401e/1/" alt="web stats">
+          </a>
+        </div>`,
+        },
+      ],
     },
   },
 
