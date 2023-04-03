@@ -72,6 +72,16 @@ export const useAudioStore = defineStore("audio", () => {
     else play()
   }
 
+  const unlock = () => {
+    console.log("unlock")
+    stream?.once("unlock", () => {
+      if (isLocked.value) {
+        isLocked.value = false
+        play()
+      }
+    })
+  }
+
   const update = () => {
     log("update")
     status.value = stream?.state()
@@ -79,44 +89,45 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   onNuxtReady(() => {
+    console.log("onNuxtReady")
+
     stream = new Howl({
       src: [streamUrl],
       html5: true,
       autoplay: true,
-    })
-
-    stream.on("load", () => {
-      log("on stream load")
-      isLoading.value = false
-      update()
-    })
-    stream.on("loaderror", () => {
-      log("on stream loaderror")
-      update()
-    })
-    stream.on("pause", () => {
-      log("on stream pause")
-      update()
-    })
-    stream.on("play", () => {
-      log("on stream play")
-      isLocked.value = false
-      isLoading.value = false
-      update()
-    })
-    stream.on("playerror", () => {
-      log("on stream playerror")
-      stream?.once("unlock", play)
-      update()
-    })
-    stream.on("stop", () => {
-      log("on stream stop")
-      update()
-    })
-    stream.on("unlock", () => {
-      log("on stream unlock")
-      isLocked.value = false
-      update()
+      onload: () => {
+        log("on stream load")
+        isLoading.value = false
+        update()
+      },
+      onloaderror: () => {
+        log("on stream loaderror")
+        update()
+      },
+      onpause: () => {
+        log("on stream pause")
+        update()
+      },
+      onplay: () => {
+        log("on stream play")
+        isLocked.value = false
+        isLoading.value = false
+        update()
+      },
+      onplayerror: () => {
+        log("on stream playerror")
+        unlock()
+        update()
+      },
+      onstop: () => {
+        log("on stream stop")
+        update()
+      },
+      onunlock: () => {
+        log("on stream unlock")
+        isLocked.value = false
+        update()
+      },
     })
   })
 
