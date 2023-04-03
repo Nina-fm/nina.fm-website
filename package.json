@@ -3,7 +3,7 @@
   "version": "0.3.4",
   "description": "The official Nina.fm website",
   "private": true,
-  "license": "MIT",
+  "licence": "MIT",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port=4000",
