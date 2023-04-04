@@ -35,6 +35,7 @@ onBeforeUnmount(() => {
 
 <template>
   <v-app :theme="currentVariant" :class="classes">
+    <VitePwaManifest />
     <NuxtLoadingIndicator :color="themeVariant.definition?.colors?.primary" />
     <Theme :name="current" />
     <Notifier v-model="snackbars" />

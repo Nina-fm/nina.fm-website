@@ -15,7 +15,6 @@ export default defineNuxtConfig({
           content:
             "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
         },
-        { name: "theme-color", content: "#ffdd67" },
         {
           hid: "fb:app_id",
           name: "fb:app_id",
@@ -129,7 +128,65 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify())
       )
     },
+    "@vite-pwa/nuxt",
   ],
+
+  pwa: {
+    manifest: {
+      name: `Nina.fm`,
+      short_name: `Nina.fm`,
+      description: `Nina.fm - Webradio artisanale — H24 Musical - Ø Pub`,
+      icons: [
+        {
+          src: "/icon-small.png",
+          sizes: "64x64",
+          type: "image/png",
+        },
+        {
+          src: "/icon-small.png",
+          sizes: "72x72",
+          type: "image/png",
+        },
+        {
+          src: "/icon-small.png",
+          sizes: "128x128",
+          type: "image/png",
+        },
+        {
+          src: "/icon-small.png",
+          sizes: "144x144",
+          type: "image/png",
+        },
+        {
+          src: "/icon-small.png",
+          sizes: "152x152",
+          type: "image/png",
+        },
+        {
+          src: "/icon-small.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "/icon-small.png",
+          sizes: "384x384",
+          type: "image/png",
+        },
+        {
+          src: "/icon-small.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: "/",
+    },
+    devOptions: {
+      enabled: true,
+      type: "module",
+    },
+  },
 
   imports: {
     dirs: ["stores", "themes/**/stores/*.{ts,js,mjs,mts}"],
