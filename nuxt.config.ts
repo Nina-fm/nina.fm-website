@@ -45,6 +45,7 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
       script: [
         {
+          type: "text/javascript",
           children: `var sc_project = 11548035
         var sc_invisible = 1
         var sc_security = "d39f401e"
@@ -52,15 +53,6 @@ export default defineNuxtConfig({
         document.write(
           "<sc" + "ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></" + "script>"
         )`,
-        },
-      ],
-      noscript: [
-        {
-          children: `<div class="statcounter">
-          <a title="web stats" href="http://statcounter.com/" target="_blank">
-            <img class="statcounter" src="//c.statcounter.com/11548035/0/d39f401e/1/" alt="web stats">
-          </a>
-        </div>`,
         },
       ],
     },
@@ -77,6 +69,8 @@ export default defineNuxtConfig({
     },
   },
 
+  ssr: false,
+
   devServerHandlers: [],
 
   typescript: {
@@ -86,13 +80,8 @@ export default defineNuxtConfig({
 
   css: ["@mdi/font/css/materialdesignicons.min.css", "assets/scss/main.scss"],
 
-  // plugins: [{ src: "~/plugins/vuekonva", mode: "client" }],
-
   build: {
-    transpile: [
-      // "konva",
-      "vuetify",
-    ],
+    transpile: ["vuetify"],
   },
 
   vite: {
@@ -114,7 +103,12 @@ export default defineNuxtConfig({
 
   // build modules
   modules: [
-    "@vueuse/nuxt",
+    [
+      "@vueuse/nuxt",
+      {
+        ssrHandlers: true,
+      },
+    ],
     [
       "@pinia/nuxt",
       {
@@ -138,44 +132,46 @@ export default defineNuxtConfig({
       description: `Nina.fm - Webradio artisanale — H24 Musical - Ø Pub`,
       icons: [
         {
-          src: "/icon-small.png",
-          sizes: "64x64",
+          src: "/maskable_icon_x48.png",
+          sizes: "48x48",
           type: "image/png",
+          purpose: "maskable any",
         },
         {
-          src: "/icon-small.png",
+          src: "/maskable_icon_x72.png",
           sizes: "72x72",
           type: "image/png",
+          purpose: "maskable any",
         },
         {
-          src: "/icon-small.png",
+          src: "/maskable_icon_x96.png",
+          sizes: "96x96",
+          type: "image/png",
+          purpose: "maskable any",
+        },
+        {
+          src: "/maskable_icon_x128.png",
           sizes: "128x128",
           type: "image/png",
+          purpose: "maskable any",
         },
         {
-          src: "/icon-small.png",
-          sizes: "144x144",
-          type: "image/png",
-        },
-        {
-          src: "/icon-small.png",
-          sizes: "152x152",
-          type: "image/png",
-        },
-        {
-          src: "/icon-small.png",
+          src: "/maskable_icon_x192.png",
           sizes: "192x192",
           type: "image/png",
+          purpose: "maskable any",
         },
         {
-          src: "/icon-small.png",
+          src: "/maskable_icon_x384.png",
           sizes: "384x384",
           type: "image/png",
+          purpose: "maskable any",
         },
         {
-          src: "/icon-small.png",
+          src: "/maskable_icon_x512.png",
           sizes: "512x512",
           type: "image/png",
+          purpose: "maskable any",
         },
       ],
     },
@@ -199,9 +195,4 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-
-  // vueuse
-  vueuse: {
-    ssrHandlers: true,
-  },
 })
