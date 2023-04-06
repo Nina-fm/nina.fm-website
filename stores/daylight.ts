@@ -1,5 +1,6 @@
+import { acceptHMRUpdate, defineStore } from "pinia"
+
 import { DateTime } from "luxon"
-import { defineStore } from "pinia"
 
 enum DaylightMode {
   DAY = "day",
@@ -32,5 +33,7 @@ export const useDaylightStore = defineStore("daylight", () => {
 export const useDaylightStoreRefs = () => storeToRefs(useDaylightStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useDaylightStore, import.meta.hot))
 }

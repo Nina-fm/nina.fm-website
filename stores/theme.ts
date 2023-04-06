@@ -1,3 +1,4 @@
+import { acceptHMRUpdate, defineStore } from "pinia"
 import { themes, themesWithVariants } from "../themes"
 
 export const useThemeStore = defineStore("theme", () => {
@@ -59,5 +60,7 @@ export const useThemeStore = defineStore("theme", () => {
 export const useThemeStoreRefs = () => storeToRefs(useThemeStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useThemeStore, import.meta.hot))
 }

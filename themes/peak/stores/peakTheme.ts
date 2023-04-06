@@ -1,3 +1,5 @@
+import { acceptHMRUpdate, defineStore } from "pinia"
+
 export const usePeakThemeStore = defineStore("peakTheme", () => {
   const { isMixtape } = useMetadataStoreRefs()
   const { setClasses } = useAppStore()
@@ -47,5 +49,7 @@ export const usePeakThemeStore = defineStore("peakTheme", () => {
 export const usePeakThemeStoreRefs = () => storeToRefs(usePeakThemeStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(usePeakThemeStore, import.meta.hot))
 }

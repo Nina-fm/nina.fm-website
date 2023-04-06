@@ -1,3 +1,5 @@
+import { acceptHMRUpdate, defineStore } from "pinia"
+
 export const useVinylThemeStore = defineStore("vinylTheme", () => {
   const { isMixtape } = useMetadataStoreRefs()
   const { setClasses } = useAppStore()
@@ -30,5 +32,7 @@ export const useVinylThemeStore = defineStore("vinylTheme", () => {
 export const useVinylThemeStoreRefs = () => storeToRefs(useVinylThemeStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useVinylThemeStore, import.meta.hot))
 }

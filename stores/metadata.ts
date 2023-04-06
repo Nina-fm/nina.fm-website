@@ -1,4 +1,4 @@
-import { defineStore } from "pinia"
+import { acceptHMRUpdate, defineStore } from "pinia"
 
 interface Query {
   authors?: string
@@ -78,5 +78,7 @@ export const useMetadataStore = defineStore("metadata", () => {
 export const useMetadataStoreRefs = () => storeToRefs(useMetadataStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useMetadataStore, import.meta.hot))
 }

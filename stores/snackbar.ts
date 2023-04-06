@@ -1,4 +1,4 @@
-import { defineStore, storeToRefs } from "pinia"
+import { acceptHMRUpdate, defineStore, storeToRefs } from "pinia"
 
 export interface Snackbar {
   duration?: number
@@ -47,5 +47,7 @@ export const useSnackbarStore = defineStore("snackbar", () => {
 export const useSnackbarStoreRefs = () => storeToRefs(useSnackbarStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useSnackbarStore, import.meta.hot))
 }

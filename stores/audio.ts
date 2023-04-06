@@ -1,6 +1,5 @@
 import { Howl, Howler } from "howler"
-
-import { defineStore } from "pinia"
+import { acceptHMRUpdate, defineStore } from "pinia"
 
 const debug = false
 
@@ -89,8 +88,6 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   onNuxtReady(() => {
-    console.log("onNuxtReady")
-
     stream = new Howl({
       src: [streamUrl],
       html5: true,
@@ -149,5 +146,7 @@ export const useAudioStore = defineStore("audio", () => {
 export const useAudioStoreRefs = () => storeToRefs(useAudioStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useAudioStore, import.meta.hot))
 }

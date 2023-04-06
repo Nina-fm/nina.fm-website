@@ -1,4 +1,4 @@
-import { defineStore, storeToRefs } from "pinia"
+import { acceptHMRUpdate, defineStore, storeToRefs } from "pinia"
 
 export const useLoadingStore = defineStore("loading", () => {
   const { isLoading: isAudioLoading } = useAudioStoreRefs()
@@ -28,5 +28,7 @@ export const useLoadingStore = defineStore("loading", () => {
 export const useLoadingStoreRefs = () => storeToRefs(useLoadingStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useLoadingStore, import.meta.hot))
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { defineStore } from "pinia"
+import { acceptHMRUpdate, defineStore } from "pinia"
 
 type ClsObj = ObjectOf<boolean>
 
@@ -38,5 +38,7 @@ export const useAppStore = defineStore("app", () => {
 export const useAppStoreRefs = () => storeToRefs(useAppStore())
 
 if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useAppStore, import.meta.hot))
 }
