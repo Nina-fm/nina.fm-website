@@ -1,7 +1,10 @@
 import { Howl, Howler } from "howler"
 import { acceptHMRUpdate, defineStore } from "pinia"
 
-const debug = false
+const debug = true
+
+Howler.html5PoolSize = 1
+Howler.autoSuspend = false
 
 export const useAudioStore = defineStore("audio", () => {
   const config = useRuntimeConfig()
@@ -12,10 +15,6 @@ export const useAudioStore = defineStore("audio", () => {
   const isLoading = ref<boolean>(false)
   const status = ref<"unloaded" | "loading" | "loaded" | undefined>()
   let stream: Howl | undefined
-
-  Howler.autoSuspend = false
-  Howler.html5PoolSize = 1
-  Howler.autoSuspend = false
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
@@ -113,7 +112,8 @@ export const useAudioStore = defineStore("audio", () => {
       },
       onplayerror: () => {
         log("on stream playerror")
-        unlock()
+        if (isLocked.value) unlock()
+        else play()
         update()
       },
       onstop: () => {
