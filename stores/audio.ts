@@ -98,6 +98,7 @@ export const useAudioStore = defineStore("audio", () => {
       },
       onloaderror: () => {
         log("on stream loaderror")
+        play()
         update()
       },
       onpause: () => {
