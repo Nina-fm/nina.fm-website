@@ -13,22 +13,27 @@ export const useAudioStore = defineStore("audio", () => {
   const isLoading = ref<boolean>(false)
   const initialized = ref<boolean>(false)
   const status = ref<"unloaded" | "loading" | "loaded" | undefined>()
-  let stream: Howl | undefined
+  const stream = ref<Howl | undefined>()
 
   watchEffect(() => {
     if (initialized.value) update()
 
-    console.log(
-      {
-        isLocked: isLocked.value,
-        isPlaying: isPlaying.value,
-        isMuted: isMuted.value,
-        isLoading: isLoading.value,
-        status: status.value,
-      },
-      { stream }
-    )
+    console.log({
+      isLocked: isLocked.value,
+      isPlaying: isPlaying.value,
+      isMuted: isMuted.value,
+      isLoading: isLoading.value,
+      status: status.value,
+    })
   })
+
+  watch(
+    stream,
+    () => {
+      update()
+    },
+    { deep: true }
+  )
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
@@ -41,18 +46,24 @@ export const useAudioStore = defineStore("audio", () => {
   const load = () => {
     log("load")
     isLoading.value = true
-    stream?.load()
+    stream.value?.load()
+  }
+
+  const unload = () => {
+    log("unload")
+    isLoading.value = false
+    stream.value?.unload()
   }
 
   const unmute = () => {
     log("unmute")
-    stream?.mute(false)
+    stream.value?.mute(false)
     isMuted.value = false
   }
 
   const mute = () => {
     log("mute")
-    stream?.mute(true)
+    stream.value?.mute(true)
     isMuted.value = true
   }
 
@@ -65,17 +76,17 @@ export const useAudioStore = defineStore("audio", () => {
   const play = () => {
     log("play")
     isLoading.value = true
-    stream?.play()
+    stream.value?.play()
   }
 
   const pause = () => {
     log("pause")
-    stream?.pause()
+    stream.value?.pause()
   }
 
   const stop = () => {
     log("stop")
-    stream?.stop()
+    stream.value?.stop()
   }
 
   const togglePlay = () => {
@@ -86,7 +97,7 @@ export const useAudioStore = defineStore("audio", () => {
 
   const unlock = () => {
     console.log("unlock")
-    stream?.once("unlock", () => {
+    stream.value?.once("unlock", () => {
       if (isLocked.value) {
         isLocked.value = false
         play()
@@ -96,44 +107,50 @@ export const useAudioStore = defineStore("audio", () => {
 
   const update = () => {
     log("update")
-    status.value = stream?.state()
-    isPlaying.value = stream?.playing() ?? false
+    status.value = stream.value?.state()
+    isPlaying.value = stream.value?.playing() ?? false
   }
 
   onNuxtReady(() => {
-    stream = new Howl({
+    const audio = new Howl({
       src: [streamUrl],
+      format: ["mp3"],
       html5: true,
       autoplay: true,
-      onload: () => {
-        log("on stream load")
-        isLoading.value = false
-      },
-      onloaderror: (id: unknown, err: unknown) => {
-        log("on stream loaderror", { id }, { err })
-        play()
-      },
-      onpause: () => {
-        log("on stream pause")
-      },
-      onplay: () => {
-        log("on stream play")
-        isLocked.value = false
-        isLoading.value = false
-      },
+      // onload: () => {
+      //   log("on stream load")
+      //   isLoading.value = false
+      // },
+      // onloaderror: (id: unknown, err: unknown) => {
+      //   log("on stream loaderror", { id }, { err })
+      //   stop()
+      //   unload()
+      //   play()
+      // },
+      // onpause: () => {
+      //   log("on stream pause")
+      // },
+      // onplay: () => {
+      //   log("on stream play")
+      //   isLocked.value = false
+      //   isLoading.value = false
+      // },
       onplayerror: (id: unknown, err: unknown) => {
         log("on stream playerror", { id }, { err })
         if (isLocked.value) unlock()
         else play()
       },
-      onstop: () => {
-        log("on stream stop")
-      },
-      onunlock: () => {
-        log("on stream unlock")
-        isLocked.value = false
-      },
+      // onstop: () => {
+      //   log("on stream stop")
+      //   unload()
+      // },
+      // onunlock: () => {
+      //   log("on stream unlock")
+      //   isLocked.value = false
+      // },
     })
+    console.log({ Howler })
+    stream.value = audio
     initialized.value = true
   })
 
