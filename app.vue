@@ -6,8 +6,8 @@ const { snackbars } = useSnackbarStoreRefs()
 // const { toggleTheme } = useThemeStore()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
 const { classes, isMobile: appIsMobile } = useAppStoreRefs()
-const { isMobile: audioIsMobile } = useAudioStoreRefs()
-const { toggleMute } = useAudioStore()
+const { isMobile: audioIsMobile, isLocked } = useAudioStoreRefs()
+const { toggleMute, play } = useAudioStore()
 
 const handleKeyDown = (e: KeyboardEvent) => {
   switch (e.key) {
@@ -31,6 +31,12 @@ const browserIsMobile = () =>
 
 const browserCannotAutoplay = () => browserIsSafari() || browserIsMobile()
 
+const handleUnlock = () => {
+  if (audioIsMobile.value && isLocked.value) {
+    play()
+  }
+}
+
 onNuxtReady(() => {
   const isMobile = browserCannotAutoplay()
   appIsMobile.value = isMobile
@@ -47,7 +53,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <v-app :theme="currentVariant" :class="classes">
+  <v-app :theme="currentVariant" :class="classes" @click="handleUnlock">
     <VitePwaManifest />
     <NuxtLoadingIndicator :color="themeVariant.definition?.colors?.primary" />
     <AudioStream />
