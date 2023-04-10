@@ -94,8 +94,8 @@ export const useAudioStore = defineStore("audio", () => {
         isLoading.value = false
         update()
       },
-      onloaderror: (arg1: unknown, arg2: unknown) => {
-        log("on stream loaderror", arg1, arg2)
+      onloaderror: (id: unknown, err: unknown) => {
+        log("on stream loaderror", { id }, { err })
         play()
         update()
       },
@@ -109,8 +109,8 @@ export const useAudioStore = defineStore("audio", () => {
         isLoading.value = false
         update()
       },
-      onplayerror: () => {
-        log("on stream playerror")
+      onplayerror: (id: unknown, err: unknown) => {
+        log("on stream playerror", { id }, { err })
         if (isLocked.value) unlock()
         else play()
         update()
