@@ -1,143 +1,89 @@
-import { Howl, Howler } from "howler"
 import { acceptHMRUpdate, defineStore } from "pinia"
 
-Howler.autoSuspend = false
-const debug = true
+const debug = false
 
 export const useAudioStore = defineStore("audio", () => {
   const config = useRuntimeConfig()
-  const { streamUrl } = config.public
-  const isLocked = ref<boolean>(true)
+  const blankSound = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA="
+  const streamRef = ref<HTMLAudioElement | undefined>()
+  const isMobile = ref<boolean>(false)
   const isPlaying = ref<boolean>(false)
+  const isStarted = ref<boolean>(false)
   const isMuted = ref<boolean>(false)
-  const isLoading = ref<boolean>(false)
-  const status = ref<"unloaded" | "loading" | "loaded" | undefined>()
-  let stream: Howl | undefined
+  const isLoading = computed(() => !isPlaying.value)
+  const isLocked = computed(() => isMobile.value && !isPlaying.value)
+  const streamUrl = computed(() => (isMobile.value ? blankSound : config.public.streamUrl))
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
     if (debug) {
-      console.log(...params)
+      console.log("[useAudioStore]", ...params)
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const load = () => {
-    log("load")
-    isLoading.value = true
-    stream?.load()
-  }
-
-  const unmute = () => {
-    log("unmute")
-    stream?.mute(false)
-    isMuted.value = false
-  }
-
-  const mute = () => {
-    log("mute")
-    stream?.mute(true)
-    isMuted.value = true
-  }
-
   const toggleMute = () => {
-    log("toggleMute")
-    if (isMuted.value) unmute()
-    else mute()
+    if (streamRef.value) {
+      const value = streamRef.value.muted
+      streamRef.value.muted = !value
+      isMuted.value = !value
+    }
   }
 
-  const play = () => {
-    log("play")
-    isLoading.value = true
-    stream?.play()
+  const updateStatus = () => {
+    isPlaying.value =
+      !!streamRef.value &&
+      isStarted.value &&
+      !streamRef.value.paused &&
+      !streamRef.value.ended &&
+      streamRef.value.readyState > 2
   }
 
-  const pause = () => {
-    log("pause")
-    stream?.pause()
-  }
-
-  const stop = () => {
-    log("stop")
-    stream?.stop()
-  }
-
-  const togglePlay = () => {
-    log("togglePlay")
-    if (isPlaying.value) stop()
-    else play()
-  }
-
-  const unlock = () => {
-    console.log("unlock")
-    stream?.once("unlock", () => {
-      if (isLocked.value) {
-        isLocked.value = false
-        play()
+  const initPlaying = () => {
+    if (streamRef.value) {
+      streamRef.value.load()
+      streamRef.value.oncanplay = () => {
+        streamRef.value?.play()
+        setTimeout(checkStreamAlive, config.public.streamRefreshTime)
       }
-    })
+      streamRef.value.ontimeupdate = () => {
+        if (!isStarted.value && streamRef.value && streamRef.value.currentTime > 0) {
+          isStarted.value = true
+          updateStatus()
+        }
+      }
+      streamRef.value.onpause = () => updateStatus()
+      streamRef.value.onplay = () => updateStatus()
+      streamRef.value.onplaying = () => updateStatus()
+      streamRef.value.onended = () => updateStatus()
+      streamRef.value.onloadeddata = () => updateStatus()
+      streamRef.value.onloadedmetadata = () => updateStatus()
+      streamRef.value.onemptied = () => updateStatus()
+      streamRef.value.onstalled = () => updateStatus()
+      streamRef.value.onwaiting = () => updateStatus()
+    }
   }
 
-  const update = () => {
-    log("update")
-    status.value = stream?.state()
-    isPlaying.value = stream?.playing() ?? false
+  const checkStreamAlive = () => {
+    if (!isMobile.value && !isPlaying) {
+      initPlaying()
+    } else {
+      setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+    }
   }
 
   onNuxtReady(() => {
-    stream = new Howl({
-      src: [streamUrl],
-      html5: true,
-      autoplay: true,
-      onload: () => {
-        log("on stream load")
-        isLoading.value = false
-        update()
-      },
-      onloaderror: (id: unknown, err: unknown) => {
-        log("on stream loaderror", { id }, { err })
-        play()
-        update()
-      },
-      onpause: () => {
-        log("on stream pause")
-        update()
-      },
-      onplay: () => {
-        log("on stream play")
-        isLocked.value = false
-        isLoading.value = false
-        update()
-      },
-      onplayerror: (id: unknown, err: unknown) => {
-        log("on stream playerror", { id }, { err })
-        if (isLocked.value) unlock()
-        else play()
-        update()
-      },
-      onstop: () => {
-        log("on stream stop")
-        update()
-      },
-      onunlock: () => {
-        log("on stream unlock")
-        isLocked.value = false
-        update()
-      },
-    })
+    initPlaying()
   })
 
   return {
-    stream,
+    streamUrl,
+    streamRef,
+    isMobile,
     isLoading,
     isLocked,
     isPlaying,
+    isStarted,
     isMuted,
-    status,
-    play,
-    pause,
-    mute,
-    togglePlay,
     toggleMute,
   }
 })

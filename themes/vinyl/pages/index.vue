@@ -17,7 +17,7 @@ const tracks = computed(() => (metadata.value?.tracks as Obj[]) ?? undefined)
 
 const handleKeyDown = (e: KeyboardEvent) => {
   switch (e.key) {
-    case "Enter":
+    case "Tab":
       toggleDetails()
       break
     case "Escape":
