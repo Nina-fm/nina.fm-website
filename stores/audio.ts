@@ -1,10 +1,8 @@
 import { Howl, Howler } from "howler"
 import { acceptHMRUpdate, defineStore } from "pinia"
 
-const debug = true
-
-Howler.html5PoolSize = 1
 Howler.autoSuspend = false
+const debug = true
 
 export const useAudioStore = defineStore("audio", () => {
   const config = useRuntimeConfig()
