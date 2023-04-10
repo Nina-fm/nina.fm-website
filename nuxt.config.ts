@@ -126,6 +126,7 @@ export default defineNuxtConfig({
   ],
 
   pwa: {
+    registerWebManifestInRouteRules: true,
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,
