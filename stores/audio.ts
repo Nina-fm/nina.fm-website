@@ -94,8 +94,8 @@ export const useAudioStore = defineStore("audio", () => {
         isLoading.value = false
         update()
       },
-      onloaderror: () => {
-        log("on stream loaderror")
+      onloaderror: (arg1: unknown, arg2: unknown) => {
+        log("on stream loaderror", arg1, arg2)
         play()
         update()
       },
