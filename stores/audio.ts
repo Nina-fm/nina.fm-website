@@ -14,6 +14,20 @@ export const useAudioStore = defineStore("audio", () => {
   const status = ref<"unloaded" | "loading" | "loaded" | undefined>()
   let stream: Howl | undefined
 
+  watchEffect(() => {
+    update()
+    console.log(
+      {
+        isLocked: isLocked.value,
+        isPlaying: isPlaying.value,
+        isMuted: isMuted.value,
+        isLoading: isLoading.value,
+        status: status.value,
+      },
+      { stream }
+    )
+  })
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
     if (debug) {
@@ -92,37 +106,30 @@ export const useAudioStore = defineStore("audio", () => {
       onload: () => {
         log("on stream load")
         isLoading.value = false
-        update()
       },
       onloaderror: (id: unknown, err: unknown) => {
         log("on stream loaderror", { id }, { err })
         play()
-        update()
       },
       onpause: () => {
         log("on stream pause")
-        update()
       },
       onplay: () => {
         log("on stream play")
         isLocked.value = false
         isLoading.value = false
-        update()
       },
       onplayerror: (id: unknown, err: unknown) => {
         log("on stream playerror", { id }, { err })
         if (isLocked.value) unlock()
         else play()
-        update()
       },
       onstop: () => {
         log("on stream stop")
-        update()
       },
       onunlock: () => {
         log("on stream unlock")
         isLocked.value = false
-        update()
       },
     })
   })
