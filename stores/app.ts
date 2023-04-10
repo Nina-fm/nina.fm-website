@@ -24,10 +24,6 @@ export const useAppStore = defineStore("app", () => {
     Object.assign(additionalClasses, cls)
   }
 
-  onNuxtReady(() => {
-    isMobile.value = typeof window.orientation !== "undefined" || navigator.userAgent.indexOf("IEMobile") !== -1
-  })
-
   return {
     classes,
     setClasses,

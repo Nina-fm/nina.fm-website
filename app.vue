@@ -2,11 +2,11 @@
 useLoadingStore()
 useDaylightStore()
 useMetadataStore()
-useAudioStoreRefs()
 const { snackbars } = useSnackbarStoreRefs()
 // const { toggleTheme } = useThemeStore()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
-const { classes } = useAppStoreRefs()
+const { classes, isMobile: appIsMobile } = useAppStoreRefs()
+const { isMobile: audioIsMobile } = useAudioStoreRefs()
 const { toggleMute } = useAudioStore()
 
 const handleKeyDown = (e: KeyboardEvent) => {
@@ -24,6 +24,19 @@ const handleKeyDown = (e: KeyboardEvent) => {
   }
 }
 
+const browserIsSafari = () => !!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)
+
+const browserIsMobile = () =>
+  typeof window.orientation !== "undefined" || navigator.userAgent.indexOf("IEMobile") !== -1
+
+const browserCannotAutoplay = () => browserIsSafari() || browserIsMobile()
+
+onNuxtReady(() => {
+  const isMobile = browserCannotAutoplay()
+  appIsMobile.value = isMobile
+  audioIsMobile.value = isMobile
+})
+
 onMounted(() => {
   document.addEventListener("keydown", handleKeyDown)
 })
@@ -37,6 +50,7 @@ onBeforeUnmount(() => {
   <v-app :theme="currentVariant" :class="classes">
     <VitePwaManifest />
     <NuxtLoadingIndicator :color="themeVariant.definition?.colors?.primary" />
+    <AudioStream />
     <Theme :name="current" />
     <Notifier v-model="snackbars" />
   </v-app>
