@@ -11,11 +11,13 @@ export const useAudioStore = defineStore("audio", () => {
   const isPlaying = ref<boolean>(false)
   const isMuted = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
+  const initialized = ref<boolean>(false)
   const status = ref<"unloaded" | "loading" | "loaded" | undefined>()
   let stream: Howl | undefined
 
   watchEffect(() => {
-    update()
+    if (initialized.value) update()
+
     console.log(
       {
         isLocked: isLocked.value,
@@ -132,6 +134,7 @@ export const useAudioStore = defineStore("audio", () => {
         isLocked.value = false
       },
     })
+    initialized.value = true
   })
 
   return {
