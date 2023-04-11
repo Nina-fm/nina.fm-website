@@ -59,5 +59,6 @@ onBeforeUnmount(() => {
     <AudioStream />
     <Theme :name="current" />
     <Notifier v-model="snackbars" />
+    <VersionAnouncement />
   </v-app>
 </template>

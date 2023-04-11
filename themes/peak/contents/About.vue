@@ -45,7 +45,6 @@
 
 <style lang="scss" scoped>
 @import "../assets/scss/base";
-@import url("https://fonts.googleapis.com/css?family=Caveat:400,700");
 .block {
   background: rgba($color-info-bg, $opacity-info-bg);
   color: $color-info-text;
@@ -131,7 +130,7 @@ blockquote {
   p {
     position: relative;
     z-index: 1;
-    font-family: "Caveat", cursive;
+    font-family: $font-cursive;
     font-size: 2vw;
     line-height: 1.2em;
     @include respond-to(tablet) {
@@ -144,7 +143,7 @@ blockquote {
 
   &:before {
     content: "\e902";
-    font-family: "nina-icons" !important;
+    font-family: $font-icons !important;
     speak: none;
     font-style: normal;
     font-weight: normal;

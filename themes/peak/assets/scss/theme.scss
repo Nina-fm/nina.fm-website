@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Caveat:400,700");
 @import "./base";
 
 .v-application[class*="v-theme--peak"] {
@@ -27,7 +28,7 @@
     &:after {
       pointer-events: none;
       content: "\e039";
-      font-family: "nina-icons" !important;
+      font-family: $font-icons !important;
       speak: none;
       font-style: normal;
       font-weight: normal;
@@ -48,6 +49,17 @@
     }
     &.dark:after {
       color: $night-color-main-text;
+    }
+  }
+
+  .versionAnouncement {
+    .versionAnouncement-title {
+      font-family: $font-cursive;
+      font-size: 2.75em;
+    }
+    .signature {
+      font-family: $font-cursive;
+      font-size: 1.5em;
     }
   }
 }
