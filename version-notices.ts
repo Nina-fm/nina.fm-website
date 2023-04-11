@@ -9,10 +9,17 @@ export type Notice = {
  *
  * The satisfies attribute use the semver synthax: https://docs.npmjs.com/cli/v6/using-npm/semver
  * to determine if the previously stored version should display the notice
+ *
+ * The notice will display if and only if :
+ *  - the notice version (key) is <= to the current package.json version
+ *  - and if the previous stored version (cookies) satisfies the attribute
+ *
+ * After the notice is displayed, the cookie version is updated with the current package.json version
+ * so the conditions will not be satisfied again
  */
 const versionNotices: ObjectOf<Notice> = {
-  "0.4.4": {
-    satisfies: ">=0.4.1 <0.4.4",
+  "0.4.5": {
+    satisfies: ">=0.4.1 <0.4.5",
     title: "Puisse la musique être avec vous",
     message: `<p>Vous l'aurez probablement constaté, 
     Nina.fm a subi quelques incidents techniques ces derniers jours. 
