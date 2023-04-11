@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 
-const debug = true
+const debug = false
 
 export const useAudioStore = defineStore("audio", () => {
   const config = useRuntimeConfig()
