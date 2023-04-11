@@ -22,7 +22,7 @@ const versionNotices: ObjectOf<Notice> = {
     satisfies: ">=0.4.1 <0.4.5",
     title: "Puisse la musique être avec vous",
     message: `<p>Vous l'aurez probablement constaté, 
-    Nina.fm a subi quelques incidents techniques ces derniers jours. 
+    votre webradio préférée a subi quelques incidents techniques ces derniers jours. 
     En effet, dans un souci permanent d'amélioration de nos services, 
     nous procédons régulièrement à des travaux sur le site et malgré nos efforts, 
     il arrive que des bugs réussissent à passer à travers les mailles de nos filets.</p>
