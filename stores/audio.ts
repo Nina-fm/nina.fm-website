@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 
-const debug = false
+const debug = true
 
 export const useAudioStore = defineStore("audio", () => {
   const config = useRuntimeConfig()
@@ -44,6 +44,22 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const updateStatus = () => {
+    log("updateStatus", {
+      isPlaying:
+        !!streamRef.value &&
+        isStarted.value &&
+        !streamRef.value.paused &&
+        !streamRef.value.ended &&
+        streamRef.value.readyState > 2,
+      stream: streamRef.value,
+      started: isStarted.value,
+      paused: streamRef.value?.paused,
+      ended: streamRef.value?.ended,
+      readyState: streamRef.value?.readyState,
+    })
+    if (streamRef.value?.paused) {
+      streamRef.value.play()
+    }
     isPlaying.value =
       !!streamRef.value &&
       isStarted.value &&
@@ -53,36 +69,89 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const checkStreamAlive = () => {
-    if (!isMobile.value && !isPlaying) {
-      initPlaying()
+    log("checkStreamAlive", { stream: streamRef.value, isMobile: isMobile.value, isPlaying: isPlaying.value })
+    if (!isMobile.value && !isPlaying.value) {
+      log("checkStreamAlive -> initPlaying")
+      launch()
     } else {
+      log("checkStreamAlive -> setTimeout")
       setTimeout(checkStreamAlive, config.public.streamRefreshTime)
     }
   }
 
-  const initPlaying = () => {
+  const launch = () => {
+    log("launch")
     if (streamRef.value) {
       streamRef.value.load()
-      streamRef.value.oncanplay = () => {
-        if (!isMobile.value) play()
+      setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+    }
+  }
 
-        setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+  const kill = () => {
+    isStarted.value = false
+  }
+
+  const initPlaying = () => {
+    if (streamRef.value) {
+      log("initPlaying")
+      launch()
+      streamRef.value.oncanplay = () => {
+        log("oncanplay")
+        if (!isMobile.value) play()
+        updateStatus()
       }
       streamRef.value.ontimeupdate = () => {
         if (!isStarted.value && streamRef.value && streamRef.value.currentTime > 0) {
+          log("ontimeupdate")
           isStarted.value = true
           updateStatus()
         }
       }
-      streamRef.value.onpause = () => updateStatus()
-      streamRef.value.onplay = () => updateStatus()
-      streamRef.value.onplaying = () => updateStatus()
-      streamRef.value.onended = () => updateStatus()
-      streamRef.value.onloadeddata = () => updateStatus()
-      streamRef.value.onloadedmetadata = () => updateStatus()
-      streamRef.value.onemptied = () => updateStatus()
-      streamRef.value.onstalled = () => updateStatus()
-      streamRef.value.onwaiting = () => updateStatus()
+      streamRef.value.onpause = () => {
+        log("onpause")
+        updateStatus()
+      }
+      streamRef.value.onplay = () => {
+        log("onplay")
+        updateStatus()
+      }
+      streamRef.value.onplaying = () => {
+        log("onplaying")
+        updateStatus()
+      }
+      streamRef.value.onended = () => {
+        log("onended")
+        kill()
+        updateStatus()
+      }
+      streamRef.value.onloadeddata = () => {
+        log("onloadeddata")
+        updateStatus()
+      }
+      streamRef.value.onloadedmetadata = () => {
+        log("onloadedmetadata")
+        updateStatus()
+      }
+      streamRef.value.onemptied = () => {
+        log("onemptied")
+        kill()
+        updateStatus()
+      }
+      streamRef.value.onwaiting = () => {
+        log("onwaiting")
+        kill()
+        updateStatus()
+      }
+      streamRef.value.onstalled = () => {
+        log("onstalled")
+        kill()
+        updateStatus()
+      }
+      streamRef.value.onsuspend = () => {
+        log("onstalled")
+        kill()
+        updateStatus()
+      }
     }
   }
 
