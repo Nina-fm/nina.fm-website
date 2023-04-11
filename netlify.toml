@@ -3,15 +3,15 @@
   command = "pnpm run build"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[[redirects]]
   from = "/stream.mp3" 
   to = "http://flux.nina.fm/nina.mp3"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 [[headers]]
   for = "/manifest.webmanifest"
