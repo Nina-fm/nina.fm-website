@@ -23,7 +23,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   watch(isLocked, (value) => {
-    log({ isLocked: value })
+    log("isLocked", value)
     if (!value) play()
   })
 
@@ -36,6 +36,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const toggleMute = () => {
+    log("toggleMute")
     if (streamRef.value) {
       const value = streamRef.value.muted
       streamRef.value.muted = !value
@@ -58,9 +59,7 @@ export const useAudioStore = defineStore("audio", () => {
       ended: streamRef.value?.ended,
       readyState: streamRef.value?.readyState,
     })
-    // if (streamRef.value?.paused) {
-    //   streamRef.value.play()
-    // }
+
     isPlaying.value =
       !!streamRef.value &&
       isStarted.value &&
@@ -89,6 +88,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const kill = () => {
+    log("kill")
     isStarted.value = false
     if (streamRef.value) {
       streamRef.value.src = blankSound
