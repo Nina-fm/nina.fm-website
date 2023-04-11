@@ -7,7 +7,7 @@ const { snackbars } = useSnackbarStoreRefs()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
 const { classes, isMobile: appIsMobile } = useAppStoreRefs()
 const { isMobile: audioIsMobile, isLocked } = useAudioStoreRefs()
-const { toggleMute, play } = useAudioStore()
+const { toggleMute, play, initPlaying } = useAudioStore()
 
 const handleKeyDown = (e: KeyboardEvent) => {
   switch (e.key) {
@@ -44,6 +44,7 @@ onNuxtReady(() => {
 })
 
 onMounted(() => {
+  initPlaying()
   document.addEventListener("keydown", handleKeyDown)
 })
 
@@ -59,5 +60,6 @@ onBeforeUnmount(() => {
     <AudioStream />
     <Theme :name="current" />
     <Notifier v-model="snackbars" />
+    <VersionAnouncement />
   </v-app>
 </template>

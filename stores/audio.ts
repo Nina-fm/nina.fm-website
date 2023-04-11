@@ -23,7 +23,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   watch(isLocked, (value) => {
-    log({ isLocked: value })
+    log("isLocked", value)
     if (!value) play()
   })
 
@@ -36,6 +36,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const toggleMute = () => {
+    log("toggleMute")
     if (streamRef.value) {
       const value = streamRef.value.muted
       streamRef.value.muted = !value
@@ -44,6 +45,21 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const updateStatus = () => {
+    log("updateStatus", {
+      isPlaying:
+        !!streamRef.value &&
+        isStarted.value &&
+        !streamRef.value.paused &&
+        !streamRef.value.ended &&
+        streamRef.value.readyState > 2,
+      stream: streamRef.value,
+      started: isStarted.value,
+      currentTime: streamRef.value?.currentTime,
+      paused: streamRef.value?.paused,
+      ended: streamRef.value?.ended,
+      readyState: streamRef.value?.readyState,
+    })
+
     isPlaying.value =
       !!streamRef.value &&
       isStarted.value &&
@@ -53,42 +69,94 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const checkStreamAlive = () => {
-    if (!isMobile.value && !isPlaying) {
-      initPlaying()
+    if (!isMobile.value && !isPlaying.value) {
+      log("checkStreamAlive -> launch")
+      launch()
     } else {
+      log("checkStreamAlive -> setTimeout")
       setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+    }
+  }
+
+  const launch = () => {
+    log("launch")
+    if (streamRef.value) {
+      streamRef.value.src = streamUrl.value
+      streamRef.value.load()
+      setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+    }
+  }
+
+  const kill = () => {
+    log("kill")
+    isStarted.value = false
+    if (streamRef.value) {
+      streamRef.value.src = blankSound
+      streamRef.value.load()
     }
   }
 
   const initPlaying = () => {
     if (streamRef.value) {
-      streamRef.value.load()
+      log("initPlaying")
+      launch()
       streamRef.value.oncanplay = () => {
+        log("oncanplay")
         if (!isMobile.value) play()
-
-        setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+        updateStatus()
       }
       streamRef.value.ontimeupdate = () => {
         if (!isStarted.value && streamRef.value && streamRef.value.currentTime > 0) {
+          log("ontimeupdate")
           isStarted.value = true
           updateStatus()
         }
       }
-      streamRef.value.onpause = () => updateStatus()
-      streamRef.value.onplay = () => updateStatus()
-      streamRef.value.onplaying = () => updateStatus()
-      streamRef.value.onended = () => updateStatus()
-      streamRef.value.onloadeddata = () => updateStatus()
-      streamRef.value.onloadedmetadata = () => updateStatus()
-      streamRef.value.onemptied = () => updateStatus()
-      streamRef.value.onstalled = () => updateStatus()
-      streamRef.value.onwaiting = () => updateStatus()
+      streamRef.value.onpause = () => {
+        log("onpause")
+        updateStatus()
+      }
+      streamRef.value.onplay = () => {
+        log("onplay")
+        updateStatus()
+      }
+      streamRef.value.onplaying = () => {
+        log("onplaying")
+        updateStatus()
+      }
+      streamRef.value.onended = () => {
+        log("onended")
+        if (isStarted.value) kill()
+        updateStatus()
+      }
+      // streamRef.value.onloadeddata = () => {
+      //   log("onloadeddata")
+      //   updateStatus()
+      // }
+      // streamRef.value.onloadedmetadata = () => {
+      //   log("onloadedmetadata")
+      //   updateStatus()
+      // }
+      // streamRef.value.onemptied = () => {
+      //   log("onemptied")
+      //   updateStatus()
+      // }
+      // streamRef.value.onwaiting = () => {
+      //   log("onwaiting")
+      //   updateStatus()
+      // }
+      streamRef.value.onstalled = () => {
+        log("onstalled")
+        if (isStarted.value) kill()
+        updateStatus()
+      }
+      streamRef.value.onsuspend = () => {
+        log("onsuspend")
+        if (isStarted.value) kill()
+        updateStatus()
+      }
     }
   }
-
-  onNuxtReady(() => {
-    initPlaying()
-  })
 
   return {
     streamUrl,
@@ -101,6 +169,7 @@ export const useAudioStore = defineStore("audio", () => {
     isMuted,
     play,
     toggleMute,
+    initPlaying,
   }
 })
 

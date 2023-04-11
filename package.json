@@ -1,6 +1,6 @@
 {
   "name": "nina.fm-website",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "The official Nina.fm website",
   "private": true,
   "license": "MIT",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.1.96",
+    "compare-versions": "^6.0.0-rc.1",
     "konva": "^8.4.2",
     "luxon": "^3.2.1",
     "uniqid": "^5.4.0",
