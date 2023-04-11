@@ -22,7 +22,7 @@ const versionNotices: ObjectOf<Notice> = {
     <p class='my-2'>Nina.fm est à nouveau pleinement opérationnelle, mais vos messages 
     seront toujours les bienvenus dans le cas contraire !</p>
     <p>Nous vous prions de bien vouloir nous excuser pour la gêne occasionnée 
-    et vous remercions pour votre patience et votre soutien indéfectible.</p>
+    et vous remercions pour votre patience et votre indéfectible soutien.</p>
     <p class='signature'>L'équipe Nina.fm</p>`,
   },
 }
