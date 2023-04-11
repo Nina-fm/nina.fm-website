@@ -13,7 +13,7 @@ export default defineNuxtPlugin(() => {
       .sort(compareVersions)
       .reduce((res, v) => {
         const msg = versionNotices[v]
-        if (!!previous && isNew && satisfies(previous, msg.satisfies)) {
+        if (!!previous && isNew && satisfies(current, `>=${v}`) && satisfies(previous, msg.satisfies)) {
           res.push(msg)
         }
         return res
