@@ -64,6 +64,7 @@ export default defineNuxtConfig({
       sitename: "Nina.fm",
       streamUrl: process.env.NUXT_PUBLIC_STREAM_URL,
       streamRefreshTime: parseInt(process.env.NUXT_PUBLIC_STREAM_REFRESH_TIME ?? "1000", 10),
+      streamSseUrl: process.env.NUXT_PUBLIC_STREAM_SSE_URL,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
       apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
     },
