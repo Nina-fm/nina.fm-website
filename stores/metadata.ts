@@ -88,17 +88,29 @@ export const useMetadataStore = defineStore("metadata", () => {
     }
   }
 
-  watch(iceCastData, () => {
-    updateListeners()
-  })
+  watch(
+    iceCastData,
+    () => {
+      updateListeners()
+    },
+    { deep: true }
+  )
 
-  watch(airTimeData, () => {
-    updateQuery()
-  })
+  watch(
+    airTimeData,
+    () => {
+      updateQuery()
+    },
+    { deep: true }
+  )
 
-  watch(liveQuery, () => {
-    fetchMetadata()
-  })
+  watch(
+    liveQuery,
+    () => {
+      fetchMetadata()
+    },
+    { deep: true }
+  )
 
   onNuxtReady(() => {
     listenServerEvents()
