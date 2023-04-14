@@ -31,13 +31,10 @@ export const useAppStore = defineStore("app", () => {
   const updateMetaTitle = () => {
     if (!liveQuery.value?.name) return config.public.siteTitle
 
-    const title =
+    metaTitle.value =
       metaTitle.value === config.public.siteTitle
         ? `${liveQuery.value?.name} - ${liveQuery.value?.authors}`
         : config.public.siteTitle
-
-    console.log("updateMetaTitle", title)
-    metaTitle.value = title
   }
 
   onNuxtReady(() => {
