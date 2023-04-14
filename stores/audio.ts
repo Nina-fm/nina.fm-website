@@ -35,12 +35,13 @@ export const useAudioStore = defineStore("audio", () => {
     }
   }
 
-  const toggleMute = () => {
+  const toggleMute = (val?: boolean) => {
     log("toggleMute")
     if (streamRef.value) {
       const value = streamRef.value.muted
-      streamRef.value.muted = !value
-      isMuted.value = !value
+      const newValue = val === undefined ? !value : val
+      streamRef.value.muted = newValue
+      isMuted.value = newValue
     }
   }
 
