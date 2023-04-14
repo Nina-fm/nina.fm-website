@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+const config = useRuntimeConfig()
 useLoadingStore()
 useDaylightStore()
 useMetadataStore()
+const { liveQuery, metadata } = useMetadataStoreRefs()
 const { snackbars } = useSnackbarStoreRefs()
 // const { toggleTheme } = useThemeStore()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
@@ -37,6 +39,44 @@ const handleUnlock = () => {
   }
 }
 
+const updateMediaSession = () => {
+  if (
+    "mediaSession" in navigator &&
+    navigator.mediaSession.metadata &&
+    liveQuery.value?.authors &&
+    liveQuery.value.name
+  ) {
+    navigator.mediaSession.metadata.title = liveQuery.value.name
+    navigator.mediaSession.metadata.artist = liveQuery.value.authors
+    navigator.mediaSession.metadata.artwork = [
+      { src: metadata.value?.cover ? `${metadata.value.cover_url}` : `/icon-large.png` },
+    ]
+  }
+}
+
+const initMediaSession = () => {
+  if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new window.MediaMetadata({
+      title: liveQuery.value?.name,
+      artist: liveQuery.value?.authors,
+      album: config.public.sitename,
+      artwork: [{ src: metadata.value?.cover_url ? `${metadata.value.cover_url}` : `/icon-large.png` }],
+    })
+
+    navigator.mediaSession.setActionHandler("play", () => toggleMute(false))
+    navigator.mediaSession.setActionHandler("pause", () => toggleMute(true))
+    navigator.mediaSession.setActionHandler("stop", () => toggleMute(true))
+  }
+}
+
+watch(
+  liveQuery,
+  () => {
+    updateMediaSession()
+  },
+  { deep: true }
+)
+
 onNuxtReady(() => {
   const isMobile = browserCannotAutoplay()
   appIsMobile.value = isMobile
@@ -45,6 +85,7 @@ onNuxtReady(() => {
 
 onMounted(() => {
   initPlaying()
+  initMediaSession()
   document.addEventListener("keydown", handleKeyDown)
 })
 
