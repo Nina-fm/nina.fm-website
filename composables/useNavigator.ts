@@ -45,8 +45,8 @@ export const useNavigator = () => {
     await wakeLock.request("screen")
   }
 
-  const initOrientation = () => {
-    lockOrientation("portrait")
+  const initOrientation = async () => {
+    await lockOrientation("portrait-primary")
   }
 
   const initNavigator = () => {
