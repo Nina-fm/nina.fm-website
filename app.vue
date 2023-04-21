@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-const config = useRuntimeConfig()
 useLoadingStore()
 useDaylightStore()
 // const { toggleTheme } = useThemeStore()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
 const { classes, isMobile: appIsMobile } = useAppStoreRefs()
-const { isMobile: audioIsMobile, isLocked } = useAudioStoreRefs()
-const { toggleMute, play, initPlaying } = useAudioStore()
-const { liveQuery, metadata } = useMetadataStoreRefs()
+const { cannotAutoplay, initNavigator } = useNavigator()
+const { isMobile: audioIsMobile } = useAudioStoreRefs()
+const { toggleMute, unlock, initPlaying } = useAudioStore()
 const { snackbars } = useSnackbarStoreRefs()
 
 const handleKeyDown = (e: KeyboardEvent) => {
@@ -25,78 +24,15 @@ const handleKeyDown = (e: KeyboardEvent) => {
   }
 }
 
-const browserIsSafari = () => !!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)
-
-const browserIsMobile = () =>
-  typeof window.orientation !== "undefined" || navigator.userAgent.indexOf("IEMobile") !== -1
-
-const browserCannotAutoplay = () => browserIsSafari() || browserIsMobile()
-
-const handleUnlock = () => {
-  if (audioIsMobile.value && isLocked.value) {
-    play()
-  }
-}
-
-const updateMediaSession = () => {
-  if (
-    "mediaSession" in navigator &&
-    navigator.mediaSession.metadata &&
-    liveQuery.value?.authors &&
-    liveQuery.value.name
-  ) {
-    navigator.mediaSession.metadata.title = liveQuery.value.name
-    navigator.mediaSession.metadata.artist = liveQuery.value.authors
-    navigator.mediaSession.metadata.artwork = [
-      { src: metadata.value?.cover_url ? `${metadata.value.cover_url}` : `/icon-large.png` },
-    ]
-  }
-}
-
-const initMediaSession = () => {
-  if ("mediaSession" in navigator) {
-    navigator.mediaSession.metadata = new window.MediaMetadata({
-      title: liveQuery.value?.name,
-      artist: liveQuery.value?.authors,
-      album: config.public.sitename,
-      artwork: [{ src: metadata.value?.cover_url ? `${metadata.value.cover_url}` : `/icon-large.png` }],
-    })
-
-    navigator.mediaSession.setActionHandler("play", () => toggleMute(false))
-    navigator.mediaSession.setActionHandler("pause", () => toggleMute(true))
-    navigator.mediaSession.setActionHandler("stop", () => toggleMute(true))
-  }
-}
-
-const initWakeLock = async () => {
-  if ("wakeLock" in navigator) {
-    try {
-      await navigator.wakeLock.request("screen")
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      console.error(`${err.name}, ${err.message}`)
-    }
-  }
-}
-
-watch(
-  liveQuery,
-  () => {
-    updateMediaSession()
-  },
-  { deep: true }
-)
-
 onNuxtReady(() => {
-  const isMobile = browserCannotAutoplay()
+  const isMobile = cannotAutoplay()
   appIsMobile.value = isMobile
   audioIsMobile.value = isMobile
 })
 
 onMounted(() => {
   initPlaying()
-  initMediaSession()
-  initWakeLock()
+  initNavigator()
   document.addEventListener("keydown", handleKeyDown)
 })
 
@@ -106,7 +42,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <v-app :theme="currentVariant" :class="classes" @click="handleUnlock">
+  <v-app :theme="currentVariant" :class="classes" @click="() => unlock()">
     <VitePwaManifest />
     <NuxtLoadingIndicator :color="themeVariant.definition?.colors?.primary" />
     <AudioStream />

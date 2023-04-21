@@ -22,15 +22,11 @@ export const useAudioStore = defineStore("audio", () => {
     }
   }
 
-  // watch(isLocked, (value) => {
-  //   log("isLocked", value)
-  //   if (!value) play()
-  // })
-
-  // const unlock = () => {
-  //   log("unlock")
-  //   initialized.value = true
-  // }
+  const unlock = () => {
+    if (isMobile.value && isLocked.value) {
+      play()
+    }
+  }
 
   const play = () => {
     log("play")
@@ -175,6 +171,7 @@ export const useAudioStore = defineStore("audio", () => {
     isStarted,
     isMuted,
     play,
+    unlock,
     toggleMute,
     initPlaying,
   }
