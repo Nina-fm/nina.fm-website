@@ -13,7 +13,7 @@ export const useAudioStore = defineStore("audio", () => {
   const isMuted = ref<boolean>(false)
   const isLoading = computed(() => !isPlaying.value)
   const isLocked = computed(() => isMobile.value && !initialized.value)
-  const streamUrl = computed(() => (isMobile.value && isLocked.value ? blankSound : config.public.streamUrl))
+  const streamUrl = computed(() => (isLocked.value ? blankSound : config.public.streamUrl))
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
@@ -22,25 +22,28 @@ export const useAudioStore = defineStore("audio", () => {
     }
   }
 
-  watch(isLocked, (value) => {
-    log("isLocked", value)
-    if (!value) play()
-  })
+  const unlock = () => {
+    if (isMobile.value && isLocked.value) {
+      play()
+    }
+  }
 
-  const play = async () => {
+  const play = () => {
     log("play")
     if (streamRef.value && !initialized.value) {
+      toggleMute(false)
       streamRef.value?.play()
       initialized.value = true
     }
   }
 
-  const toggleMute = () => {
+  const toggleMute = (val?: boolean) => {
     log("toggleMute")
     if (streamRef.value) {
       const value = streamRef.value.muted
-      streamRef.value.muted = !value
-      isMuted.value = !value
+      const newValue = val === undefined ? !value : val
+      streamRef.value.muted = newValue
+      isMuted.value = newValue
     }
   }
 
@@ -168,6 +171,7 @@ export const useAudioStore = defineStore("audio", () => {
     isStarted,
     isMuted,
     play,
+    unlock,
     toggleMute,
     initPlaying,
   }

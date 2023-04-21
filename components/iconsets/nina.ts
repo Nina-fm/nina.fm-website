@@ -3,7 +3,7 @@ import type { IconAliases, IconProps, IconSet } from "vuetify"
 import { h } from "vue"
 import { aliases as mdiAliases } from "vuetify/iconsets/mdi"
 
-const aliases: IconAliases = {
+export const aliases: IconAliases = {
   // Vuetify defaults
   ...mdiAliases,
   // Customs
@@ -65,8 +65,8 @@ const aliases: IconAliases = {
   ninaYoga3: "nina-icon-noun_yoga_3",
 }
 
-const nina: IconSet = {
+export const nina: IconSet = {
   component: (props: IconProps) => h(props.tag, { class: ["nina", props.icon] }),
 }
 
-export { aliases, nina }
+export default { aliases, nina }

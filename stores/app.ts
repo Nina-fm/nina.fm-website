@@ -3,10 +3,14 @@ import { acceptHMRUpdate, defineStore } from "pinia"
 
 type ClsObj = ObjectOf<boolean>
 
-export const useAppStore = defineStore("app", () => {
-  const { isMuted, isLoading, isLocked, isPlaying } = useAudioStoreRefs()
-  const { themeVariant } = useThemeStoreRefs()
+const metaTitleRefreshTime = 10000
 
+export const useAppStore = defineStore("app", () => {
+  const config = useRuntimeConfig()
+  const { isMuted, isLoading, isLocked, isPlaying } = useAudioStoreRefs()
+  const { liveQuery } = useMetadataStoreRefs()
+  const { themeVariant } = useThemeStoreRefs()
+  const metaTitle = ref<string>(config.public.siteTitle)
   const isMobile = ref<boolean>(false)
   const additionalClasses: ClsObj = reactive({})
 
@@ -24,10 +28,24 @@ export const useAppStore = defineStore("app", () => {
     Object.assign(additionalClasses, cls)
   }
 
+  const updateMetaTitle = () => {
+    if (!liveQuery.value?.name) return config.public.siteTitle
+
+    metaTitle.value =
+      metaTitle.value === config.public.siteTitle
+        ? `${liveQuery.value?.name} - ${liveQuery.value?.authors}`
+        : config.public.siteTitle
+  }
+
+  onNuxtReady(() => {
+    setInterval(updateMetaTitle, metaTitleRefreshTime)
+  })
+
   return {
     classes,
     setClasses,
     isMobile,
+    metaTitle,
   }
 })
 
