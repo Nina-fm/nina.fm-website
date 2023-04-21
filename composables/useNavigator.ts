@@ -3,6 +3,7 @@ export const useNavigator = () => {
   const { toggleMute } = useAudioStore()
   const { liveQuery, metadata } = useMetadataStoreRefs()
   const wakeLock = reactive(useWakeLock())
+  const { lockOrientation } = useScreenOrientation()
 
   const isSafari = () => !!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)
 
@@ -44,9 +45,14 @@ export const useNavigator = () => {
     await wakeLock.request("screen")
   }
 
+  const initOrientation = () => {
+    lockOrientation("portrait")
+  }
+
   const initNavigator = () => {
     initMediaSession()
     initWakeLock()
+    initOrientation()
   }
 
   watch(
