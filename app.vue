@@ -68,6 +68,17 @@ const initMediaSession = () => {
   }
 }
 
+const initWakeLock = async () => {
+  if ("wakeLock" in navigator) {
+    try {
+      await navigator.wakeLock.request("screen")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(`${err.name}, ${err.message}`)
+    }
+  }
+}
+
 watch(
   liveQuery,
   () => {
@@ -85,6 +96,7 @@ onNuxtReady(() => {
 onMounted(() => {
   initPlaying()
   initMediaSession()
+  initWakeLock()
   document.addEventListener("keydown", handleKeyDown)
 })
 
