@@ -51,7 +51,7 @@ onMounted(() => {
           class="equalizer"
           :title="controlsMsg"
           :style="{ ...(equalizerPath ? { backgroundImage: `url(${equalizerPath})` } : {}) }"
-          @click="toggleMute"
+          @click="() => toggleMute()"
         />
         <div class="track-viewer">
           <div :class="{ animated: typeText }" class="slider" @click="$emit('click')">

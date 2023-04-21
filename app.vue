@@ -2,14 +2,13 @@
 const config = useRuntimeConfig()
 useLoadingStore()
 useDaylightStore()
-useMetadataStore()
-const { liveQuery, metadata } = useMetadataStoreRefs()
-const { snackbars } = useSnackbarStoreRefs()
 // const { toggleTheme } = useThemeStore()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
 const { classes, isMobile: appIsMobile } = useAppStoreRefs()
 const { isMobile: audioIsMobile, isLocked } = useAudioStoreRefs()
 const { toggleMute, play, initPlaying } = useAudioStore()
+const { liveQuery, metadata } = useMetadataStoreRefs()
+const { snackbars } = useSnackbarStoreRefs()
 
 const handleKeyDown = (e: KeyboardEvent) => {
   switch (e.key) {
@@ -49,7 +48,7 @@ const updateMediaSession = () => {
     navigator.mediaSession.metadata.title = liveQuery.value.name
     navigator.mediaSession.metadata.artist = liveQuery.value.authors
     navigator.mediaSession.metadata.artwork = [
-      { src: metadata.value?.cover ? `${metadata.value.cover_url}` : `/icon-large.png` },
+      { src: metadata.value?.cover_url ? `${metadata.value.cover_url}` : `/icon-large.png` },
     ]
   }
 }
