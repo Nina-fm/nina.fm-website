@@ -21,6 +21,7 @@ export const useMetadataStore = defineStore("metadata", () => {
   const config = useRuntimeConfig()
   const isListeningEvents = ref<boolean>(false)
   const isListeningProgress = ref<boolean>(false)
+  const isListeningListeners = ref<boolean>(false)
   const iceCastData = ref<Obj | null>(null)
   const airTimeData = ref<Info | null>(null)
 
@@ -40,10 +41,6 @@ export const useMetadataStore = defineStore("metadata", () => {
     }
   }
 
-  const updateListeners = () => {
-    listeners.value = iceCastData.value ? (iceCastData.value.listeners as number) : 0
-  }
-
   const updateQuery = () => {
     if (airTimeData.value) {
       const [authors, name] = decode(airTimeData.value?.current?.name).split(" - ")
@@ -54,13 +51,27 @@ export const useMetadataStore = defineStore("metadata", () => {
     }
   }
 
-  const listenServerProgress = () => {
+  const listenSSEListeners = () => {
+    if (!isListeningListeners.value) {
+      const events = new EventSource(`${config.public.streamSseUrl}/listeners`)
+
+      events.onerror = () => {
+        setTimeout(listenSSEListeners, 3000)
+      }
+      events.onmessage = (event) => {
+        listeners.value = JSON.parse(event.data)
+      }
+
+      isListeningListeners.value = true
+    }
+  }
+
+  const listenSSEProgress = () => {
     if (!isListeningProgress.value) {
       const events = new EventSource(`${config.public.streamSseUrl}/progress`)
 
-      events.onerror = (event) => {
-        console.log(event)
-        setTimeout(listenServerProgress, 3000)
+      events.onerror = () => {
+        setTimeout(listenSSEProgress, 3000)
       }
       events.onmessage = (event) => {
         progress.value = JSON.parse(event.data)
@@ -70,13 +81,12 @@ export const useMetadataStore = defineStore("metadata", () => {
     }
   }
 
-  const listenServerEvents = () => {
+  const listenSSEEvents = () => {
     if (!isListeningEvents.value) {
       const events = new EventSource(`${config.public.streamSseUrl}/events`)
 
-      events.onerror = (event) => {
-        console.log(event)
-        setTimeout(listenServerEvents, 3000)
+      events.onerror = () => {
+        setTimeout(listenSSEEvents, 3000)
       }
       events.onmessage = (event) => {
         const parsedData = JSON.parse(event.data)
@@ -87,14 +97,6 @@ export const useMetadataStore = defineStore("metadata", () => {
       isListeningEvents.value = true
     }
   }
-
-  watch(
-    iceCastData,
-    () => {
-      updateListeners()
-    },
-    { deep: true }
-  )
 
   watch(
     airTimeData,
@@ -113,8 +115,9 @@ export const useMetadataStore = defineStore("metadata", () => {
   )
 
   onNuxtReady(() => {
-    listenServerEvents()
-    listenServerProgress()
+    listenSSEEvents()
+    listenSSEProgress()
+    listenSSEListeners()
   })
 
   return {
