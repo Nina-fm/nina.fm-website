@@ -1,9 +1,11 @@
+import mime from "mime"
+
 export const useNavigator = () => {
   const config = useRuntimeConfig()
   const { toggleMute } = useAudioStore()
   const { liveQuery, metadata } = useMetadataStoreRefs()
   const wakeLock = reactive(useWakeLock())
-  const { lockOrientation } = useScreenOrientation()
+  const { isSupported, lockOrientation } = useScreenOrientation()
 
   const isSafari = () => !!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)
 
@@ -11,7 +13,19 @@ export const useNavigator = () => {
 
   const cannotAutoplay = () => isSafari() || isMobile()
 
-  const updateMediaSession = () => {
+  const getArtwork = async (filepath?: unknown) => {
+    const file = typeof filepath !== "string" || !filepath ? `/artwork.png` : `${filepath}`
+    const type = mime.getType(file)
+    const src = await convertImageToBase64(file)
+    return [
+      {
+        src,
+        ...(type !== null ? { type } : {}),
+      },
+    ]
+  }
+
+  const updateMediaSession = async () => {
     if (
       "mediaSession" in navigator &&
       navigator.mediaSession.metadata &&
@@ -20,19 +34,17 @@ export const useNavigator = () => {
     ) {
       navigator.mediaSession.metadata.title = liveQuery.value.name
       navigator.mediaSession.metadata.artist = liveQuery.value.authors
-      navigator.mediaSession.metadata.artwork = [
-        { src: metadata.value?.cover_url ? `${metadata.value.cover_url}` : `/icon-large.png` },
-      ]
+      navigator.mediaSession.metadata.artwork = await getArtwork(metadata.value?.cover_url)
     }
   }
 
-  const initMediaSession = () => {
+  const initMediaSession = async () => {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new window.MediaMetadata({
         title: liveQuery.value?.name,
         artist: liveQuery.value?.authors,
         album: config.public.sitename,
-        artwork: [{ src: metadata.value?.cover_url ? `${metadata.value.cover_url}` : `/icon-large.png` }],
+        artwork: await getArtwork(metadata.value?.cover_url),
       })
 
       navigator.mediaSession.setActionHandler("play", () => toggleMute(false))
@@ -46,7 +58,9 @@ export const useNavigator = () => {
   }
 
   const initOrientation = async () => {
-    await lockOrientation("portrait-primary")
+    if (isSupported.value) {
+      await lockOrientation("portrait-primary")
+    }
   }
 
   const initNavigator = () => {
