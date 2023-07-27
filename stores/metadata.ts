@@ -19,16 +19,17 @@ interface Info {
 
 export const useMetadataStore = defineStore("metadata", () => {
   const config = useRuntimeConfig()
+
   const isListeningEvents = ref<boolean>(false)
   const isListeningProgress = ref<boolean>(false)
   const isListeningListeners = ref<boolean>(false)
   const iceCastData = ref<Obj | null>(null)
   const airTimeData = ref<Info | null>(null)
-
   const metadata = ref<Obj | null>(null)
   const liveQuery = ref<Query | undefined>()
   const progress = ref<number>(0)
   const listeners = ref<number>(0)
+
   const isMixtape = computed(() => !!metadata.value)
 
   const fetchMetadata = async () => {
@@ -36,9 +37,7 @@ export const useMetadataStore = defineStore("metadata", () => {
       query: liveQuery.value,
     })
 
-    if (fetchData) {
-      metadata.value = fetchData
-    }
+    metadata.value = fetchData
   }
 
   const updateQuery = () => {

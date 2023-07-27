@@ -15,7 +15,7 @@ export const useDaylightStore = defineStore("daylight", () => {
 
   const updateDaylight = () => {
     const now = DateTime.now().toObject()
-    const currentHour = now.hour
+    const currentHour = now?.hour ?? 0
     isDay.value = currentHour > 7 && currentHour < 20
     daylight.value = isDay.value ? DaylightMode.DAY : DaylightMode.NIGHT
   }
