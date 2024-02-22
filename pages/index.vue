@@ -2,9 +2,7 @@
 const { metaTitle } = useAppStoreRefs()
 
 watch(metaTitle, (value) => {
-  useHead({
-    title: value,
-  })
+  useHead({ title: value })
 })
 </script>
 

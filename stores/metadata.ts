@@ -35,6 +35,9 @@ export const useMetadataStore = defineStore("metadata", () => {
   const fetchMetadata = async () => {
     const fetchData: Obj | null = await $fetch(`${config.public.apiUrl}${config.public.apiMetadataEndpoint}`, {
       query: liveQuery.value,
+      headers: {
+        Authorization: `Bearer ${config.public.apiKey}`,
+      },
     })
 
     metadata.value = fetchData
