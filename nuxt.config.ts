@@ -68,6 +68,7 @@ export default defineNuxtConfig({
       streamSseUrl: process.env.NUXT_PUBLIC_STREAM_SSE_URL,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
       apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
+      apiKey: process.env.NUXT_PUBLIC_API_KEY,
     },
   },
 
