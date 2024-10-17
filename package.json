@@ -1,6 +1,6 @@
 {
   "name": "nina.fm-website",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "The official Nina.fm website",
   "private": true,
   "license": "MIT",
@@ -46,5 +46,6 @@
     "typescript": "^5.0.3",
     "vite-plugin-vuetify": "^1.0.2",
     "vite-svg-loader": "^4.0.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
