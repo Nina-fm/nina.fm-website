@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 useLoadingStore()
 useDaylightStore()
+
 // const { toggleTheme } = useThemeStore()
 const { current, currentVariant, themeVariant } = useThemeStoreRefs()
 const { classes, isMobile: appIsMobile } = useAppStoreRefs()
