@@ -132,18 +132,6 @@ const { open, turnedBack, title, artist, tracks, cover, isMixtape } = toRefs(pro
   height: 100%;
   background-color: rgba(var(--v-theme-surface));
   padding: 65px;
-
-  // &:after {
-  //   content: '""';
-  //   position: absolute;
-  //   z-index: 2;
-  //   top: 0;
-  //   left: 0;
-  //   width: 100%;
-  //   height: 100%;
-  //   background: linear-gradient(280deg, rgba(var(--v-theme-primary), 0.5), rgba(var(--v-theme-primary), 0.2));
-  //   opacity: 0.4;
-  // }
 }
 
 .more-btn {
@@ -173,7 +161,6 @@ const { open, turnedBack, title, artist, tracks, cover, isMixtape } = toRefs(pro
   font-size: 3.5rem;
   font-weight: 900;
   line-height: 1.2em;
-  //   border-bottom: 1px solid currentColor;
   color: rgb(var(--v-theme-primary));
   margin-bottom: 75px;
 }
