@@ -4,10 +4,12 @@ export const useVinylThemeStore = defineStore("vinylTheme", () => {
   const { isMixtape } = useMetadataStoreRefs()
   const { setClasses } = useAppStore()
   const isDetailsOpen = ref<boolean>(false)
+  const isJaquetteTurnedBack = ref<boolean>(false)
 
   const toggleDetails = () => (isDetailsOpen.value = !isDetailsOpen.value)
   const openDetails = () => (isDetailsOpen.value = true)
   const closeDetails = () => (isDetailsOpen.value = false)
+  const toggleJaquette = () => (isJaquetteTurnedBack.value = !isJaquetteTurnedBack.value)
 
   // Specific behaviors
   watch(isMixtape, (value) => {
@@ -22,10 +24,12 @@ export const useVinylThemeStore = defineStore("vinylTheme", () => {
   return {
     // Refs
     isDetailsOpen,
+    isJaquetteTurnedBack,
     // Methods
     toggleDetails,
     openDetails,
     closeDetails,
+    toggleJaquette,
   }
 })
 

@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from "pinia"
 import { themes, themesWithVariants } from "../themes"
 
 export const useThemeStore = defineStore("theme", () => {
+  const route = useRoute()
   const { isNight } = useDaylightStoreRefs()
   const themeNames = Object.keys(themes) as ThemeKey[]
   const themeVariantsNames = Object.keys(themesWithVariants) as ThemeVariantKey[]
@@ -13,7 +14,7 @@ export const useThemeStore = defineStore("theme", () => {
   const currentVariant = computed<ThemeVariantKey>(() => `${current.value}${isDarkModeActive.value ? "Dark" : ""}`)
   const theme = computed(() => themes[current.value])
   const themeVariant = computed(() => themesWithVariants[currentVariant.value])
-  const publicThemes = computed(() => themeNames.filter((t) => t !== "base"))
+  const publicThemes = computed<ThemeKey[]>(() => themeNames.filter((t): t is ThemeKey => t !== "base"))
 
   const switchTheme = (key: ThemeKey) => {
     current.value = key
@@ -34,6 +35,12 @@ export const useThemeStore = defineStore("theme", () => {
   const toggleRainbowMode = () => (isRainbowMode.value = !isRainbowMode.value)
 
   const toggleFullscreen = async () => await toggleFs()
+
+  onNuxtReady(() => {
+    if (route?.query?.theme && route?.query?.theme !== current.value) {
+      switchTheme(route?.query?.theme as ThemeKey)
+    }
+  })
 
   return {
     themes,

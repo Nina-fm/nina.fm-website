@@ -7,6 +7,12 @@ export const aliases: IconAliases = {
   // Vuetify defaults
   ...mdiAliases,
   // Customs
+  ninaTransfer: "nina-icon-transfer",
+  ninaloopAlt3: "nina-icon-loop-alt3",
+  ninaloopAlt2: "nina-icon-loop-alt2",
+  ninaloop1: "nina-icon-loop1",
+  ninaloop: "nina-icon-loop",
+  ninaInvertColorsOn: "nina-icon-invert_colors_on",
   ninaAlbum: "nina-icon-album",
   ninaAutorenew: "nina-icon-autorenew",
   ninaBright1: "nina-icon-brightness_1",
