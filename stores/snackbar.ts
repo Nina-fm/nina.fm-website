@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from "pinia"
 
 export interface Snackbar {
+  id?: string
   duration?: number
   color?: string
   message: string
@@ -16,6 +17,7 @@ export const useSnackbarStore = defineStore("snackbar", () => {
 
   const enqueueSnackbar = (snackbar: Snackbar) => {
     const values = {
+      id: Date.now().toString(),
       ...defaultValues,
       ...snackbar,
     }

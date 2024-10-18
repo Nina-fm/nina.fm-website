@@ -8,8 +8,8 @@ import { useVinylThemeStore, useVinylThemeStoreRefs } from "../stores/vinylTheme
 const { isPlaying } = useAudioStoreRefs()
 const { liveQuery, progress, metadata, isMixtape } = useMetadataStoreRefs()
 const { isRainbowMode } = useThemeStoreRefs()
-const { isDetailsOpen } = useVinylThemeStoreRefs()
-const { toggleDetails, closeDetails } = useVinylThemeStore()
+const { isDetailsOpen, isJaquetteTurnedBack } = useVinylThemeStoreRefs()
+const { toggleDetails, closeDetails, toggleJaquette } = useVinylThemeStore()
 const artist = computed(() => liveQuery.value?.authors)
 const title = computed(() => liveQuery.value?.name)
 const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
@@ -47,12 +47,14 @@ onBeforeUnmount(() => {
   <Jaquette
     :active="isMixtape"
     :open="isDetailsOpen"
+    :turned-back="isJaquetteTurnedBack"
     :artist="artist"
     :title="title"
     :tracks="tracks"
     :cover="cover"
     :is-mixtape="!!metadata"
     @click="toggleDetails"
+    @turn="toggleJaquette"
   />
 </template>
 
