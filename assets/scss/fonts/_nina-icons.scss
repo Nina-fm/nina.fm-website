@@ -1,10 +1,10 @@
 @font-face {
   font-family: "nina-icons";
-  src: url("/fonts/nina-icons/nina-icons.eot?7b028g");
-  src: url("/fonts/nina-icons/nina-icons.eot?7b028g#iefix") format("embedded-opentype"),
-    url("/fonts/nina-icons/nina-icons.ttf?7b028g") format("truetype"),
-    url("/fonts/nina-icons/nina-icons.woff?7b028g") format("woff"),
-    url("/fonts/nina-icons/nina-icons.svg?7b028g#nina-icons") format("svg");
+  src: url("/fonts/nina-icons/nina-icons.eot?5jbw3b");
+  src: url("/fonts/nina-icons/nina-icons.eot?5jbw3b#iefix") format("embedded-opentype"),
+    url("/fonts/nina-icons/nina-icons.ttf?5jbw3b") format("truetype"),
+    url("fonts/nina-icons.woff?5jbw3b") format("woff"),
+    url("/fonts/nina-icons/nina-icons.svg?5jbw3b#nina-icons") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -39,6 +39,21 @@ i {
 }
 .nina-icon-loop:before {
   content: "\e911";
+}
+.nina-icon-noun_dancer:before {
+  content: "\e916";
+}
+.nina-icon-noun_spiral:before {
+  content: "\e917";
+}
+.nina-icon-noun_yoga_2:before {
+  content: "\e918";
+}
+.nina-icon-noun_yoga_3:before {
+  content: "\e919";
+}
+.nina-icon-noun_yoga:before {
+  content: "\e91b";
 }
 .nina-icon-droplet:before {
   content: "\e90f";

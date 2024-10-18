@@ -18,7 +18,7 @@ const { open, turnedBack, title, artist, tracks, cover, isMixtape } = toRefs(pro
 </script>
 
 <template>
-  <v-sheet class="jaquette" :class="{ open, turnedBack, disabled: isMixtape }" @click="$emit('click')">
+  <v-sheet class="jaquette" :class="{ open, turnedBack, disabled: !isMixtape }" @click="$emit('click')">
     <div class="jaquette-inner">
       <div class="back-face">
         <div class="more-btn">
@@ -43,8 +43,8 @@ const { open, turnedBack, title, artist, tracks, cover, isMixtape } = toRefs(pro
         </div>
       </div>
       <div class="front-face">
-        <div>
-          <v-img :src="cover" class="jaquette-image ma-10" />
+        <div class="front-face-inner">
+          <img :src="cover" class="jaquette-image" />
         </div>
         <div class="more-btn">
           <TipIcon :icon="'$ninaloop1'" :size="15" location="left" @click.stop.prevent="$emit('turn')">{{
@@ -124,6 +124,16 @@ const { open, turnedBack, title, artist, tracks, cover, isMixtape } = toRefs(pro
   background-color: rgb(var(--v-theme-surface));
 }
 
+.front-face-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(var(--v-theme-surface));
+  padding: 65px;
+}
+
 .more-btn {
   display: flex;
   justify-content: center;
@@ -133,12 +143,17 @@ const { open, turnedBack, title, artist, tracks, cover, isMixtape } = toRefs(pro
   border-radius: 50%;
   background-color: rgb(var(--v-theme-surface));
   position: absolute;
+  z-index: 3;
   bottom: $margin-global;
   right: $margin-global;
 }
 
 .jaquette-image {
-  opacity: 0.75;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .jaquette-title {
@@ -146,7 +161,6 @@ const { open, turnedBack, title, artist, tracks, cover, isMixtape } = toRefs(pro
   font-size: 3.5rem;
   font-weight: 900;
   line-height: 1.2em;
-  //   border-bottom: 1px solid currentColor;
   color: rgb(var(--v-theme-primary));
   margin-bottom: 75px;
 }
