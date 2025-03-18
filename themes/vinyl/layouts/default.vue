@@ -1,16 +1,10 @@
-<script lang="ts" setup></script>
+<script setup lang="ts">
+const { isContentOpen } = useVinylThemeStoreRefs();
+</script>
 
 <template>
-  <v-container fluid class="h-100 pa-5">
+  <div class="absolute inset-5 overflow-hidden">
     <slot />
-  </v-container>
-  <!-- <ThemeToggler class="theme-toggler" /> -->
+    <Controls :class="cn('text-primary-foreground', { 'text-primary hidden md:flex': isContentOpen })" />
+  </div>
 </template>
-
-<style lang="scss" scoped>
-.theme-toggler {
-  :deep(.v-btn) {
-    color: rgb(var(--v-theme-primary));
-  }
-}
-</style>

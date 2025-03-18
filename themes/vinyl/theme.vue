@@ -1,11 +1,9 @@
-<script lang="ts"></script>
+<script lang="ts" setup>
+import "./assets/css/vinyl.css";
+</script>
 
 <template>
-  <v-main class="vinyl-theme">
+  <main class="theme-vinyl h-full">
     <ThemeLayout name="default" />
-  </v-main>
+  </main>
 </template>
-
-<style lang="scss">
-@import "assets/scss/theme.scss";
-</style>

@@ -1,11 +1,9 @@
-<script lang="ts"></script>
+<script lang="ts" setup>
+import "./assets/css/peak.css";
+</script>
 
 <template>
-  <v-main class="peak-theme">
+  <main class="theme-peak h-full">
     <ThemeLayout name="default" />
-  </v-main>
+  </main>
 </template>
-
-<style lang="scss">
-@import "assets/scss/theme.scss";
-</style>

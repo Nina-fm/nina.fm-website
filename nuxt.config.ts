@@ -1,63 +1,55 @@
-import svgLoader from "vite-svg-loader"
-import vuetify from "vite-plugin-vuetify"
+import svgLoader from "vite-svg-loader";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  app: {
-    // head
-    head: {
-      title: `Nina.fm - H24 Musical - Ø Pub`,
-      meta: [
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-        {
-          hid: "description",
-          name: "description",
-          content:
-            "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
-        },
-        {
-          hid: "fb:app_id",
-          name: "fb:app_id",
-          content: "1290268801073013",
-        },
-        {
-          hid: "og:title",
-          name: "og:title",
-          content: "Nina.fm - H24 Musical - Ø Pub",
-        },
-        {
-          hid: "og:description",
-          name: "og:description",
-          content:
-            "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
-        },
-        {
-          hid: "og:image",
-          name: "og:image",
-          content: "/preview.png",
-        },
-        {
-          hid: "og:type",
-          name: "og:type",
-          content: "website",
-        },
-      ],
-      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
-      script: [
-        {
-          type: "text/javascript",
-          children: `var sc_project = 11548035
-        var sc_invisible = 1
-        var sc_security = "d39f401e"
-        var scJsHost = "https:" == document.location.protocol ? "https://secure." : "http://www."
-        document.write(
-          "<sc" + "ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js' async></" + "script>"
-        )`,
-        },
-      ],
-    },
+  compatibilityDate: "2024-11-01",
+  devtools: { enabled: true },
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "shadcn-nuxt",
+    "@vite-pwa/nuxt",
+    [
+      "@pinia/nuxt",
+      {
+        autoImports: ["defineStore", "storeToRefs", "acceptHMRUpdate"],
+      },
+    ],
+    [
+      "@vueuse/nuxt",
+      {
+        ssrHandlers: true,
+      },
+    ],
+  ],
+  css: ["@/assets/css/tailwind.css"],
+  imports: {
+    dirs: ["stores", "themes/**/stores/*.{ts,js}"],
   },
-
+  components: [
+    {
+      path: "@/components/",
+      pathPrefix: false,
+    },
+    {
+      path: "@/themes/peak/components/",
+      prefix: "Peak",
+    },
+    {
+      path: "@/themes/vinyl/components/",
+      prefix: "Vinyl",
+    },
+  ],
+  shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: "",
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: "./components/ui",
+  },
   runtimeConfig: {
     env: process.env.NODE_ENV,
     public: {
@@ -71,69 +63,67 @@ export default defineNuxtConfig({
       apiKey: process.env.NUXT_PUBLIC_API_KEY,
     },
   },
-
-  // ssr: false,
-
-  devServerHandlers: [],
-
   typescript: {
     strict: true,
     shim: false,
   },
-
-  css: ["@mdi/font/css/materialdesignicons.min.css", "assets/scss/main.scss"],
-
-  build: {
-    transpile: ["vuetify"],
-  },
-
   vite: {
-    server: {
-      hmr: {
-        port: 3009,
-      },
-    },
-    ssr: {
-      noExternal: ["vuetify"], // add the vuetify vite plugin
-    },
-    define: {
-      "process.env.DEBUG": false,
-    },
-    plugins: [
-      svgLoader(), // https://github.com/jpkleemans/vite-svg-loader#readme
-    ],
+    plugins: [svgLoader()],
   },
-
-  // build modules
-  modules: [
-    [
-      "@vueuse/nuxt",
-      {
-        ssrHandlers: true,
-      },
-    ],
-    [
-      "@pinia/nuxt",
-      {
-        autoImports: ["defineStore", "storeToRefs", "acceptHMRUpdate"],
-      },
-    ],
-    async (options, nuxt) => {
-      nuxt.hooks.hook("vite:extendConfig", (config) =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        config.plugins.push(vuetify())
-      )
+  app: {
+    // head
+    head: {
+      title: `Nina.fm - H24 Musical - Ø Pub`,
+      meta: [
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        {
+          name: "description",
+          content:
+            "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
+        },
+        {
+          name: "fb:app_id",
+          content: "1290268801073013",
+        },
+        {
+          name: "og:title",
+          content: "Nina.fm - H24 Musical - Ø Pub",
+        },
+        {
+          name: "og:description",
+          content:
+            "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
+        },
+        {
+          name: "og:image",
+          content: "/preview.png",
+        },
+        {
+          name: "og:type",
+          content: "website",
+        },
+      ],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
+      script: [
+        {
+          src: "https://www.statcounter.com/counter/counter.js",
+          tagPosition: "bodyClose",
+        },
+        {
+          innerHTML: "var sc_project=11548035;  var sc_invisible=1;  var sc_security='d39f401e'; ",
+          tagPosition: "bodyClose",
+        },
+      ],
     },
-    "@vite-pwa/nuxt",
-  ],
-
+  },
   pwa: {
     registerWebManifestInRouteRules: true,
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,
       description: `Nina.fm - Webradio artisanale — H24 Musical - Ø Pub`,
+      theme_color: "#222222",
+      background_color: "#FFFFFF",
       icons: [
         {
           src: "/maskable_icon_x48.png",
@@ -187,16 +177,4 @@ export default defineNuxtConfig({
       type: "module",
     },
   },
-
-  imports: {
-    dirs: ["stores", "themes/**/stores/*.{ts,js,mjs,mts}"],
-  },
-
-  // auto import components
-  components: [
-    {
-      path: "~/components/",
-      pathPrefix: false,
-    },
-  ],
-})
+});

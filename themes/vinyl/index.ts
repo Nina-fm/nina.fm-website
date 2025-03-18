@@ -1,15 +1,14 @@
-export const vinyl: ThemeExt = {
+export const vinyl: Theme = {
   key: "vinyl",
   name: "Vinyl",
-  description: "The vinyl Nina theme",
-  definition: {
-    dark: true,
-    colors: {
-      primary: "#FFB300",
+  icon: "disk1",
+  public: true,
+  options: {
+    darkMode: false,
+    rainbow: {
+      class: "mix-blend-multiply",
+      colors: flashyColors,
+      duration: 6000,
     },
   },
-}
-
-export const vinylDark: ThemeExt = {
-  ...vinyl,
-}
+};
