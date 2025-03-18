@@ -1,0 +1,285 @@
+@font-face {
+  font-family: "nina-icons";
+  src: url("/fonts/nina-icons/nina-icons.eot?6x6mn1");
+  src: url("/fonts/nina-icons/nina-icons.eot?6x6mn1#iefix") format("embedded-opentype"),
+    url("/fonts/nina-icons/nina-icons.ttf?6x6mn1") format("truetype"),
+    url("/fonts/nina-icons/nina-icons.woff?6x6mn1") format("woff"),
+    url("/fonts/nina-icons/nina-icons.svg?6x6mn1#nina-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "nina-icons" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.nina-icon-headphones3:before {
+  content: "\e924";
+}
+.nina-icon-vynil:before {
+  content: "\e920";
+}
+.nina-icon-disk1:before {
+  content: "\e920";
+}
+.nina-icon-cd1:before {
+  content: "\e920";
+}
+.nina-icon-facebook:before {
+  content: "\e900";
+}
+.nina-icon-social:before {
+  content: "\e900";
+}
+.nina-icon-telescope:before {
+  content: "\e901";
+}
+.nina-icon-astronomy:before {
+  content: "\e901";
+}
+.nina-icon-peak:before {
+  content: "\e91d";
+}
+.nina-icon-vinyl:before {
+  content: "\e91e";
+}
+.nina-icon-headphones:before {
+  content: "\e921";
+}
+.nina-icon-transfer:before {
+  content: "\e912";
+}
+.nina-icon-headphones2:before {
+  content: "\e923";
+}
+.nina-icon-disk:before {
+  content: "\e91f";
+}
+.nina-icon-cd:before {
+  content: "\e91f";
+}
+.nina-icon-save:before {
+  content: "\e91f";
+}
+.nina-icon-headphones:before {
+  content: "\e921";
+}
+.nina-icon-transfer:before {
+  content: "\e912";
+}
+.nina-icon-loop-alt3:before {
+  content: "\e913";
+}
+.nina-icon-loop-alt2:before {
+  content: "\e914";
+}
+.nina-icon-loop1:before {
+  content: "\e915";
+}
+.nina-icon-headphones1:before {
+  content: "\e922";
+}
+.nina-icon-soundcloud:before {
+  content: "\e91c";
+}
+.nina-icon-loop:before {
+  content: "\e911";
+}
+.nina-icon-noun_dancer:before {
+  content: "\e916";
+}
+.nina-icon-noun_spiral:before {
+  content: "\e917";
+}
+.nina-icon-noun_yoga_2:before {
+  content: "\e918";
+}
+.nina-icon-noun_yoga_3:before {
+  content: "\e919";
+}
+.nina-icon-noun_yoga:before {
+  content: "\e91b";
+}
+.nina-icon-droplet:before {
+  content: "\e90f";
+}
+.nina-icon-gift:before {
+  content: "\e99f";
+}
+.nina-icon-fire:before {
+  content: "\e9a9";
+}
+.nina-icon-bullhorn:before {
+  content: "\e91a";
+}
+.nina-icon-blur_circular:before {
+  content: "\e906";
+}
+.nina-icon-blur_off:before {
+  content: "\e907";
+}
+.nina-icon-blur_on:before {
+  content: "\e908";
+}
+.nina-icon-camera:before {
+  content: "\e909";
+}
+.nina-icon-color_lens:before {
+  content: "\e90a";
+}
+.nina-icon-invert_colors_on:before {
+  content: "\e910";
+}
+.nina-icon-add_circle:before {
+  content: "\e147";
+}
+.nina-icon-add_circle_outline:before {
+  content: "\e3ba";
+}
+.nina-icon-album:before {
+  content: "\e019";
+}
+.nina-icon-brightness_1:before {
+  content: "\e3a6";
+}
+.nina-icon-brightness_2:before {
+  content: "\e3a7";
+}
+.nina-icon-brightness_3:before {
+  content: "\e3a8";
+}
+.nina-icon-brightness_4:before {
+  content: "\e3a9";
+}
+.nina-icon-brightness_low:before {
+  content: "\e1ad";
+}
+.nina-icon-navigate_before:before {
+  content: "\e408";
+}
+.nina-icon-navigate_next:before {
+  content: "\e409";
+}
+.nina-icon-close:before {
+  content: "\e5cd";
+}
+.nina-icon-remove_circle:before {
+  content: "\e15c";
+}
+.nina-icon-expand_less:before {
+  content: "\e5ce";
+}
+.nina-icon-expand_more:before {
+  content: "\e5cf";
+}
+.nina-icon-format_align_justify:before {
+  content: "\e235";
+}
+.nina-icon-fullscreen:before {
+  content: "\e5d0";
+}
+.nina-icon-fullscreen_exit:before {
+  content: "\e5d1";
+}
+.nina-icon-highlight_off:before {
+  content: "\e888";
+}
+.nina-icon-mail_outline:before {
+  content: "\e0e1";
+}
+.nina-icon-menu:before {
+  content: "\e5d2";
+}
+.nina-icon-pause_circle_filled:before {
+  content: "\e035";
+}
+.nina-icon-pause_circle_outline:before {
+  content: "\e036";
+}
+.nina-icon-play_arrow:before {
+  content: "\e037";
+}
+.nina-icon-play_circle_filled:before {
+  content: "\e038";
+}
+.nina-icon-play_circle_outline:before {
+  content: "\e039";
+}
+.nina-icon-playlist_add:before {
+  content: "\e03b";
+}
+.nina-icon-playlist_add_check:before {
+  content: "\e065";
+}
+.nina-icon-playlist_play:before {
+  content: "\e05f";
+}
+.nina-icon-queue_music:before {
+  content: "\e03d";
+}
+.nina-icon-remove_circle_outline:before {
+  content: "\e15d";
+}
+.nina-icon-reorder:before {
+  content: "\e8fe";
+}
+.nina-icon-view_headline:before {
+  content: "\e8ee";
+}
+.nina-icon-volume_down:before {
+  content: "\e04d";
+}
+.nina-icon-volume_mute:before {
+  content: "\e04e";
+}
+.nina-icon-volume_off:before {
+  content: "\e04f";
+}
+.nina-icon-volume_up:before {
+  content: "\e050";
+}
+.nina-icon-wb_sunny:before {
+  content: "\e430";
+}
+.nina-icon-colours:before {
+  content: "\e90b";
+}
+.nina-icon-drop:before {
+  content: "\e90c";
+}
+.nina-icon-lab-flask:before {
+  content: "\e90d";
+}
+.nina-icon-rocket:before {
+  content: "\e90e";
+}
+.nina-icon-quote:before {
+  content: "\e902";
+}
+.nina-icon-facebook-official:before {
+  content: "\e903";
+}
+.nina-icon-facebook2:before {
+  content: "\e904";
+}
+.nina-icon-facebook-f:before {
+  content: "\e904";
+}
+.nina-icon-paper-plane:before {
+  content: "\e905";
+}
+.nina-icon-send:before {
+  content: "\e905";
+}

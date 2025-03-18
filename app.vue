@@ -2,25 +2,18 @@
 useLoadingStore()
 useDaylightStore()
 
-// const { toggleTheme } = useThemeStore()
-const { current, currentVariant, themeVariant } = useThemeStoreRefs()
-const { classes, isMobile: appIsMobile } = useAppStoreRefs()
+const { current } = useThemeStoreRefs()
+const { isMobile: appIsMobile } = useAppStoreRefs()
 const { cannotAutoplay, initNavigator } = useNavigator()
 const { isMobile: audioIsMobile } = useAudioStoreRefs()
 const { toggleMute, unlock, initPlaying } = useAudioStore()
-const { snackbars } = useSnackbarStoreRefs()
 
 const handleKeyDown = (e: KeyboardEvent) => {
   switch (e.key) {
-    case "Tab":
-      e.preventDefault()
-      // toggleTheme()
-      break
     case " ":
       toggleMute()
       break
     default:
-      // e.preventDefault()
       break
   }
 }
@@ -43,12 +36,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <v-app :theme="currentVariant" :class="classes" @click="() => unlock()">
+  <div data-app class="h-full" @click="() => unlock()">
     <VitePwaManifest />
-    <NuxtLoadingIndicator :color="themeVariant.definition?.colors?.primary" />
+    <NuxtLoadingIndicator />
     <AudioStream />
     <Theme :name="current" />
-    <Notifier v-model="snackbars" />
-    <VersionAnouncement />
-  </v-app>
+    <ClientOnly>
+      <Toaster />
+    </ClientOnly>
+    <Rainbow />
+  </div>
 </template>

@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Waiting+for+the+Sunrise&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Doto&display=swap");
+@import url("./airbnb-cereal.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  [data-theme="vinyl"] {
+    --background: 0 0% 7.06%;
+    --foreground: 0 0% 98%;
+    --muted: 0 0% 12.94%;
+    --muted-foreground: 0 0% 63.9%;
+    --popover: 0 0% 7.06%;
+    --popover-foreground: 0 0% 98%;
+    --card: 0 0% 7.06%;
+    --card-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --primary: 42.12 100% 50%;
+    --primary-foreground: 0 0% 7.06%;
+    --secondary: 0 0% 7.06%;
+    --secondary-foreground: 0 0% 98%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 71.43% 39.49%;
+    --destructive-foreground: 0 0% 98%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 0 0% 98%;
+    --chart-2: 0 0% 14.9%;
+    --chart-3: 0 0% 14.9%;
+    --chart-4: 0 0% 17.9%;
+    --chart-5: 0 3% 98%;
+    --radius: 0.5rem;
+  }
+  [data-theme="vinyl"].rainbow {
+    --primary: 0 0% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body[data-theme="vinyl"] {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Airbnb Cereal", sans-serif;
+  }
+  html,
+  body,
+  #__nuxt {
+    height: 100vh;
+  }
+
+  [data-theme="vinyl"] {
+    .font-condensed {
+      font-family: "Bebas Neue", sans-serif;
+    }
+    .font-cursive {
+      font-family: "Waiting for the Sunrise", cursive;
+    }
+    .font-lcd {
+      font-family: "Doto", sans-serif;
+    }
+    .absolute-center {
+      @apply absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2;
+    }
+  }
+}

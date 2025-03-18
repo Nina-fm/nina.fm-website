@@ -1,20 +1,41 @@
-import { ThemeDefinition, VuetifyOptions } from "vuetify"
-import { themes, themesWithVariants } from "../themes/index"
+import { themes } from "../themes/index";
 
 declare global {
-  type ThemeKey = keyof typeof themes
-  type ThemeVariantKey = keyof typeof themesWithVariants
+  type ThemeKey = keyof typeof themes;
 
-  interface Theme {
-    key: ThemeKey
-    name?: string
-    description?: string
+  type MixBlendMode =
+    | "mix-blend-normal"
+    | "mix-blend-multiply"
+    | "mix-blend-screen"
+    | "mix-blend-overlay"
+    | "mix-blend-darken"
+    | "mix-blend-lighten"
+    | "mix-blend-color-dodge"
+    | "mix-blend-color-burn"
+    | "mix-blend-difference"
+    | "mix-blend-exclusion"
+    | "mix-blend-hue"
+    | "mix-blend-saturation"
+    | "mix-blend-color"
+    | "mix-blend-luminosity";
+
+  interface ThemeOptions {
+    darkMode?: boolean;
+    rainbow?: {
+      class?: MixBlendMode;
+      colors?: string[];
+      duration?: number;
+    };
   }
 
-  interface ThemeExt extends Theme {
-    definition?: ThemeDefinition
-    options?: VuetifyOptions
+  interface Theme {
+    key: ThemeKey;
+    name?: string;
+    description?: string;
+    icon?: string;
+    public?: boolean;
+    options?: ThemeOptions;
   }
 }
 
-export {}
+export {};

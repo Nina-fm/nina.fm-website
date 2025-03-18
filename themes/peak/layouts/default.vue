@@ -1,10 +1,6 @@
-<script lang="ts"></script>
-
 <template>
-  <v-container fluid class="position-relative h-100 pa-5">
+  <div class="absolute inset-5 overflow-hidden">
     <slot />
-  </v-container>
-  <!-- <ThemeToggler /> -->
+    <Controls />
+  </div>
 </template>
-
-<style lang="scss"></style>
