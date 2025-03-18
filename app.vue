@@ -38,7 +38,7 @@ onBeforeUnmount(() => {
 <template>
   <div data-app class="h-full" @click="() => unlock()">
     <VitePwaManifest />
-    <NuxtLoadingIndicator class="bg-foreground" />
+    <NuxtLoadingIndicator />
     <AudioStream />
     <Theme :name="current" />
     <ClientOnly>

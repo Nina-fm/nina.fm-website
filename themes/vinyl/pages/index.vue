@@ -1,33 +1,33 @@
 <script setup lang="ts">
-const { isPlaying } = useAudioStoreRefs();
-const { liveQuery, listeners, progress, metadata, isMixtape } = useMetadataStoreRefs();
-const { isContentOpen, isJaquetteTurnedBack } = useVinylThemeStoreRefs();
-const { toggleDetails, closeDetails, toggleJaquette } = useVinylThemeStore();
-const artist = computed(() => liveQuery.value?.authors);
-const title = computed(() => liveQuery.value?.name);
-const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined);
-const tracks = computed(() => (metadata.value?.tracks as Obj[]) ?? undefined);
+const { isPlaying } = useAudioStoreRefs()
+const { liveQuery, listeners, progress, metadata, isMixtape } = useMetadataStoreRefs()
+const { isContentOpen } = useVinylThemeStoreRefs()
+const { toggleDetails, closeDetails, toggleJaquette } = useVinylThemeStore()
+const artist = computed(() => liveQuery.value?.authors)
+const title = computed(() => liveQuery.value?.name)
+const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
+const tracks = computed(() => (metadata.value?.tracks as Obj[]) ?? undefined)
 
 const handleKeyDown = (e: KeyboardEvent) => {
   switch (e.key) {
     case "Tab":
-      toggleDetails();
-      break;
+      toggleDetails()
+      break
     case "Escape":
-      closeDetails();
-      break;
+      closeDetails()
+      break
     default:
-      break;
+      break
   }
-};
+}
 
 onMounted(() => {
-  document.addEventListener("keydown", handleKeyDown);
-});
+  document.addEventListener("keydown", handleKeyDown)
+})
 
 onBeforeUnmount(() => {
-  document.removeEventListener("keydown", handleKeyDown);
-});
+  document.removeEventListener("keydown", handleKeyDown)
+})
 </script>
 
 <template>
@@ -43,18 +43,7 @@ onBeforeUnmount(() => {
         <VinylLcdCounter :count="listeners" />
       </div>
     </div>
-    <VinylCover
-      :active="isMixtape"
-      :turned-back="isJaquetteTurnedBack"
-      :artist="artist"
-      :title="title"
-      :tracks="tracks"
-      :cover="cover"
-      :is-mixtape="!!metadata"
-      @click="toggleDetails"
-      @turn="toggleJaquette"
-      @close="closeDetails"
-    />
+    <VinylCover v-if="!!metadata && isMixtape" :artist="artist" :title="title" :tracks="tracks" :cover="cover" />
   </div>
   <VinylContentPage />
 </template>

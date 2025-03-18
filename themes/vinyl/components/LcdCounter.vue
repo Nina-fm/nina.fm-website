@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 defineProps<{
-  count: number;
-}>();
+  count: number
+}>()
 </script>
 
 <template>
   <Card
+    v-if="count"
     class="absolute right-44 sm:right-24 md:right-0 -bottom-10 sm:bottom-0 md:bottom-28 rounded-2xl bg-transparent border-2 border-muted/20"
   >
     <div class="rounded-xl m-0 px-4 py-2 bg-background">

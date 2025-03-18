@@ -1,41 +1,41 @@
 <script lang="ts" setup>
-const ToneArmSvg = defineAsyncComponent(() => import("../assets/svg/tonearm.svg"));
+const ToneArmSvg = defineAsyncComponent(() => import("../assets/svg/tonearm.svg"))
 
 const props = defineProps<{
-  progress?: number;
-}>();
+  progress?: number
+}>()
 
 // Angle range is 10deg
-const angleStart = 0;
-const angleEnd = 25;
+const angleStart = 0
+const angleEnd = 25
 
-const config = useRuntimeConfig();
-const { isMixtape } = useMetadataStoreRefs();
+const config = useRuntimeConfig()
+const { isMixtape } = useMetadataStoreRefs()
 
-const { progress } = toRefs(props);
-const progressAngle = computed(() => `${(angleEnd * (progress?.value ?? angleStart)) / 100}deg`);
+const { progress } = toRefs(props)
+const progressAngle = computed(() => `${(angleEnd * (progress?.value ?? angleStart)) / 100}deg`)
 
-const defaultDelay = `${config.public.streamRefreshTime}ms`;
-const delay = computed(() => (isMixtape.value ? defaultDelay : "3000ms"));
-const back = ref<boolean>(false);
+const defaultDelay = `${config.public.streamRefreshTime}ms`
+const delay = computed(() => (isMixtape.value ? defaultDelay : "3000ms"))
+const back = ref<boolean>(false)
 
 const updatePosition = () => {
-  back.value = true;
-  setTimeout(() => (back.value = false), 1000);
-};
+  back.value = true
+  setTimeout(() => (back.value = false), 1000)
+}
 
 watch(
   () => progress,
   (value, oldValue) => {
     if ((value ?? 0) < (oldValue ?? 0)) {
-      updatePosition();
+      updatePosition()
     }
   }
-);
+)
 
 onMounted(() => {
-  updatePosition();
-});
+  updatePosition()
+})
 </script>
 
 <template>
