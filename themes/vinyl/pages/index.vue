@@ -41,16 +41,18 @@ onBeforeUnmount(() => {
     :class="cn('absolute inset-0 transition-main', { 'right-full md:right-1/2 border-r border-muted': isContentOpen })"
   >
     <div class="z-0 h-full w-full overflow-hidden relative bg-primary">
-      <div
-        class="absolute left-1/2 top-1/2 origin-top-left -ml-10 sm:ml-0 md:ml-0"
-        :style="{
-          transform: `scale(${scaling}) translate(-50%, -50%)`,
-        }"
-      >
-        <VinylDisk :artist="artist" :title="title" :rotate="isPlaying" :cover="cover" />
-        <VinylToneArm :progress="progress" />
-        <VinylLcdCounter :count="listeners" />
-      </div>
+      <ClientOnly>
+        <div
+          class="absolute left-1/2 top-1/2 origin-top-left -ml-10 sm:ml-0 md:ml-0"
+          :style="{
+            transform: `scale(${scaling}) translate(-50%, -50%)`,
+          }"
+        >
+          <VinylDisk :artist="artist" :title="title" :rotate="isPlaying" :cover="cover" />
+          <VinylToneArm :progress="progress" />
+          <VinylLcdCounter :count="listeners" />
+        </div>
+      </ClientOnly>
     </div>
     <VinylCover v-if="!!metadata && isMixtape" :artist="artist" :title="title" :tracks="tracks" :cover="cover" />
   </div>
