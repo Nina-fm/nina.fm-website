@@ -81,6 +81,7 @@ export default defineNuxtConfig({
           content:
             "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
         },
+        { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
         {
           name: "fb:app_id",
           content: "1290268801073013",
