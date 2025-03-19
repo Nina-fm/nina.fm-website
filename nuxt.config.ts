@@ -1,4 +1,4 @@
-import svgLoader from "vite-svg-loader";
+import svgLoader from "vite-svg-loader"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -81,6 +81,7 @@ export default defineNuxtConfig({
           content:
             "Webradio artisanale et associative, nina.fm diffuse des pépites musicales en continu, sans publicité, jusqu'aux confins du cosmos. Faîtes une pause, écoutez!",
         },
+        { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
         {
           name: "fb:app_id",
           content: "1290268801073013",
@@ -106,10 +107,13 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
       script: [
         {
-          src: "https://www.statcounter.com/counter/counter.js",
+          type: "text/javascript",
+          src: "https://secure.statcounter.com/counter/counter.js",
           tagPosition: "bodyClose",
+          async: true,
         },
         {
+          type: "text/javascript",
           innerHTML: "var sc_project=11548035;  var sc_invisible=1;  var sc_security='d39f401e'; ",
           tagPosition: "bodyClose",
         },
@@ -177,4 +181,4 @@ export default defineNuxtConfig({
       type: "module",
     },
   },
-});
+})

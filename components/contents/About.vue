@@ -7,9 +7,11 @@
       <blockquote class="px-0 text-center">
         <p class="font-cursive text-xl md:text-2xl leading-5 md:leading-7 text-card-foreground/80">
           Nina.fm c'est une webradio artisanale et associative.<br class="hidden xl:block" />
-          C'est une diffusion gratuite, en continue et sans pubicité.<br class="hidden xl:block" />
+          C'est bientôt 10 ans de pépites musicales diffusées gratuitement, en continu et sans publicité.<br
+            class="hidden xl:block"
+          />
           Ce sont des DJs qui partagent leurs mixtapes.<br class="hidden xl:block" />
-          Enfin Nina.fm c'est nous, une bande de passionnés, mais avant-tout c'est vous, car sans auditeur, pas de
+          Enfin Nina.fm c'est nous, une bande de passionnés, mais avant-tout c'est vous, car sans auditeurs, pas de
           radio !
         </p>
       </blockquote>
@@ -17,8 +19,8 @@
     <Card class="block-card text-center flex flex-col items-stretch md:items-center gap-4">
       <h2 class="text-2xl font-condensed [.theme-peak_&]:font-bold m-0 text-primary">Devenez DJ !</h2>
       <p class="[.theme-vinyl_&]:text-foreground/80">
-        Vous avez une ou plusieurs bonnes mixtapes ou playlist à partager ? N'hésitez pas à nous la transmettre, nous
-        pouvons l'intègrer à la programmation ! Dès que votre mixtape sera diffusée, votre nom de DJ apparaitra !
+        Vous avez une mixtape à partager ? N'hésitez pas à nous la transmettre, nous pouvons l'intègrer à la
+        programmation ! Dès que votre mixtape sera diffusée, votre nom de DJ apparaitra !
       </p>
       <Button as-child class="rounded-full">
         <a

@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "Dot Digital-7";
+  src: url("/fonts/dot-digital-7/EnhancedDotDigital-7.woff2") format("woff2"),
+    url("/fonts/dot-digital-7/EnhancedDotDigital-7.woff") format("woff"),
+    url("/fonts/dot-digital-7/EnhancedDotDigital-7.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
