@@ -1,30 +1,32 @@
 <script lang="ts" setup>
 defineEmits<{
-  (e: "click"): void;
-}>();
+  (e: "click"): void
+}>()
 
 const msg = {
   locked: "Cliquez pour lancer la lecture",
   loading: "Recherche des infos...",
   mixtape: "Une mixtape Nina.fm",
   listening: "À l'écoute sur Nina.fm",
-};
-const { isLocked, isLoading, isPlaying } = useAudioStoreRefs();
-const { isMixtape, liveQuery } = useMetadataStoreRefs();
-const { toggleDetails } = usePeakThemeStore();
-const { isDetailsOpen } = usePeakThemeStoreRefs();
+}
+const { isLocked, isLoading, isPlaying } = useAudioStoreRefs()
+const { isMixtape, liveQuery } = useMetadataStoreRefs()
+const { toggleDetails } = usePeakThemeStore()
+const { isDetailsOpen } = usePeakThemeStoreRefs()
 
-const shouldPlay = computed(() => !isLocked.value || isLoading.value);
-const initMsg = computed(() => (shouldPlay.value ? msg.loading : msg.locked));
-const typeText = computed(() => (shouldPlay.value ? (isMixtape.value ? msg.mixtape : msg.listening) : false));
-const artist = computed(() => liveQuery.value?.authors);
-const title = computed(() => liveQuery.value?.name);
+const shouldPlay = computed(() => !isLocked.value || isLoading.value)
+const initMsg = computed(() => (shouldPlay.value ? msg.loading : msg.locked))
+const typeText = computed(() => (shouldPlay.value ? (isMixtape.value ? msg.mixtape : msg.listening) : false))
+const artist = computed(() => liveQuery.value?.authors)
+const title = computed(() => liveQuery.value?.name)
 </script>
 
 <template>
   <ClientOnly>
     <div class="absolute z-10 inset-0 overflow-hidden pointer-events-none">
-      <div class="h-fit p-2 md:px-5 md:py-4 flex items-center gap-5 font-condensed pointer-events-auto">
+      <div
+        class="h-fit max-w-[80vw] px-4 py-3.5 md:px-5 md:py-4 flex items-center gap-5 font-condensed pointer-events-auto"
+      >
         <PeakPlayerEqualizer />
         <div class="h-5 overflow-hidden">
           <div
@@ -35,7 +37,10 @@ const title = computed(() => liveQuery.value?.name);
             "
             @click="$emit('click')"
           >
-            <div class="m-0 w-auto h-5 whitespace-nowrap overflow-hidden text-ellipsis" data-append="trackinfo">
+            <div
+              class="m-0 w-auto max-w-[70vw] h-5 whitespace-nowrap overflow-hidden text-ellipsis"
+              data-append="trackinfo"
+            >
               <span v-if="shouldPlay && artist && title">
                 <strong v-if="artist" class="uppercase mr-2">
                   {{ artist }}
