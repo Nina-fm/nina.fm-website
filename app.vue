@@ -47,5 +47,6 @@ onBeforeUnmount(() => {
       <Toaster />
     </ClientOnly>
     <Rainbow />
+    <MobilePlayUnlocker />
   </div>
 </template>
