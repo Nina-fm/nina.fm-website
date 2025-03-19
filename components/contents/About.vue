@@ -7,7 +7,9 @@
       <blockquote class="px-0 text-center">
         <p class="font-cursive text-xl md:text-2xl leading-5 md:leading-7 text-card-foreground/80">
           Nina.fm c'est une webradio artisanale et associative.<br class="hidden xl:block" />
-          C'est bientôt 10 ans de diffusion gratuite, en continu et sans publicité.<br class="hidden xl:block" />
+          C'est bientôt 10 ans de pépites musicales diffusées gratuitement, en continu et sans publicité.<br
+            class="hidden xl:block"
+          />
           Ce sont des DJs qui partagent leurs mixtapes.<br class="hidden xl:block" />
           Enfin Nina.fm c'est nous, une bande de passionnés, mais avant-tout c'est vous, car sans auditeurs, pas de
           radio !
