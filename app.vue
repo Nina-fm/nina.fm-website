@@ -33,6 +33,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener("keydown", handleKeyDown)
 })
+
+// TODO: Check if the AudioStrem is rerendered (cf. audio bug)
 </script>
 
 <template>
