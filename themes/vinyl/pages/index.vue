@@ -1,8 +1,14 @@
 <script setup lang="ts">
+const { width, height } = useWindowSize()
 const { isPlaying } = useAudioStoreRefs()
 const { liveQuery, listeners, progress, metadata, isMixtape } = useMetadataStoreRefs()
 const { isContentOpen } = useVinylThemeStoreRefs()
 const { toggleDetails, closeDetails, toggleJaquette } = useVinylThemeStore()
+
+const baseHeight = 855
+const minDimension = computed(() => Math.min(width.value, height.value))
+const scaling = computed(() => (minDimension.value * 100) / baseHeight / 100)
+
 const artist = computed(() => liveQuery.value?.authors)
 const title = computed(() => liveQuery.value?.name)
 const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
@@ -36,7 +42,10 @@ onBeforeUnmount(() => {
   >
     <div class="z-0 h-full w-full overflow-hidden relative bg-primary">
       <div
-        class="absolute left-1/2 translate-x-[-55%] sm:translate-x-[-62%] md:-translate-x-1/2 top-1/2 -translate-y-1/2 mt-0 sm:mt-4 md:mt-0 scale-50 sm:scale-75 md:scale-100"
+        class="absolute left-1/2 top-1/2 origin-top-left -ml-10 sm:ml-0 md:ml-0"
+        :style="{
+          transform: `scale(${scaling}) translate(-50%, -50%)`,
+        }"
       >
         <VinylDisk :artist="artist" :title="title" :rotate="isPlaying" :cover="cover" />
         <VinylToneArm :progress="progress" />

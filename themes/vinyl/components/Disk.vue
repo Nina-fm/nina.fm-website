@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  title?: string;
-  artist?: string;
-  cover?: string;
-  rotate?: boolean;
-}>();
+  title?: string
+  artist?: string
+  cover?: string
+  rotate?: boolean
+}>()
 
-const { title, artist, rotate, cover } = toRefs(props);
+const { title, artist, rotate } = toRefs(props)
 </script>
 
 <template>
