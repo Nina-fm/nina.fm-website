@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Waiting+for+the+Sunrise&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Doto&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Doto&display=swap"); */
 @import url("./airbnb-cereal.css");
+@import url("./dot-digital-7.css");
 
 @tailwind base;
 @tailwind components;
@@ -62,7 +63,7 @@
       font-family: "Waiting for the Sunrise", cursive;
     }
     .font-lcd {
-      font-family: "Doto", sans-serif;
+      font-family: "Dot Digital-7", sans-serif;
     }
     .absolute-center {
       @apply absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2;

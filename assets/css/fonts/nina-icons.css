@@ -25,6 +25,15 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.nina-icon-headphones4:before {
+  content: "\e925";
+}
+.nina-icon-peak:before {
+  content: "\e91d";
+}
+.nina-icon-vinyl:before {
+  content: "\e91e";
+}
 .nina-icon-headphones3:before {
   content: "\e924";
 }
@@ -48,18 +57,6 @@ i {
 }
 .nina-icon-astronomy:before {
   content: "\e901";
-}
-.nina-icon-peak:before {
-  content: "\e91d";
-}
-.nina-icon-vinyl:before {
-  content: "\e91e";
-}
-.nina-icon-headphones:before {
-  content: "\e921";
-}
-.nina-icon-transfer:before {
-  content: "\e912";
 }
 .nina-icon-headphones2:before {
   content: "\e923";
