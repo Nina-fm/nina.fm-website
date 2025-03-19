@@ -108,14 +108,15 @@ export default defineNuxtConfig({
       script: [
         {
           type: "text/javascript",
-          src: "https://secure.statcounter.com/counter/counter.js",
           tagPosition: "bodyClose",
-          async: true,
-        },
-        {
-          type: "text/javascript",
-          innerHTML: "var sc_project=11548035;  var sc_invisible=1;  var sc_security='d39f401e'; ",
-          tagPosition: "bodyClose",
+          innerHTML: `
+            var sc_project = 11548035
+            var sc_invisible = 1
+            var sc_security = "d39f401e"
+            var scJsHost = "https:" == document.location.protocol ? "https://secure." : "http://www."
+            document.write(
+              "<sc" + "ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js' async></" + "script>"
+            )`,
         },
       ],
     },
