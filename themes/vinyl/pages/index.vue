@@ -2,7 +2,7 @@
 const { width, height } = useWindowSize()
 const { isPlaying } = useAudioStoreRefs()
 const { liveQuery, listeners, progress, metadata, isMixtape } = useMetadataStoreRefs()
-const { isContentOpen } = useVinylThemeStoreRefs()
+const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs()
 const { toggleDetails, closeDetails, closeContent } = useVinylThemeStore()
 
 const baseHeight = 855
@@ -43,8 +43,8 @@ onBeforeUnmount(() => {
   <div
     :class="cn('absolute inset-0 transition-main', { 'right-full md:right-1/2 border-r border-muted': isContentOpen })"
   >
-    <div class="z-0 h-full w-full overflow-hidden relative bg-primary">
-      <ClientOnly>
+    <ClientOnly>
+      <div class="z-0 h-full w-full overflow-hidden relative bg-primary">
         <div
           class="absolute left-1/2 top-1/2 origin-top-left -ml-10 sm:ml-0 md:ml-0"
           :style="{
@@ -55,9 +55,23 @@ onBeforeUnmount(() => {
           <VinylToneArm :progress="progress" />
           <VinylLcdCounter :count="listeners" />
         </div>
-      </ClientOnly>
-    </div>
-    <VinylCover v-if="!!metadata && isMixtape" :artist="artist" :title="title" :tracks="tracks" :cover="cover" />
+      </div>
+      <div v-if="isDetailsOpen" class="absolute inset-0" @click.stop.prevent="closeDetails()" />
+      <div class="absolute inset-0 pointer-events-none">
+        <VinylCover
+          v-if="!!metadata && isMixtape"
+          :artist="artist"
+          :title="title"
+          :tracks="tracks"
+          :cover="cover"
+          :style="{
+            '--tw-scale-y': scaling,
+            '--tw-scale-x': scaling,
+            transform: `translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`,
+          }"
+        />
+      </div>
+    </ClientOnly>
   </div>
   <VinylContentPage />
 </template>
