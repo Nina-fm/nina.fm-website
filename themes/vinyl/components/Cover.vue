@@ -3,7 +3,7 @@ const props = defineProps<{
   title?: string
   artist?: string
   cover?: string
-  tracks?: Obj[]
+  tracks?: Track[]
 }>()
 
 const { toggleDetails, closeDetails, toggleJaquette } = useVinylThemeStore()
@@ -20,7 +20,7 @@ const { title, artist, tracks, cover } = toRefs(props)
         [$attrs.class],
         {
           'left-[-600px] sm:left-[-750px] md:left-[-900px] cursor-pointer': !isDetailsOpen,
-          'left-1/2 md:left-1/3 -translate-x-1/2 top-1/2 sm:top-1/2 md:top-1/2 -translate-y-1/2 mt-2 -ml-10 sm:-ml-5 md:-ml-5 rotate-[-5deg] md:rotate-[-10deg]':
+          'left-1/2 md:left-1/3 -translate-x-1/2 top-1/2 sm:top-1/2 md:top-1/2 -translate-y-1/2 mt-2 -ml-10 sm:-ml-5 md:-ml-5 rotate-[-5deg] md:rotate-[-8deg]':
             isDetailsOpen,
           'left-[-1200px]': isContentOpen && !isDetailsOpen,
           'left-[-900px] top-[100vh] rotate-[-20deg] -translate-y-1/2': isContentOpen && isDetailsOpen,
