@@ -1,27 +1,29 @@
 <script lang="ts" setup>
-const { toggleDetails, closeContent, closeDetails } = usePeakThemeStore();
+const { toggleDetails, closeContent, closeDetails } = usePeakThemeStore()
 
 const handleKeyDown = (e: KeyboardEvent) => {
+  e.preventDefault()
+  e.stopPropagation()
   switch (e.key) {
     case "Tab":
-      toggleDetails();
-      break;
+      toggleDetails()
+      break
     case "Escape":
-      closeDetails();
-      closeContent();
-      break;
+      closeDetails()
+      closeContent()
+      break
     default:
-      break;
+      break
   }
-};
+}
 
 onMounted(() => {
-  document.addEventListener("keydown", handleKeyDown);
-});
+  document.addEventListener("keydown", handleKeyDown)
+})
 
 onBeforeUnmount(() => {
-  document.removeEventListener("keydown", handleKeyDown);
-});
+  document.removeEventListener("keydown", handleKeyDown)
+})
 </script>
 
 <template>
