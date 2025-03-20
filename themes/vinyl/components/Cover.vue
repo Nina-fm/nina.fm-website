@@ -12,15 +12,14 @@ const { title, artist, tracks, cover } = toRefs(props)
 </script>
 
 <template>
-  <div v-if="isDetailsOpen" class="absolute z-0 inset-0 bg-transparent" @click.stop.prevent="closeDetails()" />
   <div
     :class="
       cn(
-        'perspective z-10 absolute size-[900px] scale-50 sm:scale-75 md:scale-100 top-[45vh] sm:top-[60vh] md:top-[70vh] rotate-[15deg] transition-all duration-700 ease-in-out bg-transparent',
-        [$attrs.class],
+        'pointer-events-auto perspective z-10 absolute size-[1000px] transition-all duration-700 ease-in-out bg-transparent origin-top-left ',
         {
-          'left-[-600px] sm:left-[-750px] md:left-[-900px] cursor-pointer': !isDetailsOpen,
-          'left-1/2 md:left-1/3 -translate-x-1/2 top-1/2 sm:top-1/2 md:top-1/2 -translate-y-1/2 mt-2 -ml-10 sm:-ml-5 md:-ml-5 rotate-[-5deg] md:rotate-[-8deg]':
+          'left-0 top-0 -translate-x-1/3 md:-translate-x-3/4 translate-y-[75vh] sm:translate-y-[65vh] md:translate-y-[70vh] lg:translate-y-[65vh] rotate-[6deg] cursor-pointer':
+            !isDetailsOpen,
+          'left-0 top-0 translate-x-[-9%] md:translate-x-[-18%] lg:translate-x-[-8%] xl:translate-x-[-5%] translate-y-[10%] sm:translate-y-0 lg:translate-y-[-5%] xl:translate-y-[-5%] rotate-[-2deg] sm:rotate-[-12deg] md:rotate-[-4deg] lg:rotate-[-6deg] xl:rotate-[-8deg]':
             isDetailsOpen,
           'left-[-1200px]': isContentOpen && !isDetailsOpen,
           'left-[-900px] top-[100vh] rotate-[-20deg] -translate-y-1/2': isContentOpen && isDetailsOpen,

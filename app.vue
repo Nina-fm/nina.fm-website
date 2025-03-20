@@ -38,7 +38,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div data-app class="h-full" @click="() => unlock()">
+  <div data-app class="h-full" @click="unlock">
     <VitePwaManifest />
     <NuxtLoadingIndicator />
     <AudioStream />
