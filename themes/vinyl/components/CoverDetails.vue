@@ -24,9 +24,8 @@ defineProps<{
       </div>
     </div>
     <div v-if="artist" class="flex flex-col items-center gap-0">
-      <span v-if="isMixtape" class="text-sm">Une mixtape signée</span>
+      <span class="text-xs">Une mixtape signée</span>
       <span class="font-cursive text-primary text-3xl">{{ artist }}</span>
-      <span v-if="!isMixtape" class="text-sm">à l'écoute sur Nina.fm</span>
     </div>
   </div>
 </template>
