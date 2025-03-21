@@ -5,7 +5,7 @@ const { liveQuery, listeners, progress, metadata, isMixtape } = useMetadataStore
 const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs()
 const { toggleDetails, closeDetails, closeContent } = useVinylThemeStore()
 
-const baseHeight = 855
+const baseHeight = 900
 const minDimension = computed(() => Math.min(width.value, height.value))
 const scaling = computed(() => (minDimension.value * 100) / baseHeight / 100)
 
@@ -15,10 +15,9 @@ const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
 const tracks = computed(() => (metadata.value?.tracks as Track[]) ?? undefined)
 
 const handleKeyDown = (e: KeyboardEvent) => {
-  e.preventDefault()
-  e.stopPropagation()
   switch (e.key) {
     case "Tab":
+      e.preventDefault()
       toggleDetails()
       break
     case "Escape":
