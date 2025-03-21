@@ -2,10 +2,9 @@
 const { toggleDetails, closeContent, closeDetails } = usePeakThemeStore()
 
 const handleKeyDown = (e: KeyboardEvent) => {
-  e.preventDefault()
-  e.stopPropagation()
   switch (e.key) {
     case "Tab":
+      e.preventDefault()
       toggleDetails()
       break
     case "Escape":
