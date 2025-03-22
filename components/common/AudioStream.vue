@@ -1,6 +1,10 @@
 <script lang="ts" setup>
   const { streamRef } = useAudioStoreRefs()
-  console.log('AudioStrem render')
+  const { debug } = useDebugStore()
+
+  if (debug) {
+    console.log('AudioStrem render')
+  }
 </script>
 
 <template>
