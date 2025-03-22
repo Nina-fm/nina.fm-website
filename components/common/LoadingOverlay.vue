@@ -6,20 +6,20 @@
   })
 
   defineEmits<{
-    (e: 'click'): void
+    (e: 'click' | 'refresh'): void
   }>()
 </script>
 
 <template>
   <Transition>
-    <div v-if="isLoading" class="absolute inset-0 z-40 flex items-center justify-center">
+    <div v-if="isLoading" class="absolute inset-0 z-50 flex items-center justify-center" @click="$emit('click')">
       <Overlay blur />
       <AnimatedLoader />
       <Button
         variant="ghost"
         size="icon"
-        class="absolute bottom-10 left-1/2 -translate-x-1/2 rounded-full hover:bg-foreground/10"
-        @click="$emit('click')"
+        class="absolute bottom-20 left-1/2 -translate-x-1/2 rounded-full text-primary hover:bg-foreground/10"
+        @click="$emit('refresh')"
       >
         <RefreshCwIcon class="size-4" />
       </Button>

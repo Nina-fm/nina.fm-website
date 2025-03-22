@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+  import { InfoIcon } from 'lucide-vue-next'
+
   const props = defineProps<{
-    icon: string
+    icon?: string
     size?: number | string
     tooltip?: string
     class?: string
@@ -20,7 +22,10 @@
     <Tooltip>
       <TooltipTrigger>
         <Button as-child variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
-          <NinaIcon :icon="props.icon" :size="props.size" />
+          <slot>
+            <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" />
+            <InfoIcon v-else />
+          </slot>
         </Button>
       </TooltipTrigger>
       <TooltipContent arrow>
@@ -30,6 +35,9 @@
     </Tooltip>
   </TooltipProvider>
   <Button v-else as-child variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
-    <NinaIcon :icon="props.icon" :size="props.size" />
+    <slot>
+      <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" />
+      <InfoIcon v-else />
+    </slot>
   </Button>
 </template>

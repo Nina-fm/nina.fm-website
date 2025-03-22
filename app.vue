@@ -1,12 +1,11 @@
 <script lang="ts" setup>
   useDaylightStore()
   const { isLoading } = useLoadingStoreRefs()
-
   const { current } = useThemeStoreRefs()
   const { isMobile: appIsMobile } = useAppStoreRefs()
-  const { cannotAutoplay, initNavigator } = useNavigator()
   const { isMobile: audioIsMobile, isPlaying, isLocked } = useAudioStoreRefs()
-  const { toggleMute, unlock, initPlaying } = useAudioStore()
+  const { toggleMute, unlock, relaunch, initPlaying } = useAudioStore()
+  const { cannotAutoplay, initNavigator } = useNavigator()
 
   const handleKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
@@ -43,11 +42,10 @@
     <NuxtLoadingIndicator />
     <AudioStream />
     <Theme :name="current" />
-    <ClientOnly>
-      <Toaster />
-    </ClientOnly>
-    <LoadingOverlay :is-loading="isLoading && !isLocked" @click="unlock" />
+    <LoadingOverlay :is-loading="isLoading && !isLocked" @refresh="relaunch" />
     <MobilePlayUnlocker :active="isLocked && !isPlaying" @click="unlock" />
+    <AudioDebugger />
+    <Notifier />
     <Rainbow />
   </div>
 </template>
