@@ -21,13 +21,14 @@ export const useAudioStore = defineStore('audio', () => {
   const { debug } = useDebugStoreRefs()
   const { log } = useDebugStore()
 
-  // const blankSound = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA='
+  const blankSound = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA='
   const streamRef = ref<HTMLAudioElement | undefined>()
   const streamUrl = ref<string | undefined>()
   const initialized = ref<boolean>(false)
   const isMobile = ref<boolean>(false)
   const isPlaying = ref<boolean>(false)
   const isStarted = ref<boolean>(false)
+  const isKilled = ref<boolean>(false)
   const isMuted = ref<boolean>(false)
   const isLoading = computed(() => !isPlaying.value && ((isMobile.value && initialized.value) || !initialized.value))
   const isLocked = computed(() => isMobile.value && !initialized.value)
@@ -65,19 +66,21 @@ export const useAudioStore = defineStore('audio', () => {
   }
 
   const updateStatus = () => {
-    audioLog('updateStatus', {
-      isPlaying:
-        !!streamRef.value &&
-        isStarted.value &&
-        !streamRef.value.paused &&
-        !streamRef.value.ended &&
-        streamRef.value.readyState > 2,
-      started: isStarted.value,
-      currentTime: streamRef.value?.currentTime,
-      paused: streamRef.value?.paused,
-      ended: streamRef.value?.ended,
-      readyState: streamRef.value ? (readyStatus?.[streamRef.value?.readyState] ?? 'undefined') : 'undefined',
-    })
+    if (!isKilled.value) {
+      audioLog('updateStatus', {
+        isPlaying:
+          !!streamRef.value &&
+          isStarted.value &&
+          !streamRef.value.paused &&
+          !streamRef.value.ended &&
+          streamRef.value.readyState > 2,
+        started: isStarted.value,
+        currentTime: streamRef.value?.currentTime,
+        paused: streamRef.value?.paused,
+        ended: streamRef.value?.ended,
+        readyState: streamRef.value ? (readyStatus?.[streamRef.value?.readyState] ?? 'undefined') : 'undefined',
+      })
+    }
 
     isPlaying.value =
       !!streamRef.value &&
@@ -88,25 +91,27 @@ export const useAudioStore = defineStore('audio', () => {
   }
 
   const checkStreamAlive = () => {
-    if (!isMobile.value && !isPlaying.value) {
-      audioLog('checkStreamAlive -> launch', {
-        audio: streamRef.value
-          ? {
-              currentSrc: streamRef.value?.currentSrc,
-              error: streamRef.value?.error
-                ? `Error ${streamRef.value?.error?.code}: ${streamRef.value?.error?.message}`
-                : 'null',
-              networkState: networkStatus?.[streamRef.value?.networkState] ?? 'undefined',
-              playbackRate: streamRef.value?.playbackRate,
-              readyState: readyStatus?.[streamRef.value?.readyState] ?? 'undefined',
-              buffered: streamRef.value?.buffered,
-            }
-          : null,
-      })
-      launch()
-    } else {
-      audioLog('checkStreamAlive -> setTimeout')
-      setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+    if (!isKilled.value) {
+      if (!isMobile.value && !isPlaying.value) {
+        audioLog('checkStreamAlive -> launch', {
+          audio: streamRef.value
+            ? {
+                currentSrc: streamRef.value?.currentSrc,
+                error: streamRef.value?.error
+                  ? `Error ${streamRef.value?.error?.code}: ${streamRef.value?.error?.message}`
+                  : 'null',
+                networkState: networkStatus?.[streamRef.value?.networkState] ?? 'undefined',
+                playbackRate: streamRef.value?.playbackRate,
+                readyState: readyStatus?.[streamRef.value?.readyState] ?? 'undefined',
+                buffered: streamRef.value?.buffered,
+              }
+            : null,
+        })
+        launch()
+      } else {
+        audioLog('checkStreamAlive -> setTimeout')
+        setTimeout(checkStreamAlive, config.public.streamRefreshTime)
+      }
     }
   }
 
@@ -118,28 +123,32 @@ export const useAudioStore = defineStore('audio', () => {
     }
   }
 
-  const kill = () => {
+  const kill = async () => {
     audioLog('kill')
+    isKilled.value = true
     isStarted.value = false
     if (streamRef.value) {
-      streamRef.value.removeAttribute('src')
+      streamRef.value.src = blankSound
       streamRef.value.load()
+      await nextTick()
+      streamRef.value = undefined
     }
   }
 
-  const relaunch = () => {
+  const relaunch = async () => {
     audioLog('relaunch')
-    if (streamRef.value && streamUrl.value) {
-      kill()
-      streamRef.value.src = streamUrl.value
-      initPlaying()
-    }
+    kill()
+    await nextTick()
+    isKilled.value = false
+    await nextTick()
+    initPlaying()
   }
 
-  const initPlaying = () => {
-    if (streamRef.value) {
+  const initPlaying = async () => {
+    if (streamRef.value && streamUrl.value && !isKilled.value) {
       audioLog('initPlaying')
-      streamUrl.value = streamRef.value.src
+      streamRef.value.src = streamUrl.value
+      await nextTick()
       launch()
       streamRef.value.oncanplay = () => {
         audioLog('oncanplay')
@@ -201,13 +210,16 @@ export const useAudioStore = defineStore('audio', () => {
 
   return {
     streamRef,
+    streamUrl,
     isMobile,
     isLoading,
     isLocked,
     isPlaying,
     isStarted,
     isMuted,
+    isKilled,
     play,
+    kill,
     unlock,
     relaunch,
     toggleMute,
