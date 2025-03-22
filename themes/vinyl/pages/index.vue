@@ -11,6 +11,7 @@
 
   const artist = computed(() => liveQuery.value?.authors)
   const title = computed(() => liveQuery.value?.name)
+  const year = computed(() => metadata.value?.year)
   const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
   const tracks = computed(() => (metadata.value?.tracks as Track[]) ?? undefined)
 
@@ -61,6 +62,7 @@
           v-if="!!metadata && isMixtape"
           :artist="artist"
           :title="title"
+          :year="year"
           :tracks="tracks"
           :cover="cover"
           :style="{

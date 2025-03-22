@@ -2,6 +2,7 @@
   defineProps<{
     title?: string
     artist?: string
+    year?: number | string
     tracks?: Track[]
     isMixtape?: boolean
   }>()
@@ -26,7 +27,11 @@
       </div>
     </div>
     <div v-if="artist" class="flex flex-col items-center gap-0">
-      <span class="text-xs">Une mixtape signée</span>
+      <span class="text-xs">
+        Une mixtape
+        <span v-if="year" class="inline-flex">de {{ year }}</span>
+        signée
+      </span>
       <span class="font-cursive text-3xl text-primary">{{ artist }}</span>
     </div>
   </div>

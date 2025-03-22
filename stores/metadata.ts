@@ -25,7 +25,7 @@ export const useMetadataStore = defineStore('metadata', () => {
   const isListeningListeners = ref<boolean>(false)
   const iceCastData = ref<Obj | null>(null)
   const airTimeData = ref<Info | null>(null)
-  const metadata = ref<Obj | null>(null)
+  const metadata = ref<Metadata | null>(null)
   const liveQuery = ref<Query | undefined>()
   const progress = ref<number>(0)
   const listeners = ref<number>(0)
@@ -40,7 +40,7 @@ export const useMetadataStore = defineStore('metadata', () => {
       },
     })
 
-    metadata.value = fetchData
+    metadata.value = fetchData as unknown as Metadata
   }
 
   const updateQuery = () => {

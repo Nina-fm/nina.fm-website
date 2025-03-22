@@ -2,6 +2,7 @@
   const props = defineProps<{
     title?: string
     artist?: string
+    year?: number | string
     cover?: string
     tracks?: Track[]
   }>()
@@ -40,7 +41,7 @@
       "
     >
       <div class="backface absolute size-full bg-muted p-12">
-        <VinylCoverDetails :title="title" :tracks="tracks" :artist="artist" />
+        <VinylCoverDetails :title="title" :tracks="tracks" :artist="artist" :year="year" />
         <VinylCoverSwitchButton @click="toggleJaquette()" />
       </div>
       <div class="backface rotate-y-180 absolute size-full bg-muted">

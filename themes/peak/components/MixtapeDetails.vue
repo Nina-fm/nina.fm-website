@@ -35,9 +35,10 @@
           <img :src="`${metadata?.cover_url}`" />
           <Progress :model-value="progress" class="h-0.5" />
         </div>
-        <div class="text-right">
-          Une Mixtape proposée par
-          <strong>{{ metadata?.authors_text }}</strong>
+        <div class="space-x-1 text-right">
+          <span>Une Mixtape proposée par</span>
+          <span class="font-bold">{{ metadata?.authors_text }}</span>
+          <span v-if="metadata?.year">en {{ metadata.year }}</span>
         </div>
         <div data-type="tracklist" class="pb-14">
           <div v-if="!tracks.length" class="white-space-pre-line">
