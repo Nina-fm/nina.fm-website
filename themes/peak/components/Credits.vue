@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute bottom-0 left-0 text-5xs md:text-4xs font-medium tracking-widest uppercase flex items-end leading-none"
+    class="absolute bottom-0 left-0 flex items-end text-5xs font-medium uppercase leading-none tracking-widest md:text-4xs"
   >
     © PHOTO:BOBIN - MONTAGE:120
   </div>

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-const Content = defineAsyncComponent(() => import("@/components/contents/About.vue"));
+  const Content = defineAsyncComponent(() => import('@/components/contents/About.vue'))
 
-const { toggleContent, closeContent } = useVinylThemeStore();
-const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs();
+  const { toggleContent, closeContent } = useVinylThemeStore()
+  const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs()
 </script>
 
 <template>
@@ -11,10 +11,10 @@ const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs();
     <ControlButton
       :class="
         cn(
-          'absolute z-10 top-2 md:top-4 right-2 md:right-4 cursor-pointer text-primary-foreground hover:text-primary',
+          'absolute right-2 top-2 z-10 cursor-pointer text-primary-foreground hover:text-primary md:right-4 md:top-4',
           {
             'text-foreground': isContentOpen,
-          }
+          },
         )
       "
       :icon="isContentOpen ? 'close' : 'reorder'"
@@ -24,12 +24,12 @@ const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs();
     <div
       :class="
         cn(
-          'absolute w-full md:w-1/2 inset-y-0 left-full overflow-y-auto pointer-events-none transition-content content-page-box bg-background/90 md:bg-transparent',
-          { 'left-0 md:left-1/2': isContentOpen, 'left-full': isDetailsOpen }
+          'transition-content content-page-box pointer-events-none absolute inset-y-0 left-full w-full overflow-y-auto bg-background/90 md:w-1/2 md:bg-transparent',
+          { 'left-0 md:left-1/2': isContentOpen, 'left-full': isDetailsOpen },
         )
       "
     >
-      <div class="absolute top-14 md:top-16 left-0 md:left-10 right-0 md:right-10 mb-10 pointer-events-auto">
+      <div class="pointer-events-auto absolute left-0 right-0 top-14 pb-10 md:left-10 md:right-10 md:top-16">
         <Content />
       </div>
     </div>
@@ -37,7 +37,7 @@ const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs();
 </template>
 
 <style scoped>
-.transition-content {
-  transition: all 0.3s ease-in-out;
-}
+  .transition-content {
+    transition: all 0.3s ease-in-out;
+  }
 </style>

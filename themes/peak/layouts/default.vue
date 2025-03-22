@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute inset-4 md:inset-5 overflow-hidden rounded">
+  <div class="absolute inset-4 overflow-hidden rounded md:inset-5">
     <slot />
     <Controls />
   </div>

@@ -1,8 +1,11 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": false,
   "editor.formatOnSave": true,
-  "volar.autoCompleteRefs": true,
-  "[vue]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "editor.formatOnType": false,
+  "eslint.format.enable": true,
+  "eslint.useFlatConfig": true,
+  "prettier.configPath": "prettier.config.mjs",
+  "prettier.useEditorConfig": false,
+  "scss.lint.unknownAtRules": "ignore"
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-const { streamRef } = useAudioStoreRefs()
-console.log("AudioStrem render")
+  const { streamRef } = useAudioStoreRefs()
+  console.log('AudioStrem render')
 </script>
 
 <template>

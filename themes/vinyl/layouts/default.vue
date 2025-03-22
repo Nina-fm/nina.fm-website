@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const { isContentOpen } = useVinylThemeStoreRefs()
+  const { isContentOpen } = useVinylThemeStoreRefs()
 </script>
 
 <template>
-  <div class="absolute inset-4 md:inset-5 overflow-hidden rounded">
+  <div class="absolute inset-4 overflow-hidden rounded md:inset-5">
     <slot />
-    <Controls :class="cn('text-primary-foreground', { 'text-primary hidden md:flex': isContentOpen })" />
+    <Controls :class="cn('text-primary-foreground', { 'hidden text-primary md:flex': isContentOpen })" />
   </div>
 </template>

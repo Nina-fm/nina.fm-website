@@ -1,29 +1,29 @@
 <script setup lang="ts">
-const { isMuted, isPlaying } = useAudioStoreRefs();
-const { toggleMute } = useAudioStore();
-const { isDarkModeActive } = useThemeStoreRefs();
+  const { isMuted, isPlaying } = useAudioStoreRefs()
+  const { toggleMute } = useAudioStore()
+  const { isDarkModeActive } = useThemeStoreRefs()
 
-const equalizerPath = ref<string | null>(null);
+  const equalizerPath = ref<string | null>(null)
 
-const controlsMsg = computed(
-  () => `${isMuted ? "Activer" : "Désactiver"} le son (vous pouvez aussi utiliser la barre d'espace)`
-);
+  const controlsMsg = computed(
+    () => `${isMuted ? 'Activer' : 'Désactiver'} le son (vous pouvez aussi utiliser la barre d'espace)`,
+  )
 
-const updateEqualizer = async () => {
-  equalizerPath.value = (
-    await import(
-      `../assets/images/equalizer${!isPlaying.value ? "-loader" : ""}${isDarkModeActive.value ? "-night" : ""}.gif`
-    )
-  ).default;
-};
+  const updateEqualizer = async () => {
+    equalizerPath.value = (
+      await import(
+        `../assets/images/equalizer${!isPlaying.value ? '-loader' : ''}${isDarkModeActive.value ? '-night' : ''}.gif`
+      )
+    ).default
+  }
 
-watch([isPlaying, isDarkModeActive], () => {
-  updateEqualizer();
-});
+  watch([isPlaying, isDarkModeActive], () => {
+    updateEqualizer()
+  })
 
-onMounted(() => {
-  updateEqualizer();
-});
+  onMounted(() => {
+    updateEqualizer()
+  })
 </script>
 
 <template>
@@ -32,7 +32,7 @@ onMounted(() => {
       <TooltipTrigger>
         <div
           :class="
-            cn('bg-no-repeat bg-center bg-contain -mt-0.5 size-4 pointer-events-auto cursor-pointer', {
+            cn('pointer-events-auto -mt-0.5 size-4 cursor-pointer bg-contain bg-center bg-no-repeat', {
               'opacity-20': isMuted,
             })
           "

@@ -1,12 +1,12 @@
-import type { ConfigurableDocument, ConfigurableNavigator } from "@vueuse/core";
+import type { ConfigurableDocument, ConfigurableNavigator } from '@vueuse/core'
 
-type WakeLockType = "screen";
+type WakeLockType = 'screen'
 export interface WakeLockSentinel extends EventTarget {
-  type: WakeLockType;
-  released: boolean;
-  release: () => Promise<void>;
+  type: WakeLockType
+  released: boolean
+  release: () => Promise<void>
 }
-export type UseWakeLockOptions = ConfigurableNavigator & ConfigurableDocument;
+export type UseWakeLockOptions = ConfigurableNavigator & ConfigurableDocument
 /**
  * Reactive Screen Wake Lock API.
  *
@@ -14,9 +14,9 @@ export type UseWakeLockOptions = ConfigurableNavigator & ConfigurableDocument;
  * @param options
  */
 export declare function useWakeLock(options?: UseWakeLockOptions): {
-  isSupported: ComputedRef<boolean>;
-  isActive: Ref<boolean>;
-  request: (type: WakeLockType) => Promise<void>;
-  release: () => Promise<void>;
-};
-export type UseWakeLockReturn = ReturnType<typeof useWakeLock>;
+  isSupported: ComputedRef<boolean>
+  isActive: Ref<boolean>
+  request: (type: WakeLockType) => Promise<void>
+  release: () => Promise<void>
+}
+export type UseWakeLockReturn = ReturnType<typeof useWakeLock>

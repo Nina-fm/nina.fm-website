@@ -1,23 +1,24 @@
 <template>
-  <div class="flex flex-col gap-2 items-center">
-    <div class="p-0 md:p-5 text-2xl text-center font-condensed [.theme-peak_&]:font-bold text-primary">
+  <div class="flex flex-col items-center gap-2">
+    <div class="font-condensed p-0 text-center text-2xl text-primary md:p-5 [.theme-peak_&]:font-bold">
       PROJET RADIOPHONIQUE À LONGUE PORTÉE
     </div>
     <Card class="block-card">
       <blockquote class="px-0 text-center">
-        <p class="font-cursive text-xl md:text-2xl leading-5 md:leading-7 text-card-foreground/80">
-          Nina.fm c'est une webradio artisanale et associative.<br class="hidden xl:block" />
-          C'est bientôt 10 ans de pépites musicales diffusées gratuitement, en continu et sans publicité.<br
-            class="hidden xl:block"
-          />
-          Ce sont des DJs qui partagent leurs mixtapes.<br class="hidden xl:block" />
+        <p class="font-cursive text-xl leading-5 text-card-foreground/80 md:text-2xl md:leading-7">
+          Nina.fm c'est une webradio artisanale et associative.
+          <br class="hidden xl:block" />
+          C'est bientôt 10 ans de pépites musicales diffusées gratuitement, en continu et sans publicité.
+          <br class="hidden xl:block" />
+          Ce sont des DJs qui partagent leurs mixtapes.
+          <br class="hidden xl:block" />
           Enfin Nina.fm c'est nous, une bande de passionnés, mais avant-tout c'est vous, car sans auditeurs, pas de
-          radio !
+          radio&nbsp;!
         </p>
       </blockquote>
     </Card>
-    <Card class="block-card text-center flex flex-col items-stretch md:items-center gap-4">
-      <h2 class="text-2xl font-condensed [.theme-peak_&]:font-bold m-0 text-primary">Devenez DJ !</h2>
+    <Card class="block-card flex flex-col items-stretch gap-4 text-center md:items-center">
+      <h2 class="font-condensed m-0 text-2xl text-primary [.theme-peak_&]:font-bold">Devenez DJ !</h2>
       <p class="[.theme-vinyl_&]:text-foreground/80">
         Vous avez une mixtape à partager ? N'hésitez pas à nous la transmettre, nous pouvons l'intègrer à la
         programmation ! Dès que votre mixtape sera diffusée, votre nom de DJ apparaitra !
@@ -30,7 +31,7 @@
         </a>
       </Button>
     </Card>
-    <div class="flex gap-2 mt-5">
+    <div class="mt-5 flex gap-2">
       <Button as-child variant="outline" size="icon" class="social-button">
         <a href="https://www.facebook.com/nina.webradio/" target="_blank" rel="noopener noreferrer">
           <NinaIcon icon="facebook-f" />
@@ -51,10 +52,10 @@
 </template>
 
 <style scoped>
-.block-card {
-  @apply w-full bg-transparent md:bg-background/90 rounded-md p-2 md:p-6 border-0 shadow-none;
-}
-.social-button {
-  @apply size-12 text-xl rounded-full bg-transparent hover:bg-primary/10 border-accent-foreground text-accent-foreground;
-}
+  .block-card {
+    @apply w-full rounded-md border-0 bg-transparent p-2 shadow-none md:bg-background/90 md:p-6;
+  }
+  .social-button {
+    @apply size-12 rounded-full border-accent-foreground bg-transparent text-xl text-accent-foreground hover:bg-primary/10;
+  }
 </style>

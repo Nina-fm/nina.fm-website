@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import "./assets/css/peak.css";
+  import './assets/css/peak.css'
 </script>
 
 <template>

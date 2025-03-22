@@ -1,40 +1,40 @@
 <script lang="ts" setup>
-useLoadingStore()
-useDaylightStore()
+  useLoadingStore()
+  useDaylightStore()
 
-const { current } = useThemeStoreRefs()
-const { isMobile: appIsMobile } = useAppStoreRefs()
-const { cannotAutoplay, initNavigator } = useNavigator()
-const { isMobile: audioIsMobile } = useAudioStoreRefs()
-const { toggleMute, unlock, initPlaying } = useAudioStore()
+  const { current } = useThemeStoreRefs()
+  const { isMobile: appIsMobile } = useAppStoreRefs()
+  const { cannotAutoplay, initNavigator } = useNavigator()
+  const { isMobile: audioIsMobile } = useAudioStoreRefs()
+  const { toggleMute, unlock, initPlaying } = useAudioStore()
 
-const handleKeyDown = (e: KeyboardEvent) => {
-  switch (e.key) {
-    case " ":
-      toggleMute()
-      break
-    default:
-      break
+  const handleKeyDown = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case ' ':
+        toggleMute()
+        break
+      default:
+        break
+    }
   }
-}
 
-onNuxtReady(() => {
-  const isMobile = cannotAutoplay()
-  appIsMobile.value = isMobile
-  audioIsMobile.value = isMobile
-})
+  onNuxtReady(() => {
+    const isMobile = cannotAutoplay()
+    appIsMobile.value = isMobile
+    audioIsMobile.value = isMobile
+  })
 
-onMounted(() => {
-  initPlaying()
-  initNavigator()
-  document.addEventListener("keydown", handleKeyDown)
-})
+  onMounted(() => {
+    initPlaying()
+    initNavigator()
+    document.addEventListener('keydown', handleKeyDown)
+  })
 
-onBeforeUnmount(() => {
-  document.removeEventListener("keydown", handleKeyDown)
-})
+  onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyDown)
+  })
 
-// TODO: Check if the AudioStrem is rerendered (cf. audio bug)
+  // TODO: Check if the AudioStrem is rerendered (cf. audio bug)
 </script>
 
 <template>

@@ -1,12 +1,12 @@
-@import "./avenir-next.css";
-@import url("https://fonts.googleapis.com/css?family=Caveat:400,700");
+@import './avenir-next.css';
+@import url('https://fonts.googleapis.com/css?family=Caveat:400,700');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  [data-theme="peak"] {
+  [data-theme='peak'] {
     --background: 0 0% 100%;
     --foreground: 0 0% 26.67%;
     --muted: 0 0% 96.1%;
@@ -34,7 +34,7 @@
     --radius: 0.5rem;
   }
 
-  [data-theme="peak"].dark {
+  [data-theme='peak'].dark {
     --background: 0 0% 26.67%;
     --foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -66,9 +66,9 @@
   * {
     @apply border-border;
   }
-  body[data-theme="peak"] {
+  body[data-theme='peak'] {
     @apply bg-background text-foreground antialiased;
-    font-family: "Avenir Next", "Helvetica", sans-serif;
+    font-family: 'Avenir Next', 'Helvetica', sans-serif;
   }
   html,
   body,
@@ -76,12 +76,12 @@
     height: 100vh;
   }
 
-  [data-theme="peak"] {
+  [data-theme='peak'] {
     .font-condensed {
-      font-family: "Avenir Next Condensed", "Helvetica", sans-serif;
+      font-family: 'Avenir Next Condensed', 'Helvetica', sans-serif;
     }
     .font-cursive {
-      font-family: "Caveat", sans-serif;
+      font-family: 'Caveat', sans-serif;
     }
   }
 }

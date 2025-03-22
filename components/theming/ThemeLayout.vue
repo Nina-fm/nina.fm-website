@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-const props = defineProps<{
-  name?: string;
-}>();
+  const props = defineProps<{
+    name?: string
+  }>()
 
-const { current } = useThemeStoreRefs();
+  const { current } = useThemeStoreRefs()
 
-const { name } = toRefs(props);
+  const { name } = toRefs(props)
 
-const layout = computed(() =>
-  defineAsyncComponent(() => import(`../../themes/${current.value}/layouts/${name?.value ?? "default"}.vue`))
-);
+  const layout = computed(() =>
+    defineAsyncComponent(() => import(`../../themes/${current.value}/layouts/${name?.value ?? 'default'}.vue`)),
+  )
 </script>
 
 <template>

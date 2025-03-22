@@ -1,24 +1,24 @@
 <script lang="ts" setup>
-import type { AcceptableValue } from "reka-ui";
-import { key, type TogglerContext } from "./types";
+  import type { AcceptableValue } from 'reka-ui'
+  import { key, type TogglerContext } from './types'
 
-const props = defineProps<{
-  value: AcceptableValue;
-}>();
+  const props = defineProps<{
+    value: AcceptableValue
+  }>()
 
-const ctx = inject<TogglerContext>(key);
+  const ctx = inject<TogglerContext>(key)
 
-const isActive = computed(() => {
-  return ctx?.value?.value === props.value;
-});
+  const isActive = computed(() => {
+    return ctx?.value?.value === props.value
+  })
 
-const handleClick = () => {
-  ctx?.setValue?.(props.value);
-};
+  const handleClick = () => {
+    ctx?.setValue?.(props.value)
+  }
 </script>
 
 <template>
-  <Button size="icon" :variant="isActive ? 'default' : 'ghost'" class="rounded-full size-7" @click="handleClick">
+  <Button size="icon" :variant="isActive ? 'default' : 'ghost'" class="size-7 rounded-full" @click="handleClick">
     <slot />
   </Button>
 </template>

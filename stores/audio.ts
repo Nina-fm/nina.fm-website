@@ -1,10 +1,10 @@
-import { acceptHMRUpdate, defineStore } from "pinia"
+import { acceptHMRUpdate, defineStore } from 'pinia'
 
 const debug = false
 
-export const useAudioStore = defineStore("audio", () => {
+export const useAudioStore = defineStore('audio', () => {
   const config = useRuntimeConfig()
-  const blankSound = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA="
+  const blankSound = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA='
   const streamRef = ref<HTMLAudioElement | undefined>()
   const initialized = ref<boolean>(false)
   const isMobile = ref<boolean>(false)
@@ -17,7 +17,7 @@ export const useAudioStore = defineStore("audio", () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
     if (debug) {
-      console.log("[useAudioStore]", ...params)
+      console.log('[useAudioStore]', ...params)
     }
   }
 
@@ -28,7 +28,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const play = () => {
-    log("play")
+    log('play')
     if (streamRef.value && !initialized.value) {
       toggleMute(false)
       streamRef.value.play()
@@ -37,7 +37,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const toggleMute = (val?: boolean) => {
-    log("toggleMute")
+    log('toggleMute')
     if (streamRef.value) {
       const value = streamRef.value.muted
       const newValue = val === undefined ? !value : val
@@ -47,7 +47,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const updateStatus = () => {
-    log("updateStatus", {
+    log('updateStatus', {
       isPlaying:
         !!streamRef.value &&
         isStarted.value &&
@@ -72,16 +72,16 @@ export const useAudioStore = defineStore("audio", () => {
 
   const checkStreamAlive = () => {
     if (!isMobile.value && !isPlaying.value) {
-      log("checkStreamAlive -> launch")
+      log('checkStreamAlive -> launch')
       launch()
     } else {
-      log("checkStreamAlive -> setTimeout")
+      log('checkStreamAlive -> setTimeout')
       setTimeout(checkStreamAlive, config.public.streamRefreshTime)
     }
   }
 
   const launch = () => {
-    log("launch")
+    log('launch')
     if (streamRef.value) {
       streamRef.value.load()
       setTimeout(checkStreamAlive, config.public.streamRefreshTime)
@@ -89,7 +89,7 @@ export const useAudioStore = defineStore("audio", () => {
   }
 
   const kill = () => {
-    log("kill")
+    log('kill')
     isStarted.value = false
     if (streamRef.value) {
       streamRef.value.src = blankSound
@@ -99,34 +99,34 @@ export const useAudioStore = defineStore("audio", () => {
 
   const initPlaying = () => {
     if (streamRef.value) {
-      log("initPlaying")
+      log('initPlaying')
       launch()
       streamRef.value.oncanplay = () => {
-        log("oncanplay")
+        log('oncanplay')
         if (!isMobile.value) play()
         updateStatus()
       }
       streamRef.value.ontimeupdate = () => {
         if (!isStarted.value && streamRef.value && streamRef.value.currentTime > 0) {
-          log("ontimeupdate")
+          log('ontimeupdate')
           isStarted.value = true
           updateStatus()
         }
       }
       streamRef.value.onpause = () => {
-        log("onpause")
+        log('onpause')
         updateStatus()
       }
       streamRef.value.onplay = () => {
-        log("onplay")
+        log('onplay')
         updateStatus()
       }
       streamRef.value.onplaying = () => {
-        log("onplaying")
+        log('onplaying')
         updateStatus()
       }
       streamRef.value.onended = () => {
-        log("onended")
+        log('onended')
         if (isStarted.value) kill()
         updateStatus()
       }
@@ -147,12 +147,12 @@ export const useAudioStore = defineStore("audio", () => {
       //   updateStatus()
       // }
       streamRef.value.onstalled = () => {
-        log("onstalled")
+        log('onstalled')
         if (isStarted.value) kill()
         updateStatus()
       }
       streamRef.value.onsuspend = () => {
-        log("onsuspend")
+        log('onsuspend')
         if (isStarted.value) kill()
         updateStatus()
       }
