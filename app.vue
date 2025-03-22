@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-  useLoadingStore()
   useDaylightStore()
+  const { isLoading } = useLoadingStoreRefs()
 
   const { current } = useThemeStoreRefs()
   const { isMobile: appIsMobile } = useAppStoreRefs()
   const { cannotAutoplay, initNavigator } = useNavigator()
-  const { isMobile: audioIsMobile } = useAudioStoreRefs()
+  const { isMobile: audioIsMobile, isPlaying, isLocked } = useAudioStoreRefs()
   const { toggleMute, unlock, initPlaying } = useAudioStore()
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -46,7 +46,8 @@
     <ClientOnly>
       <Toaster />
     </ClientOnly>
+    <LoadingOverlay :is-loading="isLoading && !isLocked" @click="unlock" />
+    <MobilePlayUnlocker :active="isLocked && !isPlaying" @click="unlock" />
     <Rainbow />
-    <MobilePlayUnlocker />
   </div>
 </template>

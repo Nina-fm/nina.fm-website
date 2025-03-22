@@ -11,7 +11,7 @@ export const useAudioStore = defineStore('audio', () => {
   const isPlaying = ref<boolean>(false)
   const isStarted = ref<boolean>(false)
   const isMuted = ref<boolean>(false)
-  const isLoading = computed(() => !isPlaying.value)
+  const isLoading = computed(() => !isPlaying.value && ((isMobile.value && initialized.value) || !initialized.value))
   const isLocked = computed(() => isMobile.value && !initialized.value)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

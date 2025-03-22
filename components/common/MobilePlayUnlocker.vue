@@ -1,16 +1,30 @@
 <script lang="ts" setup>
-  const { unlock } = useAudioStore()
-  const { isLocked } = useAudioStoreRefs()
+  defineProps({
+    active: Boolean,
+  })
+
+  defineEmits<{
+    (e: 'click'): void
+  }>()
 </script>
 
 <template>
-  <div
-    v-if="isLocked"
-    class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/60"
-    @click="unlock"
-  >
-    <NinaIcon icon="play_circle_outline" class="text-primary" :style="{ fontSize: '200px' }" />
-  </div>
+  <Transition>
+    <div v-if="active" class="absolute inset-0 z-50 flex flex-col items-center justify-center" @click="$emit('click')">
+      <Overlay blur />
+      <NinaIcon icon="play_circle_outline" class="relative text-primary/50" :style="{ fontSize: '200px' }" />
+    </div>
+  </Transition>
 </template>
 
-<style></style>
+<style scoped>
+  /* .v-enter-active, */
+  .v-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
+  }
+</style>
