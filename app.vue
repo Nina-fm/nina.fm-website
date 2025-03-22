@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { themes } from '~/themes'
+
   useDaylightStore()
   const { isLoading } = useLoadingStoreRefs()
   const { current } = useThemeStoreRefs()
@@ -17,7 +19,14 @@
     }
   }
 
+  const loadThemesCss = () => {
+    Object.keys(themes).map((theme) => {
+      import(`./themes/${theme}/assets/css/${theme}.css`)
+    })
+  }
+
   onNuxtReady(() => {
+    loadThemesCss()
     const isMobile = cannotAutoplay()
     appIsMobile.value = isMobile
     audioIsMobile.value = isMobile
