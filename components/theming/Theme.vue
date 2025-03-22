@@ -7,8 +7,8 @@
 
   const theme = computed(() => defineAsyncComponent(() => import(`../../themes/${name.value}/theme.vue`)))
 
-  watch(name, () => {
-    componentRef.value = name.value
+  watch(name, (value) => {
+    componentRef.value = value
   })
 </script>
 
