@@ -1,11 +1,17 @@
 <script lang="ts" setup>
-const { streamRef } = useAudioStoreRefs()
-console.log("AudioStrem render")
+  const { streamRef } = useAudioStoreRefs()
+  const { debug } = useDebugStore()
+
+  if (debug) {
+    console.log('AudioStrem render')
+  }
 </script>
 
 <template>
-  <audio v-once ref="streamRef" src="https://flux.nina.fm/nina.mp3" type="audio/mpeg" autoplay>
-    Votre navigateur est un vieux machin dépassé. Il ne supporte pas la musique, ce qui est un peu con quand on veut
-    écouter la radio.
-  </audio>
+  <Teleport to="body">
+    <audio v-once ref="streamRef" src="https://flux.nina.fm/nina.mp3" type="audio/mpeg" autoplay>
+      Votre navigateur est un vieux machin dépassé. Il ne supporte pas la musique, ce qui est un peu con quand on veut
+      écouter la radio.
+    </audio>
+  </Teleport>
 </template>

@@ -1,8 +1,10 @@
 <template>
   <h1>Diantre !</h1>
   <p>
-    La canicule a eu raison de notre serveur.<br />
-    Nos ingénieurs-pompier sont sur le coup…<br />
+    La canicule a eu raison de notre serveur.
+    <br />
+    Nos ingénieurs-pompier sont sur le coup…
+    <br />
     La reprise des ondes est donc imminente.
   </p>
   <p>Revenez vite !</p>

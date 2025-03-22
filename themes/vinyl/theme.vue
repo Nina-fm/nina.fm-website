@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import "./assets/css/vinyl.css";
+  import './assets/css/vinyl.css'
 </script>
 
 <template>

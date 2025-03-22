@@ -1,40 +1,39 @@
 <script lang="ts" setup>
-useLoadingStore()
-useDaylightStore()
+  useDaylightStore()
+  const { isLoading } = useLoadingStoreRefs()
+  const { current } = useThemeStoreRefs()
+  const { isMobile: appIsMobile } = useAppStoreRefs()
+  const { isMobile: audioIsMobile, isPlaying, isLocked } = useAudioStoreRefs()
+  const { toggleMute, unlock, relaunch, initPlaying } = useAudioStore()
+  const { cannotAutoplay, initNavigator } = useNavigator()
 
-const { current } = useThemeStoreRefs()
-const { isMobile: appIsMobile } = useAppStoreRefs()
-const { cannotAutoplay, initNavigator } = useNavigator()
-const { isMobile: audioIsMobile } = useAudioStoreRefs()
-const { toggleMute, unlock, initPlaying } = useAudioStore()
-
-const handleKeyDown = (e: KeyboardEvent) => {
-  switch (e.key) {
-    case " ":
-      toggleMute()
-      break
-    default:
-      break
+  const handleKeyDown = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case ' ':
+        toggleMute()
+        break
+      default:
+        break
+    }
   }
-}
 
-onNuxtReady(() => {
-  const isMobile = cannotAutoplay()
-  appIsMobile.value = isMobile
-  audioIsMobile.value = isMobile
-})
+  onNuxtReady(() => {
+    const isMobile = cannotAutoplay()
+    appIsMobile.value = isMobile
+    audioIsMobile.value = isMobile
+  })
 
-onMounted(() => {
-  initPlaying()
-  initNavigator()
-  document.addEventListener("keydown", handleKeyDown)
-})
+  onMounted(() => {
+    initPlaying()
+    initNavigator()
+    document.addEventListener('keydown', handleKeyDown)
+  })
 
-onBeforeUnmount(() => {
-  document.removeEventListener("keydown", handleKeyDown)
-})
+  onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyDown)
+  })
 
-// TODO: Check if the AudioStrem is rerendered (cf. audio bug)
+  // TODO: Check if the AudioStrem is rerendered (cf. audio bug)
 </script>
 
 <template>
@@ -43,10 +42,10 @@ onBeforeUnmount(() => {
     <NuxtLoadingIndicator />
     <AudioStream />
     <Theme :name="current" />
-    <ClientOnly>
-      <Toaster />
-    </ClientOnly>
+    <LoadingOverlay :is-loading="isLoading && !isLocked" @refresh="relaunch" />
+    <MobilePlayUnlocker :active="isLocked && !isPlaying" @click="unlock" />
+    <AudioDebugger />
+    <Notifier />
     <Rainbow />
-    <MobilePlayUnlocker />
   </div>
 </template>

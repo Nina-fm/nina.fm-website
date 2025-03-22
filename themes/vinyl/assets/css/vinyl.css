@@ -1,15 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Waiting+for+the+Sunrise&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Waiting+for+the+Sunrise&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 /* @import url("https://fonts.googleapis.com/css2?family=Doto&display=swap"); */
-@import url("./airbnb-cereal.css");
-@import url("./dot-digital-7.css");
+@import url('./airbnb-cereal.css');
+@import url('./dot-digital-7.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  [data-theme="vinyl"] {
+  [data-theme='vinyl'] {
     --background: 0 0% 7.06%;
     --foreground: 0 0% 98%;
     --muted: 0 0% 12.94%;
@@ -36,7 +36,7 @@
     --chart-5: 0 3% 98%;
     --radius: 0.5rem;
   }
-  [data-theme="vinyl"].rainbow {
+  [data-theme='vinyl'].rainbow {
     --primary: 0 0% 98%;
   }
 }
@@ -45,9 +45,9 @@
   * {
     @apply border-border;
   }
-  body[data-theme="vinyl"] {
+  body[data-theme='vinyl'] {
     @apply bg-background text-foreground antialiased;
-    font-family: "Airbnb Cereal", sans-serif;
+    font-family: 'Airbnb Cereal', sans-serif;
   }
   html,
   body,
@@ -55,18 +55,18 @@
     height: 100vh;
   }
 
-  [data-theme="vinyl"] {
+  [data-theme='vinyl'] {
     .font-condensed {
-      font-family: "Bebas Neue", sans-serif;
+      font-family: 'Bebas Neue', sans-serif;
     }
     .font-cursive {
-      font-family: "Waiting for the Sunrise", cursive;
+      font-family: 'Waiting for the Sunrise', cursive;
     }
     .font-lcd {
-      font-family: "Dot Digital-7", sans-serif;
+      font-family: 'Dot Digital-7', sans-serif;
     }
     .absolute-center {
-      @apply absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2;
+      @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
     }
   }
 }

@@ -18,16 +18,16 @@ declare global {
       ? `${L}.${R}`
       : L
     : R extends string | number
-    ? R
-    : undefined
+      ? R
+      : undefined
 
   type Union<L extends unknown | undefined, R extends unknown | undefined> = L extends undefined
     ? R extends undefined
       ? undefined
       : R
     : R extends undefined
-    ? L
-    : L | R
+      ? L
+      : L | R
 
   type Rename<T, U> = {
     [K in keyof U as K extends keyof T ? (T[K] extends string ? T[K] : never) : K]: K extends keyof U ? U[K] : never
@@ -43,7 +43,7 @@ declare global {
   type NestedPaths<
     T extends Obj,
     Prev extends Primitive | undefined = undefined,
-    Path extends Primitive | undefined = undefined
+    Path extends Primitive | undefined = undefined,
   > = {
     [K in keyof T]: T[K] extends Obj
       ? NestedPaths<T[K], Union<Prev, Path>, Join<Path, K>>
@@ -59,15 +59,15 @@ declare global {
    */
   type TypeFromPath<
     T extends Obj,
-    Path extends string // Or, if you prefer, NestedPaths<T>
+    Path extends string, // Or, if you prefer, NestedPaths<T>
   > = {
     [K in Path]: K extends keyof T
       ? T[K]
       : K extends `${infer P}.${infer S}`
-      ? T[P] extends Obj
-        ? TypeFromPath<T[P], S>
+        ? T[P] extends Obj
+          ? TypeFromPath<T[P], S>
+          : never
         : never
-      : never
   }[Path]
 
   type SnakeToCamelCase<S extends string> = S extends `${infer T}_${infer U}`
@@ -81,7 +81,7 @@ declare global {
     : T
 
   type CamelToSnakeCase<S extends string> = S extends `${infer T}${infer U}`
-    ? `${T extends Capitalize<T> ? "_" : ""}${Lowercase<T>}${CamelToSnakeCase<U>}`
+    ? `${T extends Capitalize<T> ? '_' : ''}${Lowercase<T>}${CamelToSnakeCase<U>}`
     : S
 
   type CamelToSnakeCaseObjKeys<T> = T extends object

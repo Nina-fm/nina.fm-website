@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-const { metaTitle } = useAppStoreRefs();
+  const { metaTitle } = useAppStoreRefs()
 
-watch(metaTitle, (value) => {
-  useHead({ title: value });
-});
+  watch(metaTitle, (value) => {
+    useHead({ title: value })
+  })
 </script>
 
 <template>

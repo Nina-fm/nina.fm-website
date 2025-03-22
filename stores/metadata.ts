@@ -1,6 +1,6 @@
-import { acceptHMRUpdate, defineStore } from "pinia"
+import { acceptHMRUpdate, defineStore } from 'pinia'
 
-import { decode } from "html-entities"
+import { decode } from 'html-entities'
 
 interface Query {
   authors?: string
@@ -17,7 +17,7 @@ interface Info {
   [key: string]: any
 }
 
-export const useMetadataStore = defineStore("metadata", () => {
+export const useMetadataStore = defineStore('metadata', () => {
   const config = useRuntimeConfig()
 
   const isListeningEvents = ref<boolean>(false)
@@ -25,7 +25,7 @@ export const useMetadataStore = defineStore("metadata", () => {
   const isListeningListeners = ref<boolean>(false)
   const iceCastData = ref<Obj | null>(null)
   const airTimeData = ref<Info | null>(null)
-  const metadata = ref<Obj | null>(null)
+  const metadata = ref<Metadata | null>(null)
   const liveQuery = ref<Query | undefined>()
   const progress = ref<number>(0)
   const listeners = ref<number>(0)
@@ -40,12 +40,12 @@ export const useMetadataStore = defineStore("metadata", () => {
       },
     })
 
-    metadata.value = fetchData
+    metadata.value = fetchData as unknown as Metadata
   }
 
   const updateQuery = () => {
     if (airTimeData.value) {
-      const [authors, name] = decode(airTimeData.value?.current?.name).split(" - ")
+      const [authors, name] = decode(airTimeData.value?.current?.name).split(' - ')
       const query = { authors, name }
       liveQuery.value = query
     } else {
@@ -105,7 +105,7 @@ export const useMetadataStore = defineStore("metadata", () => {
     () => {
       updateQuery()
     },
-    { deep: true }
+    { deep: true },
   )
 
   watch(
@@ -113,7 +113,7 @@ export const useMetadataStore = defineStore("metadata", () => {
     () => {
       fetchMetadata()
     },
-    { deep: true }
+    { deep: true },
   )
 
   onNuxtReady(() => {
