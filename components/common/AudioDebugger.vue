@@ -3,7 +3,7 @@
 
   const { debug, logs } = useDebugStoreRefs()
   const { clearLogs } = useDebugStore()
-  const { relaunch } = useAudioStore()
+  const { kill, relaunch } = useAudioStore()
   const bottomRef = useTemplateRef('bottomEl')
   const open = useCookie<boolean>('codemaster-debug-open', { watch: true })
 
@@ -49,6 +49,7 @@
           </div>
         </div>
         <DialogFooter class="p-6 pt-0">
+          <Button variant="outline" size="sm" @click="kill">Fermer le flux</Button>
           <Button variant="outline" size="sm" @click="relaunch">Relancer le flux</Button>
           <Button size="sm" @click="clearLogs">Effacer les logs</Button>
         </DialogFooter>

@@ -4,7 +4,7 @@
   const { current } = useThemeStoreRefs()
   const { isMobile: appIsMobile } = useAppStoreRefs()
   const { isMobile: audioIsMobile, isPlaying, isLocked } = useAudioStoreRefs()
-  const { toggleMute, unlock, relaunch, initPlaying } = useAudioStore()
+  const { toggleMute, unlock, relaunch } = useAudioStore()
   const { cannotAutoplay, initNavigator } = useNavigator()
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -24,7 +24,6 @@
   })
 
   onMounted(() => {
-    initPlaying()
     initNavigator()
     document.addEventListener('keydown', handleKeyDown)
   })
