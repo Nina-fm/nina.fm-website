@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { CircleMinusIcon, CirclePlusIcon } from 'lucide-vue-next'
+
   defineEmits<{
     (e: 'click'): void
   }>()
@@ -54,12 +56,10 @@
             </div>
           </div>
         </div>
-        <ControlButton
-          v-if="isMixtape && (shouldPlay || isPlaying)"
-          :icon="isDetailsOpen ? 'remove_circle_outline' : 'add_circle_outline'"
-          class="-mb-3 -mt-2"
-          @click="toggleDetails"
-        />
+        <ControlButton v-if="isMixtape && (shouldPlay || isPlaying)" class="-mb-3 -mt-2" @click="toggleDetails">
+          <CircleMinusIcon v-if="isDetailsOpen" class="h-1 w-1" />
+          <CirclePlusIcon v-else class="h-1 w-1" />
+        </ControlButton>
       </div>
     </div>
   </ClientOnly>

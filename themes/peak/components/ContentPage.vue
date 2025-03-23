@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { MenuIcon, XIcon } from 'lucide-vue-next'
+
   const Content = defineAsyncComponent(() => import('@/components/contents/About.vue'))
 
   const { toggleContent, closeContent } = usePeakThemeStore()
@@ -10,10 +12,12 @@
   <div :class="cn('flex md:flex', [$attrs.class], { 'hidden md:flex': isDetailsOpen })">
     <ControlButton
       class="absolute right-2 top-2 z-10 cursor-pointer md:right-4 md:top-4"
-      :icon="isContentOpen ? 'close' : 'reorder'"
       :size="22"
       @click="toggleContent"
-    />
+    >
+      <XIcon v-if="isContentOpen" class="h-2 w-2" />
+      <MenuIcon v-else class="h-2 w-2" />
+    </ControlButton>
     <div
       :class="
         cn(

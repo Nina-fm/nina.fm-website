@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { HeadphonesIcon } from 'lucide-vue-next'
+
   const props = defineProps<{
     count: number
   }>()
@@ -18,7 +20,7 @@
         <TooltipTrigger>
           <div class="m-0 rounded-xl bg-background px-3 py-2">
             <div class="flex items-center gap-3">
-              <NinaIcon icon="headphones3" :size="24" class="text-primary/30" />
+              <HeadphonesIcon class="text-primary/30" />
               <div class="rounded-md bg-muted px-2 py-0">
                 <div class="font-lcd text-xl tracking-wider">
                   <span v-for="i in emptyZeros" :key="i" class="text-foreground/20">0</span>

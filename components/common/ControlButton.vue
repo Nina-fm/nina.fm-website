@@ -31,7 +31,7 @@
       </TooltipTrigger>
       <TooltipContent arrow>
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <slot><div v-html="props.tooltip" /></slot>
+        <div v-html="props.tooltip" />
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
