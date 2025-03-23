@@ -20,7 +20,7 @@
         {
           'left-0 top-0 -translate-x-1/3 translate-y-[75vh] rotate-[6deg] cursor-pointer sm:translate-y-[65vh] md:-translate-x-3/4 md:translate-y-[70vh] lg:translate-y-[65vh]':
             !isDetailsOpen,
-          'left-0 top-0 translate-x-[-9%] translate-y-[10%] rotate-[-2deg] sm:translate-y-0 sm:rotate-[-12deg] md:translate-x-[-18%] md:rotate-[-4deg] lg:translate-x-[-8%] lg:translate-y-[-5%] lg:rotate-[-6deg] xl:translate-x-[-5%] xl:translate-y-[-5%] xl:rotate-[-8deg]':
+          'left-0 top-0 translate-x-[-9%] translate-y-[10%] rotate-[-2deg] sm:translate-y-0 sm:rotate-[-12deg] md:translate-x-[-18%] md:rotate-[-4deg] lg:translate-x-[-8%] lg:translate-y-[0%] lg:rotate-[-6deg] xl:translate-x-[-5%] xl:translate-y-[0%] xl:rotate-[-8deg]':
             isDetailsOpen,
           'left-[-1200px]': isContentOpen && !isDetailsOpen,
           'left-[-900px] top-[100vh] -translate-y-1/2 rotate-[-20deg]': isContentOpen && isDetailsOpen,

@@ -7,8 +7,17 @@
 
 <template>
   <div v-if="isContentOpen" class="absolute inset-0 z-0 bg-transparent" @click.stop.prevent="closeContent" />
-  <div :class="cn('flex md:flex', [$attrs.class], { 'hidden md:flex': isDetailsOpen })">
-    <MenuButton :open="isContentOpen" :variant="isContentOpen ? 'ghost' : 'default'" @click="toggleContent" />
+  <div
+    :class="
+      cn('pointer-events-none absolute inset-0 z-10 flex md:flex', [$attrs.class], { 'hidden md:flex': isDetailsOpen })
+    "
+  >
+    <MenuButton
+      :open="isContentOpen"
+      :variant="isContentOpen ? 'ghost' : 'default'"
+      class="pointer-events-auto"
+      @click="toggleContent"
+    />
     <div
       :class="
         cn(

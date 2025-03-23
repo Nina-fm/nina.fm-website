@@ -23,7 +23,7 @@
         )
       "
     >
-      <div class="pointer-events-auto absolute left-0 right-0 top-20 pb-10 md:left-10 md:right-10 md:top-16">
+      <div class="pointer-events-auto absolute left-0 right-0 top-20 pb-10 md:left-10 md:right-16 md:top-16">
         <Content />
       </div>
     </div>
