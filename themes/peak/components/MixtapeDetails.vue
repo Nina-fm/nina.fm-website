@@ -36,9 +36,12 @@
           <Progress :model-value="progress" class="h-0.5" />
         </div>
         <div class="space-x-1 text-right">
-          <span>Une Mixtape proposée par</span>
+          <span>
+            Une mixtape
+            <span v-if="metadata?.year" class="inline-flex">de {{ metadata.year }}</span>
+            signée
+          </span>
           <span class="font-bold">{{ metadata?.authors_text }}</span>
-          <span v-if="metadata?.year">en {{ metadata.year }}</span>
         </div>
         <div data-type="tracklist" class="pb-14">
           <div v-if="!tracks.length" class="white-space-pre-line">
