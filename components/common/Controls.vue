@@ -16,32 +16,24 @@
   const { isMuted, isPlaying } = useAudioStoreRefs()
   const { toggleMute } = useAudioStore()
   const { toggleFullscreen, toggleRainbowMode, toggleDarkMode, toggleTheme } = useThemeStore()
-  const { darkMode, isFullscreen, isRainbowMode, theme, nextTheme, themeOptions, hasManyThemes } = useThemeStoreRefs()
+  const { darkMode, isFullscreen, isRainbowMode, nextTheme, themeOptions, hasManyThemes } = useThemeStoreRefs()
 
-  const themeToggleIcon = computed(() => nextTheme.value.icon ?? 'color_lens')
-
-  const themeToggleTooltip = computed(
-    () => `<b>Thème ${theme.value.name} actif.</b><br/>Cliquer pour passer au thème ${nextTheme.value.name}`,
-  )
+  const themeToggleTooltip = computed(() => `Passer au thème ${nextTheme.value.name}`)
   const rainbowTooltip = computed(() =>
-    isRainbowMode.value
-      ? '<b>Mode psychédélique actif</b><br/>Cliquer pour quitter le mode psychédélique'
-      : '<b>Mode psychédélique inactif</b><br/>Cliquer pour passer en mode psychédélique',
+    isRainbowMode.value ? 'Quitter le mode psychédélique' : 'Passer en mode psychédélique',
   )
+  const darkModeTooltip = computed(() => {
+    if (darkMode.value === 'auto') return '<b>Luminosité automatique</b><br/>Cliquer pour passer en mode nuit'
+    else if (darkMode.value === true) return '<b>Mode nuit</b><br/>Cliquer pour passer en mode jour'
+    return '<b>Mode jour</b><br/>Cliquer pour passer en mode lumière automatique'
+  })
   const muteTooltip = computed(() =>
     isMuted.value
       ? '<b>Son coupé</b><br/>Cliquer pour réactiver le son'
       : '<b>Son actif</b><br/>Cliquer pour couper le son',
   )
-  const darkModeTooltip = computed(() => {
-    if (darkMode.value === 'auto') return '<b>Mode lumière automatique actif</b><br/>Cliquer pour passer en mode nuit'
-    else if (darkMode.value === true) return '<b>Mode nuit actif</b><br/>Cliquer pour passer en mode jour'
-    return '<b>Mode jour actif</b><br/>Cliquer pour passer en mode lumière automatique'
-  })
   const fullscreenTooltip = computed(() =>
-    isFullscreen.value
-      ? '<b>Mode plein écran actif</b><br/>Cliquer pour quitter le mode plein écran'
-      : '<b>Mode plein écran inactif</b><br/>Cliquer pour passer en mode plein écran',
+    isFullscreen.value ? 'Quitter le mode plein écran' : 'Passer en mode plein écran',
   )
 </script>
 
@@ -61,7 +53,7 @@
       <CandyOffIcon v-if="isRainbowMode" class="h-1 w-1" />
       <CandyIcon v-else class="h-1 w-1" />
     </ControlButton>
-    <ControlButton v-if="hasManyThemes" :icon="themeToggleIcon" :tooltip="themeToggleTooltip" @click="toggleTheme">
+    <ControlButton v-if="hasManyThemes" :tooltip="themeToggleTooltip" @click="toggleTheme">
       <MountainSnowIcon v-if="nextTheme.key === 'peak'" class="h-1 w-1" />
       <Disc3Icon v-else-if="nextTheme.key === 'vinyl'" class="h-1 w-1" />
     </ControlButton>
