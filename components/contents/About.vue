@@ -1,3 +1,7 @@
+<script setup lang="ts">
+  import { MailIcon } from 'lucide-vue-next'
+</script>
+
 <template>
   <div class="flex flex-col items-center gap-2">
     <div class="font-condensed p-0 text-center text-2xl text-primary md:p-5 [.theme-peak_&]:font-bold">
@@ -34,17 +38,17 @@
     <div class="mt-5 flex gap-2">
       <Button as-child variant="outline" size="icon" class="social-button">
         <a href="https://www.facebook.com/nina.webradio/" target="_blank" rel="noopener noreferrer">
-          <NinaIcon icon="facebook-f" />
+          <FacebookIcon />
         </a>
       </Button>
       <Button as-child variant="outline" size="icon" class="social-button">
         <a href="mailto:infos@nina.fm" target="_blank" rel="noopener noreferrer">
-          <NinaIcon icon="mail_outline" />
+          <MailIcon class="size-5" />
         </a>
       </Button>
       <Button as-child variant="outline" size="icon" class="social-button">
         <a href="https://www.mixcloud.com/Nina_fm/" target="_blank" rel="noopener noreferrer">
-          <NinaIcon icon="soundcloud" />
+          <MixcloudIcon />
         </a>
       </Button>
     </div>
@@ -56,6 +60,6 @@
     @apply w-full rounded-md border-0 bg-transparent p-2 shadow-none md:bg-background/90 md:p-6;
   }
   .social-button {
-    @apply size-12 rounded-full border-accent-foreground bg-transparent text-xl text-accent-foreground hover:bg-primary/10;
+    @apply size-12 rounded-full border-accent-foreground bg-transparent text-xl text-accent-foreground hover:bg-primary/10 [&_svg.size-5]:size-5 [&_svg]:size-6;
   }
 </style>

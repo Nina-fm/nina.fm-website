@@ -8,19 +8,7 @@
 <template>
   <div v-if="isContentOpen" class="absolute inset-0 z-0 bg-transparent" @click.stop.prevent="closeContent" />
   <div :class="cn('flex md:flex', [$attrs.class], { 'hidden md:flex': isDetailsOpen })">
-    <ControlButton
-      :class="
-        cn(
-          'absolute right-2 top-2 z-10 cursor-pointer text-primary-foreground hover:text-primary md:right-4 md:top-4',
-          {
-            'text-foreground': isContentOpen,
-          },
-        )
-      "
-      :icon="isContentOpen ? 'close' : 'reorder'"
-      :size="22"
-      @click="toggleContent"
-    />
+    <MenuButton :open="isContentOpen" :variant="isContentOpen ? 'ghost' : 'default'" @click="toggleContent" />
     <div
       :class="
         cn(

@@ -33,4 +33,5 @@
   <PeakAnimatedLogo />
   <PeakMixtapeDetails />
   <PeakContentPage />
+  <Controls />
 </template>

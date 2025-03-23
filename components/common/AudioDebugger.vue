@@ -26,12 +26,12 @@
   <ClientOnly>
     <Dialog v-if="debug" :modal="false" :open="open" @update:open="handleUpdateOpen">
       <DialogTrigger as-child>
-        <Button size="icon" variant="ghost" class="absolute right-6 top-24 z-50 rounded-full md:right-9">
-          <BugIcon class="size-2" />
-        </Button>
+        <ControlButton variant="outline" class="absolute right-5 top-20 z-50 rounded-full md:right-7">
+          <BugIcon />
+        </ControlButton>
       </DialogTrigger>
       <DialogContent
-        class="left-10 right-16 max-h-[90dvh] w-auto max-w-none translate-x-0 grid-rows-[auto_minmax(0,1fr)_auto] bg-background/90 p-0 md:right-20"
+        class="left-10 right-16 max-h-[90dvh] w-auto max-w-none translate-x-0 grid-rows-[auto_minmax(0,1fr)_auto] bg-background/90 p-0 backdrop-blur md:right-20"
         @interact-outside="(e) => e.preventDefault()"
       >
         <DialogHeader class="p-6 pb-0">

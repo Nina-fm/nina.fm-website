@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { CirclePlayIcon } from 'lucide-vue-next'
+
   defineProps({
     active: Boolean,
   })
@@ -12,7 +14,7 @@
   <Transition>
     <div v-if="active" class="absolute inset-0 z-50 flex flex-col items-center justify-center" @click="$emit('click')">
       <Overlay blur />
-      <NinaIcon icon="play_circle_outline" class="relative text-primary/50" :style="{ fontSize: '200px' }" />
+      <CirclePlayIcon class="absolute size-44 text-primary/50" />
     </div>
   </Transition>
 </template>

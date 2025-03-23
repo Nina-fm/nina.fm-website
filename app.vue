@@ -12,6 +12,7 @@
   const handleKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
       case ' ':
+        e.preventDefault()
         toggleMute()
         break
       default:

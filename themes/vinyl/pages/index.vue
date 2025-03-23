@@ -75,6 +75,10 @@
     </ClientOnly>
   </div>
   <VinylContentPage />
+  <Controls
+    :controls-variant="isContentOpen ? 'ghost' : 'default'"
+    :class="cn({ 'text-muted-foreground': isContentOpen })"
+  />
 </template>
 
 <style scoped>

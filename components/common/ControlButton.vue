@@ -1,43 +1,46 @@
 <script lang="ts" setup>
-  import { InfoIcon } from 'lucide-vue-next'
+  import type { ButtonVariants } from '~/components/ui/button'
 
-  const props = defineProps<{
-    icon?: string
-    size?: number | string
-    tooltip?: string
-    class?: string
-  }>()
+  const props = withDefaults(
+    defineProps<{
+      variant?: ButtonVariants['variant']
+      tooltip?: string
+      iconClass?: string
+    }>(),
+    {
+      variant: 'ghost',
+      tooltip: undefined,
+      iconClass: '',
+    },
+  )
 
   const emit = defineEmits<{
     (e: 'click', event: Event): void
   }>()
 
+  const attrs = useAttrs()
   const handleClick = (event: Event) => emit('click', event)
 
-  const buttonClass = computed(() => cn('cursor-pointer rounded-full hover:bg-background/40', props.class))
+  const buttonClass = computed(() =>
+    cn('shadow-none rounded-full [&_svg]:size-4 hover:bg-background/40', [attrs.class]),
+  )
 </script>
 
 <template>
   <TooltipProvider v-if="!!props.tooltip">
     <Tooltip>
       <TooltipTrigger>
-        <Button as-child variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
-          <slot>
-            <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" />
-            <InfoIcon v-else />
-          </slot>
+        <Button tabindex="-1" :variant="props.variant" size="icon" :class="buttonClass" @click="handleClick">
+          <slot></slot>
         </Button>
       </TooltipTrigger>
       <TooltipContent arrow>
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <slot><div v-html="props.tooltip" /></slot>
+        <div v-html="props.tooltip" />
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
-  <Button v-else as-child variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
-    <slot>
-      <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" />
-      <InfoIcon v-else />
-    </slot>
+  <Button v-else tabindex="-1" :variant="props.variant" size="icon" :class="buttonClass" @click="handleClick">
+    <slot></slot>
   </Button>
 </template>
