@@ -12,6 +12,18 @@
     Volume2Icon,
     VolumeOffIcon,
   } from 'lucide-vue-next'
+  import type { ButtonVariants } from '~/components/ui/button'
+
+  const props = withDefaults(
+    defineProps<{
+      controlsVariant?: ButtonVariants['variant']
+      controlsClass?: string
+    }>(),
+    {
+      controlsVariant: 'ghost',
+      controlsClass: '',
+    },
+  )
 
   const { isMuted, isPlaying } = useAudioStoreRefs()
   const { toggleMute } = useAudioStore()
@@ -38,32 +50,56 @@
 </script>
 
 <template>
-  <div class="absolute bottom-1 right-1 z-0 flex flex-col items-center justify-end md:bottom-3 md:right-3">
-    <ControlButton v-if="themeOptions.darkMode" :tooltip="darkModeTooltip" @click="toggleDarkMode">
-      <SunMoonIcon v-if="darkMode === 'auto'" class="h-1 w-1" />
-      <MoonIcon v-else-if="darkMode === true" class="h-1 w-1" />
-      <SunIcon v-else class="h-1 w-1" />
+  <div class="absolute bottom-1 right-1 z-0 flex flex-col items-center justify-end gap-1 md:bottom-3 md:right-3">
+    <ControlButton
+      v-if="themeOptions.darkMode"
+      :tooltip="darkModeTooltip"
+      :variant="props.controlsVariant"
+      :class="props.controlsClass"
+      @click="toggleDarkMode"
+    >
+      <SunMoonIcon v-if="darkMode === 'auto'" />
+      <MoonIcon v-else-if="darkMode === true" />
+      <SunIcon v-else />
     </ControlButton>
     <ControlButton
       v-if="!!themeOptions.rainbow"
       :tooltip="rainbowTooltip"
-      :class="cn({ spin: isRainbowMode })"
+      :variant="props.controlsVariant"
+      :class="cn(props.controlsClass, { spin: isRainbowMode })"
       @click="toggleRainbowMode"
     >
-      <CandyOffIcon v-if="isRainbowMode" class="h-1 w-1" />
-      <CandyIcon v-else class="h-1 w-1" />
+      <CandyOffIcon v-if="isRainbowMode" />
+      <CandyIcon v-else />
     </ControlButton>
-    <ControlButton v-if="hasManyThemes" :tooltip="themeToggleTooltip" @click="toggleTheme">
-      <MountainSnowIcon v-if="nextTheme.key === 'peak'" class="h-1 w-1" />
-      <Disc3Icon v-else-if="nextTheme.key === 'vinyl'" class="h-1 w-1" />
+    <ControlButton
+      v-if="hasManyThemes"
+      :tooltip="themeToggleTooltip"
+      :variant="props.controlsVariant"
+      :class="props.controlsClass"
+      @click="toggleTheme"
+    >
+      <MountainSnowIcon v-if="nextTheme.key === 'peak'" />
+      <Disc3Icon v-else-if="nextTheme.key === 'vinyl'" />
     </ControlButton>
-    <ControlButton v-if="isPlaying" :tooltip="muteTooltip" @click="() => toggleMute()">
-      <VolumeOffIcon v-if="isMuted" class="h-1 w-1" />
-      <Volume2Icon v-else class="h-1 w-1" />
+    <ControlButton
+      v-if="isPlaying"
+      :tooltip="muteTooltip"
+      :variant="props.controlsVariant"
+      :class="props.controlsClass"
+      @click="() => toggleMute()"
+    >
+      <VolumeOffIcon v-if="isMuted" />
+      <Volume2Icon v-else />
     </ControlButton>
-    <ControlButton :tooltip="fullscreenTooltip" @click="toggleFullscreen">
-      <MinimizeIcon v-if="isFullscreen" class="h-1 w-1" />
-      <MaximizeIcon v-else class="h-1 w-1" />
+    <ControlButton
+      :tooltip="fullscreenTooltip"
+      :variant="props.controlsVariant"
+      :class="props.controlsClass"
+      @click="toggleFullscreen"
+    >
+      <MinimizeIcon v-if="isFullscreen" />
+      <MaximizeIcon v-else />
     </ControlButton>
   </div>
 </template>

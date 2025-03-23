@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { MenuIcon, XIcon } from 'lucide-vue-next'
+  import MenuButton from '~/components/common/MenuButton.vue'
 
   const Content = defineAsyncComponent(() => import('@/components/contents/About.vue'))
 
@@ -9,15 +9,12 @@
 
 <template>
   <div v-if="isContentOpen" class="absolute inset-0 z-0 bg-transparent" @click.stop.prevent="closeContent" />
-  <div :class="cn('flex md:flex', [$attrs.class], { 'hidden md:flex': isDetailsOpen })">
-    <ControlButton
-      class="absolute right-2 top-2 z-10 cursor-pointer md:right-4 md:top-4"
-      :size="22"
-      @click="toggleContent"
-    >
-      <XIcon v-if="isContentOpen" class="h-2 w-2" />
-      <MenuIcon v-else class="h-2 w-2" />
-    </ControlButton>
+  <div
+    :class="
+      cn('pointer-events-none absolute inset-0 z-10 flex md:flex', [$attrs.class], { 'hidden md:flex': isDetailsOpen })
+    "
+  >
+    <MenuButton :open="isContentOpen" variant="ghost" class="pointer-events-auto" @click="toggleContent" />
     <div
       :class="
         cn(

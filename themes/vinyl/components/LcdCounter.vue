@@ -30,7 +30,9 @@
             </div>
           </div>
         </TooltipTrigger>
-        <TooltipContent arrow>{{ count }} paires d'oreilles écoutent actuellement Nina.fm !</TooltipContent>
+        <TooltipContent arrow>
+          Vous partagez l'écoute de Nina.fm avec {{ `${count} autre${count > 1 ? 's' : ''}` }} !
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   </Card>
