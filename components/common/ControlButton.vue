@@ -5,25 +5,26 @@
     icon?: string
     size?: number | string
     tooltip?: string
-    class?: string
+    iconClass?: string
   }>()
 
   const emit = defineEmits<{
     (e: 'click', event: Event): void
   }>()
 
+  const attrs = useAttrs()
   const handleClick = (event: Event) => emit('click', event)
 
-  const buttonClass = computed(() => cn('cursor-pointer rounded-full hover:bg-background/40', props.class))
+  const buttonClass = computed(() => cn('rounded-full hover:bg-background/40', [attrs.class]))
 </script>
 
 <template>
   <TooltipProvider v-if="!!props.tooltip">
     <Tooltip>
       <TooltipTrigger>
-        <Button as-child variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
+        <Button tabindex="-1" variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
           <slot>
-            <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" />
+            <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" :class="iconClass" />
             <InfoIcon v-else />
           </slot>
         </Button>
@@ -34,9 +35,9 @@
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
-  <Button v-else as-child variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
+  <Button v-else tabindex="-1" variant="ghost" size="icon" :class="buttonClass" @click="handleClick">
     <slot>
-      <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" />
+      <NinaIcon v-if="props.icon" :icon="props.icon" :size="props.size" :class="iconClass" />
       <InfoIcon v-else />
     </slot>
   </Button>

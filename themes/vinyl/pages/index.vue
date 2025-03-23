@@ -75,6 +75,7 @@
     </ClientOnly>
   </div>
   <VinylContentPage />
+  <Controls :class="cn('text-primary-foreground', { 'hidden text-primary md:flex': isContentOpen })" />
 </template>
 
 <style scoped>

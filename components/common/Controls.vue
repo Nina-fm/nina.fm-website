@@ -1,6 +1,11 @@
 <script lang="ts" setup>
+  const { isMuted, isPlaying } = useAudioStoreRefs()
+  const { toggleMute } = useAudioStore()
   const { toggleFullscreen, toggleRainbowMode, toggleDarkMode, toggleTheme } = useThemeStore()
   const { darkMode, isFullscreen, isRainbowMode, theme, nextTheme, themeOptions, hasManyThemes } = useThemeStoreRefs()
+
+  const muteTooltip = computed(() => (isMuted.value ? 'Activer le son' : 'Muter le son'))
+  const muteIcon = computed(() => (isMuted.value ? 'volume_off' : 'volume_up'))
 
   const themeToggleTooltip = computed(
     () => `<b>Thème ${theme.value.name} actif.</b><br/>Cliquezr pour passer au thème ${nextTheme.value.name}`,
@@ -29,12 +34,14 @@
 
 <template>
   <div class="absolute bottom-1 right-1 z-0 flex flex-col items-center justify-end md:bottom-3 md:right-3">
+    <ControlButton v-if="isPlaying" :icon="muteIcon" :tooltip="muteTooltip" @click="() => toggleMute()" />
     <ControlButton v-if="hasManyThemes" :icon="themeToggleIcon" :tooltip="themeToggleTooltip" @click="toggleTheme" />
     <ControlButton
       v-if="!!themeOptions.rainbow"
       :icon="rainbowIcon"
       :tooltip="rainbowTooltip"
       :class="cn({ spin: isRainbowMode })"
+      :icon-class="cn({ 'animate-spin': isRainbowMode })"
       @click="toggleRainbowMode"
     />
     <ControlButton
