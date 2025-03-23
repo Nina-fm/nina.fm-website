@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/sitemap',
     'shadcn-nuxt',
     '@vite-pwa/nuxt',
     [
@@ -40,6 +41,10 @@ export default defineNuxtConfig({
     dirs: ['stores', 'themes/**/stores/*.{ts,js}'],
   },
   css: ['@/assets/css/tailwind.css'],
+  // site: {
+  //   url: process.env.NUXT_SITE_URL ?? '',
+  //   name: process.env.NUXT_SITE_NAME ?? '',
+  // },
   runtimeConfig: {
     env: process.env.NODE_ENV,
     public: {
