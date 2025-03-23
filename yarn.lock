@@ -1616,7 +1616,7 @@
     vite-plugin-checker "^0.9.1"
     vue-bundle-renderer "^2.1.1"
 
-"@nuxtjs/sitemap@7.2.9":
+"@nuxtjs/sitemap@^7.2.9":
   version "7.2.9"
   resolved "https://registry.yarnpkg.com/@nuxtjs/sitemap/-/sitemap-7.2.9.tgz#695378a4e3c0cf42cbb00b4e6a59c5269ddb6105"
   integrity sha512-LXabZyFsK+6l8TvrHOQWt00QW9DYFXiST59VGsH9nQiv39qFWaJ1x4HmrDX2l9egtj1uxzryamj+myRpKWJOdA==

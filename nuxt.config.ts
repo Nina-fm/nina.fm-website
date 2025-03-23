@@ -6,8 +6,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxt/eslint',
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/sitemap',
+    '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@vite-pwa/nuxt',
     [
@@ -41,10 +41,10 @@ export default defineNuxtConfig({
     dirs: ['stores', 'themes/**/stores/*.{ts,js}'],
   },
   css: ['@/assets/css/tailwind.css'],
-  // site: {
-  //   url: process.env.NUXT_SITE_URL ?? '',
-  //   name: process.env.NUXT_SITE_NAME ?? '',
-  // },
+  site: {
+    url: process.env.NUXT_SITE_URL ?? 'http://localhost:4000',
+    name: process.env.NUXT_SITE_NAME ?? 'Nina.fm',
+  },
   runtimeConfig: {
     env: process.env.NODE_ENV,
     public: {
