@@ -8,6 +8,7 @@
   const lcdDigitNumber = 3
   const numberCount = computed(() => props.count.toString().length)
   const emptyZeros = computed(() => lcdDigitNumber - numberCount.value)
+  const otherCount = computed(() => props.count - 1)
 </script>
 
 <template>
@@ -31,7 +32,7 @@
           </div>
         </TooltipTrigger>
         <TooltipContent arrow>
-          Vous partagez l'écoute de Nina.fm avec {{ `${count} autre${count > 1 ? 's' : ''}` }} !
+          Vous partagez l'écoute de Nina.fm avec {{ `${otherCount} autre${otherCount > 1 ? 's' : ''}` }} !
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
