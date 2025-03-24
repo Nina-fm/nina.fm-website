@@ -50,56 +50,58 @@
 </script>
 
 <template>
-  <div class="absolute bottom-1 right-1 z-0 flex flex-col items-center justify-end gap-1 md:bottom-3 md:right-3">
-    <ControlButton
-      v-if="themeOptions.darkMode"
-      :tooltip="darkModeTooltip"
-      :variant="props.controlsVariant"
-      :class="props.controlsClass"
-      @click="toggleDarkMode"
-    >
-      <SunMoonIcon v-if="darkMode === 'auto'" />
-      <MoonIcon v-else-if="darkMode === true" />
-      <SunIcon v-else />
-    </ControlButton>
-    <ControlButton
-      v-if="!!themeOptions.rainbow"
-      :tooltip="rainbowTooltip"
-      :variant="props.controlsVariant"
-      :class="cn(props.controlsClass, { spin: isRainbowMode })"
-      @click="toggleRainbowMode"
-    >
-      <CandyOffIcon v-if="isRainbowMode" />
-      <CandyIcon v-else />
-    </ControlButton>
-    <ControlButton
-      v-if="hasManyThemes"
-      :tooltip="themeToggleTooltip"
-      :variant="props.controlsVariant"
-      :class="props.controlsClass"
-      @click="toggleTheme"
-    >
-      <MountainSnowIcon v-if="nextTheme.key === 'peak'" />
-      <Disc3Icon v-else-if="nextTheme.key === 'vinyl'" />
-    </ControlButton>
-    <ControlButton
-      v-if="isPlaying"
-      :tooltip="muteTooltip"
-      :variant="props.controlsVariant"
-      :class="props.controlsClass"
-      @click="() => toggleMute()"
-    >
-      <VolumeOffIcon v-if="isMuted" />
-      <Volume2Icon v-else />
-    </ControlButton>
-    <ControlButton
-      :tooltip="fullscreenTooltip"
-      :variant="props.controlsVariant"
-      :class="props.controlsClass"
-      @click="toggleFullscreen"
-    >
-      <MinimizeIcon v-if="isFullscreen" />
-      <MaximizeIcon v-else />
-    </ControlButton>
-  </div>
+  <ClientOnly>
+    <div class="absolute bottom-1 right-1 z-0 flex flex-col items-center justify-end gap-1 md:bottom-3 md:right-3">
+      <ControlButton
+        v-if="themeOptions.darkMode"
+        :tooltip="darkModeTooltip"
+        :variant="props.controlsVariant"
+        :class="props.controlsClass"
+        @click="toggleDarkMode"
+      >
+        <SunMoonIcon v-if="darkMode === 'auto'" />
+        <MoonIcon v-else-if="darkMode === true" />
+        <SunIcon v-else />
+      </ControlButton>
+      <ControlButton
+        v-if="!!themeOptions.rainbow"
+        :tooltip="rainbowTooltip"
+        :variant="props.controlsVariant"
+        :class="cn(props.controlsClass, { spin: isRainbowMode })"
+        @click="toggleRainbowMode"
+      >
+        <CandyOffIcon v-if="isRainbowMode" />
+        <CandyIcon v-else />
+      </ControlButton>
+      <ControlButton
+        v-if="hasManyThemes"
+        :tooltip="themeToggleTooltip"
+        :variant="props.controlsVariant"
+        :class="props.controlsClass"
+        @click="toggleTheme"
+      >
+        <MountainSnowIcon v-if="nextTheme.key === 'peak'" />
+        <Disc3Icon v-else-if="nextTheme.key === 'vinyl'" />
+      </ControlButton>
+      <ControlButton
+        v-if="isPlaying"
+        :tooltip="muteTooltip"
+        :variant="props.controlsVariant"
+        :class="props.controlsClass"
+        @click="() => toggleMute()"
+      >
+        <VolumeOffIcon v-if="isMuted" />
+        <Volume2Icon v-else />
+      </ControlButton>
+      <ControlButton
+        :tooltip="fullscreenTooltip"
+        :variant="props.controlsVariant"
+        :class="props.controlsClass"
+        @click="toggleFullscreen"
+      >
+        <MinimizeIcon v-if="isFullscreen" />
+        <MaximizeIcon v-else />
+      </ControlButton>
+    </div>
+  </ClientOnly>
 </template>
