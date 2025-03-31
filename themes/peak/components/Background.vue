@@ -7,12 +7,12 @@
   const animatedDark = (await import(`../assets/images/animated-background-night.gif`)).default
 
   const { isDarkModeActive } = useThemeStoreRefs()
-  const { isPlaying } = useAudioStoreRefs()
+  const { playing } = useAudioStoreRefs()
 
   const mask = computed(() => (isDarkModeActive.value ? maskDark : maskLight))
   const img = computed(() => (isDarkModeActive.value ? imgDark : imgLight))
   const animated = computed(() => (isDarkModeActive.value ? animatedDark : animatedLight))
-  const bg = computed(() => (isPlaying.value ? animated : img))
+  const bg = computed(() => (playing.value ? animated : img))
 </script>
 
 <template>

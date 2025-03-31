@@ -1,17 +1,14 @@
 import mime from 'mime'
+import detectAutoplay from '~/utils/detectAutoplay'
 
-export const useNavigator = () => {
+export const useBrowserStore = defineStore('browser', () => {
   const config = useRuntimeConfig()
   const { toggleMute } = useAudioStore()
   const { liveQuery, metadata } = useMetadataStoreRefs()
-  const wakeLock = reactive(useWakeLock())
   const { isSupported, lockOrientation } = useScreenOrientation()
 
-  const isSafari = () => !!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)
-
-  const isMobile = () => typeof window.orientation !== 'undefined' || navigator.userAgent.indexOf('IEMobile') !== -1
-
-  const cannotAutoplay = () => isSafari() || isMobile()
+  const wakeLock = reactive(useWakeLock())
+  const canAutoplay = ref<boolean>(true)
 
   const getArtwork = async (filepath?: unknown) => {
     const file = typeof filepath !== 'string' || !filepath ? `/artwork.png` : `${filepath}`
@@ -63,7 +60,12 @@ export const useNavigator = () => {
     }
   }
 
-  const initNavigator = () => {
+  const checkAutoplay = async () => {
+    const value = await detectAutoplay()
+    canAutoplay.value = value
+  }
+
+  const init = () => {
     initMediaSession()
     initWakeLock()
     initOrientation()
@@ -77,14 +79,21 @@ export const useNavigator = () => {
     { deep: true },
   )
 
+  onBeforeMount(() => {
+    checkAutoplay()
+  })
+
   return {
-    wakeLock,
-    isSafari,
-    isMobile,
-    cannotAutoplay,
+    // State
+    canAutoplay,
+    // Actions
     updateMediaSession,
-    initMediaSession,
-    initWakeLock,
-    initNavigator,
+    init,
   }
+})
+
+export const useBrowserStoreRefs = () => storeToRefs(useBrowserStore())
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useBrowserStore, import.meta.hot))
 }

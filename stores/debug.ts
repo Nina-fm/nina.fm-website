@@ -21,7 +21,7 @@ export const useDebugStore = defineStore('debug', () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const log = (...params: any[]) => {
-    if (debug) {
+    if (debug.value) {
       pushLog(
         params
           .map((param) =>

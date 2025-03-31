@@ -12,6 +12,7 @@
     "format": "prettier --write --list-different \"./*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"{assets,components,composables,pages,server,stores,themes,types,utils}/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\""
   },
   "dependencies": {
+    "@nuxtjs/device": "3.2.4",
     "@tanstack/vue-table": "^8.21.2",
     "@vueuse/nuxt": "13.0.0",
     "class-variance-authority": "^0.7.1",

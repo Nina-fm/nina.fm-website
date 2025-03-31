@@ -3,10 +3,9 @@ import svgLoader from 'vite-svg-loader'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: [
     '@nuxt/eslint',
-    '@nuxtjs/sitemap',
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@vite-pwa/nuxt',
@@ -22,6 +21,7 @@ export default defineNuxtConfig({
         ssrHandlers: true,
       },
     ],
+    '@nuxtjs/device',
   ],
   components: [
     {
@@ -41,18 +41,14 @@ export default defineNuxtConfig({
     dirs: ['stores', 'themes/**/stores/*.{ts,js}'],
   },
   css: ['@/assets/css/tailwind.css'],
-  site: {
-    url: process.env.NUXT_SITE_URL ?? 'http://localhost:4000',
-    name: process.env.NUXT_SITE_NAME ?? 'Nina.fm',
-  },
   runtimeConfig: {
     env: process.env.NODE_ENV,
     public: {
       sitename: 'Nina.fm',
       siteTitle: 'Nina.fm - H24 Musical - Ø Pub',
       streamUrl: process.env.NUXT_PUBLIC_STREAM_URL,
-      streamRefreshTime: parseInt(process.env.NUXT_PUBLIC_STREAM_REFRESH_TIME ?? '1000', 10),
       streamSseUrl: process.env.NUXT_PUBLIC_STREAM_SSE_URL,
+      streamCheckNetworkTimeout: 10000,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
       apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
       apiKey: process.env.NUXT_PUBLIC_API_KEY,

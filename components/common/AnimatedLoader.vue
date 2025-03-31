@@ -1,5 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
   <div class="relative size-10">
     <div
@@ -10,5 +8,3 @@
     />
   </div>
 </template>
-
-<style></style>

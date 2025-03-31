@@ -1,236 +1,171 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
+import { toast } from 'vue-sonner'
 
-const networkStatus = [
-  'NETWORK_EMPTY: There is no data yet. Also, readyState is HAVE_NOTHING.',
-  'NETWORK_IDLE: HTMLMediaElement is active and has selected a resource, but is not using the network.',
-  'NETWORK_LOADING: The browser is downloading HTMLMediaElement data.',
-  'NETWORK_NO_SOURCE: No HTMLMediaElement src found.',
-  'undefined',
-]
-
-const readyStatus = [
-  'HAVE_NOTHING: No information is available about the media resource.',
-  'HAVE_METADATA: Enough of the media resource has been retrieved that the metadata attributes are initialized. Seeking will no longer raise an exception.',
-  'HAVE_CURRENT_DATA: Data is available for the current playback position, but not enough to actually play more than one frame.',
-  'HAVE_FUTURE_DATA: Data for the current playback position as well as for at least a little bit of time into the future is available.',
-  'HAVE_ENOUGH_DATA: Enough data is available—and the download rate is high enough—that the media can be played through to the end without interruption.',
-]
+const defaultState = {
+  locked: false,
+  loadStarted: false,
+  preloadStarted: false,
+  stopped: true,
+}
 
 export const useAudioStore = defineStore('audio', () => {
   const config = useRuntimeConfig()
-  const { debug } = useDebugStoreRefs()
   const { log } = useDebugStore()
+  const audioElement = useAudioElement()
 
-  const blankSound = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA='
-  const streamRef = ref<HTMLAudioElement | undefined>()
-  const streamUrl = ref<string | undefined>()
-  const initialized = ref<boolean>(false)
-  const isMobile = ref<boolean>(false)
-  const isPlaying = ref<boolean>(false)
-  const isStarted = ref<boolean>(false)
-  const isKilled = ref<boolean>(false)
-  const isMuted = ref<boolean>(false)
-  const isLoading = computed(() => !isPlaying.value && ((isMobile.value && initialized.value) || !initialized.value))
-  const isLocked = computed(() => isMobile.value && !initialized.value)
+  const streamUrl = config.public.streamUrl
+  const checkNetworkTimeout = config.public.streamCheckNetworkTimeout
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const audioLog = (...params: any[]) => {
-    if (debug.value) {
-      log(...params)
+  const { audio, currentTime, error, load, paused, played, readyState, toggleMute, unload } = audioElement
+
+  // State
+  const canAutoplay = ref<boolean>(true)
+  const initialized = ref(false)
+  const loadStarted = ref(defaultState.loadStarted)
+  const preloadStarted = ref(defaultState.preloadStarted)
+  const stopped = ref(defaultState.stopped)
+  const networkDown = ref<boolean>(false)
+
+  // Computed
+
+  const locked = computed(() => !canAutoplay.value && !playing.value)
+  const readyToPlay = computed(() => readyState.value >= 3)
+  const playing = computed(() => currentTime.value > 0 && !!played.value && !paused.value && !stopped.value)
+  const preloading = computed(() => preloadStarted.value && readyState.value < 3)
+  const _loading = computed(
+    () => preloading.value || (loadStarted.value && (currentTime.value === 0 || readyState.value < 3)),
+  )
+  const loading = computed(() => (_loading.value || preloading.value) && !readyToPlay.value)
+  const networkIssue = computed(() => error.value || (playing.value && loading.value))
+
+  // Watchers
+
+  watch(networkIssue, (value) => {
+    if (!!value && !networkDown.value && initialized.value) {
+      console.log('networkIssue', value)
+      networkDown.value = true
+      _connectionCheck()
+    }
+  })
+
+  onMounted(() => {
+    initialized.value = true
+    start()
+  })
+
+  onBeforeMount(() => {
+    _checkAutoplay()
+  })
+
+  // Private methods
+
+  const _checkAutoplay = async () => {
+    log('checkAutoplay')
+    canAutoplay.value = await detectAutoplay()
+  }
+
+  const _connectionCheck = () => {
+    log('connectionCheck')
+    if (networkIssue.value && initialized.value) {
+      log('connection needs restart')
+      toast.promise(
+        new Promise((resolve) => {
+          const check = () => {
+            if (networkIssue.value && initialized.value) {
+              stop()
+              start()
+              setTimeout(check, checkNetworkTimeout)
+            } else {
+              resolve(true)
+            }
+          }
+          check()
+        }),
+        {
+          loading: () => `Connexion perdue. Tentative de reconnexion...`,
+          success: () => `Connexion retrouvée.`,
+          error: () => `Échec de la reconnexion.`,
+        },
+      )
     }
   }
 
-  const unlock = () => {
-    if (isMobile.value && isLocked.value) {
-      play()
+  const _resetState = () => {
+    log('_resetState')
+    loadStarted.value = defaultState.loadStarted
+    preloadStarted.value = defaultState.preloadStarted
+    stopped.value = defaultState.stopped
+  }
+
+  // Public methods
+
+  const start = () => {
+    log('start')
+    if (stopped.value) {
+      stopped.value = false
+      load(`${streamUrl}?t=${Date.now()}`)
+      loadStarted.value = true
     }
   }
 
-  const play = () => {
-    audioLog('play')
-    if (streamRef.value && !initialized.value) {
-      toggleMute(false)
-      streamRef.value.play()
-      initialized.value = true
+  const stop = () => {
+    log('stop')
+    if (audio.value) {
+      stopped.value = true
+      unload()
+      _resetState()
     }
   }
 
-  const toggleMute = (val?: boolean) => {
-    audioLog('toggleMute')
-    if (streamRef.value) {
-      const value = streamRef.value.muted
-      const newValue = val === undefined ? !value : val
-      streamRef.value.muted = newValue
-      isMuted.value = newValue
+  const refresh = () => {
+    log('refresh')
+    stop()
+    start()
+  }
+
+  const toggleStartStop = () => {
+    log('toggleStartStop')
+    if (playing.value) {
+      stop()
+    } else {
+      start()
     }
   }
 
-  const updateStatus = () => {
-    if (!isKilled.value) {
-      audioLog('updateStatus', {
-        isPlaying:
-          !!streamRef.value &&
-          isStarted.value &&
-          !streamRef.value.paused &&
-          !streamRef.value.ended &&
-          streamRef.value.readyState > 2,
-        started: isStarted.value,
-        currentTime: streamRef.value?.currentTime,
-        paused: streamRef.value?.paused,
-        ended: streamRef.value?.ended,
-        readyState: streamRef.value ? (readyStatus?.[streamRef.value?.readyState] ?? 'undefined') : 'undefined',
-      })
-    }
-
-    isPlaying.value =
-      !!streamRef.value &&
-      isStarted.value &&
-      !streamRef.value.paused &&
-      !streamRef.value.ended &&
-      streamRef.value.readyState > 2
-  }
-
-  const checkStreamAlive = () => {
-    if (!isKilled.value) {
-      if (!isMobile.value && !isPlaying.value) {
-        audioLog('checkStreamAlive -> launch', {
-          audio: streamRef.value
-            ? {
-                currentSrc: streamRef.value?.currentSrc,
-                error: streamRef.value?.error
-                  ? `Error ${streamRef.value?.error?.code}: ${streamRef.value?.error?.message}`
-                  : 'null',
-                networkState: networkStatus?.[streamRef.value?.networkState] ?? 'undefined',
-                playbackRate: streamRef.value?.playbackRate,
-                readyState: readyStatus?.[streamRef.value?.readyState] ?? 'undefined',
-                buffered: streamRef.value?.buffered,
-              }
-            : null,
-        })
-        launch()
-      } else {
-        audioLog('checkStreamAlive -> setTimeout')
-        setTimeout(checkStreamAlive, config.public.streamRefreshTime)
-      }
-    }
-  }
-
-  const launch = () => {
-    audioLog('launch')
-    if (streamRef.value) {
-      streamRef.value.load()
-      setTimeout(checkStreamAlive, config.public.streamRefreshTime)
-    }
-  }
-
-  const kill = async () => {
-    audioLog('kill')
-    isKilled.value = true
-    isStarted.value = false
-    if (streamRef.value) {
-      streamRef.value.src = blankSound
-      streamRef.value.load()
-      await nextTick()
-      streamRef.value = undefined
-    }
-  }
-
-  const relaunch = async () => {
-    audioLog('relaunch')
-    kill()
-    await nextTick()
-    isKilled.value = false
-    await nextTick()
-    initPlaying()
-  }
-
-  const initPlaying = async () => {
-    if (streamRef.value && streamUrl.value && !isKilled.value) {
-      audioLog('initPlaying')
-      streamRef.value.src = streamUrl.value
-      await nextTick()
-      launch()
-      streamRef.value.oncanplay = () => {
-        audioLog('oncanplay')
-        if (!isMobile.value) play()
-        updateStatus()
-      }
-      streamRef.value.ontimeupdate = () => {
-        if (!isStarted.value && streamRef.value && streamRef.value.currentTime > 0) {
-          audioLog('ontimeupdate')
-          isStarted.value = true
-          updateStatus()
-        }
-      }
-      streamRef.value.onpause = () => {
-        audioLog('onpause')
-        updateStatus()
-      }
-      streamRef.value.onplay = () => {
-        audioLog('onplay')
-        updateStatus()
-      }
-      streamRef.value.onplaying = () => {
-        audioLog('onplaying')
-        updateStatus()
-      }
-      streamRef.value.onended = () => {
-        audioLog('onended')
-        if (isStarted.value) kill()
-        updateStatus()
-      }
-      // streamRef.value.onloadeddata = () => {
-      //   audioLog("onloadeddata")
-      //   updateStatus()
-      // }
-      // streamRef.value.onloadedmetadata = () => {
-      //   audioLog("onloadedmetadata")
-      //   updateStatus()
-      // }
-      // streamRef.value.onemptied = () => {
-      //   audioLog("onemptied")
-      //   updateStatus()
-      // }
-      // streamRef.value.onwaiting = () => {
-      //   audioLog("onwaiting")
-      //   updateStatus()
-      // }
-      streamRef.value.onstalled = () => {
-        audioLog('onstalled')
-        if (isStarted.value) kill()
-        updateStatus()
-      }
-      streamRef.value.onsuspend = () => {
-        audioLog('onsuspend')
-        if (isStarted.value) kill()
-        updateStatus()
-      }
+  const togglePlayPause = () => {
+    log('togglePlayPause')
+    if (paused.value) {
+      audio.value?.play()
+    } else {
+      audio.value?.pause()
     }
   }
 
   return {
-    streamRef,
+    ...audioElement,
     streamUrl,
-    isMobile,
-    isLoading,
-    isLocked,
-    isPlaying,
-    isStarted,
-    isMuted,
-    isKilled,
-    play,
-    kill,
-    unlock,
-    relaunch,
+    // State
+    loadStarted,
+    preloadStarted,
+    stopped,
+    // Computed
+    locked,
+    loading,
+    networkIssue,
+    playing,
+    preloading,
+    readyToPlay,
+    // Actions
     toggleMute,
-    initPlaying,
+    toggleStartStop,
+    togglePlayPause,
+    refresh,
+    start,
+    stop,
   }
 })
 
 export const useAudioStoreRefs = () => storeToRefs(useAudioStore())
 
 if (import.meta.hot) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useAudioStore, import.meta.hot))
 }

@@ -3,7 +3,7 @@
 
   const { debug, logs } = useDebugStoreRefs()
   const { clearLogs } = useDebugStore()
-  const { kill, relaunch } = useAudioStore()
+  const { refresh, stop } = useAudioStore()
   const bottomRef = useTemplateRef('bottomEl')
   const open = useCookie<boolean>('codemaster-debug-open', { watch: true })
 
@@ -31,7 +31,7 @@
         </ControlButton>
       </DialogTrigger>
       <DialogContent
-        class="left-10 right-16 max-h-[90dvh] w-auto max-w-none translate-x-0 grid-rows-[auto_minmax(0,1fr)_auto] bg-background/90 p-0 backdrop-blur md:right-20"
+        class="left-10 max-h-[90dvh] w-full translate-x-0 grid-rows-[auto_minmax(0,1fr)_auto] bg-background/90 p-0 backdrop-blur sm:w-96"
         @interact-outside="(e) => e.preventDefault()"
       >
         <DialogHeader class="p-6 pb-0">
@@ -49,8 +49,8 @@
           </div>
         </div>
         <DialogFooter class="p-6 pt-0">
-          <Button variant="outline" size="sm" @click="kill">Fermer le flux</Button>
-          <Button variant="outline" size="sm" @click="relaunch">Relancer le flux</Button>
+          <Button variant="outline" size="sm" @click="stop">Fermer le flux</Button>
+          <Button variant="outline" size="sm" @click="refresh">Relancer le flux</Button>
           <Button size="sm" @click="clearLogs">Effacer les logs</Button>
         </DialogFooter>
       </DialogContent>
