@@ -6,7 +6,7 @@ const metaTitleRefreshTime = 10000
 
 export const useAppStore = defineStore('app', () => {
   const config = useRuntimeConfig()
-  const { isMuted, isLoading, isLocked, isPlaying } = useAudioStoreRefs()
+  const { muted, loading, locked, playing } = useAudioStoreRefs()
   const { liveQuery } = useMetadataStoreRefs()
   const { theme, themeOptions, isDarkModeActive, isRainbowMode } = useThemeStoreRefs()
   const metaTitle = ref<string>(config.public.siteTitle)
@@ -16,12 +16,11 @@ export const useAppStore = defineStore('app', () => {
   const classes = computed<ClsObj>(() => ({
     [`theme-${theme.value.key}`]: true,
     dark: !!themeOptions.value?.darkMode && isDarkModeActive.value,
-    muted: isMuted.value,
-    loading: isLoading.value,
-    locked: isLocked.value,
-    playing: isPlaying.value,
-    mobile: isMobile.value,
     rainbow: isRainbowMode.value,
+    muted: muted.value,
+    loading: loading.value,
+    locked: locked.value,
+    playing: playing.value,
     ...additionalClasses,
   }))
 
@@ -65,7 +64,5 @@ export const useAppStore = defineStore('app', () => {
 export const useAppStoreRefs = () => storeToRefs(useAppStore())
 
 if (import.meta.hot) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   import.meta.hot.accept(acceptHMRUpdate(useAppStore, import.meta.hot))
 }

@@ -25,7 +25,7 @@
     },
   )
 
-  const { isMuted, isPlaying } = useAudioStoreRefs()
+  const { muted, playing } = useAudioStoreRefs()
   const { toggleMute } = useAudioStore()
   const { toggleFullscreen, toggleRainbowMode, toggleDarkMode, toggleTheme } = useThemeStore()
   const { darkMode, isFullscreen, isRainbowMode, nextTheme, themeOptions, hasManyThemes } = useThemeStoreRefs()
@@ -40,13 +40,32 @@
     return '<b>Mode jour</b><br/>Cliquer pour passer en mode lumière automatique'
   })
   const muteTooltip = computed(() =>
-    isMuted.value
+    muted.value
       ? '<b>Son coupé</b><br/>Cliquer pour réactiver le son'
       : '<b>Son actif</b><br/>Cliquer pour couper le son',
   )
   const fullscreenTooltip = computed(() =>
     isFullscreen.value ? 'Quitter le mode plein écran' : 'Passer en mode plein écran',
   )
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case ' ':
+        e.preventDefault()
+        toggleMute()
+        break
+      default:
+        break
+    }
+  }
+
+  onMounted(() => {
+    document.addEventListener('keydown', handleKeyDown)
+  })
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyDown)
+  })
 </script>
 
 <template>
@@ -84,13 +103,13 @@
         <Disc3Icon v-else-if="nextTheme.key === 'vinyl'" />
       </ControlButton>
       <ControlButton
-        v-if="isPlaying"
+        v-if="playing"
         :tooltip="muteTooltip"
         :variant="props.controlsVariant"
         :class="props.controlsClass"
         @click="() => toggleMute()"
       >
-        <VolumeOffIcon v-if="isMuted" />
+        <VolumeOffIcon v-if="muted" />
         <Volume2Icon v-else />
       </ControlButton>
       <ControlButton

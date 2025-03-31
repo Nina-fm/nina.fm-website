@@ -1,6 +1,6 @@
 <script setup lang="ts">
   const { width, height } = useWindowSize()
-  const { isPlaying } = useAudioStoreRefs()
+  const { playing } = useAudioStoreRefs()
   const { liveQuery, listeners, progress, metadata, isMixtape } = useMetadataStoreRefs()
   const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs()
   const { toggleDetails, closeDetails, closeContent } = useVinylThemeStore()
@@ -51,7 +51,7 @@
             transform: `scale(${scaling}) translate(-50%, -50%)`,
           }"
         >
-          <VinylDisk :artist="artist" :title="title" :rotate="isPlaying" :cover="cover" />
+          <VinylDisk :artist="artist" :title="title" :rotate="playing" :cover="cover" />
           <VinylToneArm :progress="progress" />
           <VinylLcdCounter :count="listeners" />
         </div>

@@ -11,12 +11,12 @@
     mixtape: 'Une mixtape Nina.fm',
     listening: "À l'écoute sur Nina.fm",
   }
-  const { isLocked, isLoading, isPlaying } = useAudioStoreRefs()
+  const { locked, loading, playing } = useAudioStoreRefs()
   const { isMixtape, liveQuery } = useMetadataStoreRefs()
   const { toggleDetails } = usePeakThemeStore()
   const { isDetailsOpen } = usePeakThemeStoreRefs()
 
-  const shouldPlay = computed(() => !isLocked.value || isLoading.value)
+  const shouldPlay = computed(() => !locked.value || loading.value)
   const initMsg = computed(() => (shouldPlay.value ? msg.loading : msg.locked))
   const typeText = computed(() => (shouldPlay.value ? (isMixtape.value ? msg.mixtape : msg.listening) : false))
   const artist = computed(() => liveQuery.value?.authors)
@@ -56,7 +56,7 @@
             </div>
           </div>
         </div>
-        <ControlButton v-if="isMixtape && (shouldPlay || isPlaying)" class="-mb-3 -mt-2" @click="toggleDetails">
+        <ControlButton v-if="isMixtape && (shouldPlay || playing)" class="-mb-3 -mt-2" @click="toggleDetails">
           <CircleMinusIcon v-if="isDetailsOpen" />
           <CirclePlusIcon v-else />
         </ControlButton>
