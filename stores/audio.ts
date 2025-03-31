@@ -41,7 +41,7 @@ export const useAudioStore = defineStore('audio', () => {
 
   watch(networkIssue, (value) => {
     if (!!value && !networkDown.value && initialized.value) {
-      console.log('networkIssue', value)
+      log('networkIssue', value)
       networkDown.value = true
       _connectionCheck()
     }
