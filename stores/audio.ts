@@ -18,16 +18,16 @@ export const useAudioStore = defineStore('audio', () => {
   const { audio, currentTime, error, load, paused, played, readyState, toggleMute, unload } = audioElement
 
   // State
-  const canAutoplay = ref<boolean>(true)
+  const canAutoplay = ref(true)
   const initialized = ref(false)
+  const locked = ref(defaultState.locked)
   const loadStarted = ref(defaultState.loadStarted)
   const preloadStarted = ref(defaultState.preloadStarted)
   const stopped = ref(defaultState.stopped)
-  const networkDown = ref<boolean>(false)
+  const networkDown = ref(false)
 
   // Computed
 
-  const locked = computed(() => !canAutoplay.value && !playing.value)
   const readyToPlay = computed(() => readyState.value >= 3)
   const playing = computed(() => currentTime.value > 0 && !!played.value && !paused.value && !stopped.value)
   const preloading = computed(() => preloadStarted.value && readyState.value < 3)
@@ -59,12 +59,16 @@ export const useAudioStore = defineStore('audio', () => {
   // Private methods
 
   const _checkAutoplay = async () => {
-    log('checkAutoplay')
+    log('_checkAutoplay')
     canAutoplay.value = await detectAutoplay()
+    if (!canAutoplay.value) {
+      log('autoplay not allowed')
+      locked.value = true
+    }
   }
 
   const _connectionCheck = () => {
-    log('connectionCheck')
+    log('_connectionCheck')
     if (networkIssue.value && initialized.value) {
       log('connection needs restart')
       toast.promise(
@@ -81,11 +85,19 @@ export const useAudioStore = defineStore('audio', () => {
           check()
         }),
         {
-          loading: () => `Connexion perdue. Tentative de reconnexion...`,
-          success: () => `Connexion retrouvée.`,
-          error: () => `Échec de la reconnexion.`,
+          loading: () => `Connexion au flux audio Nina.fm impossible. Tentative de reconnexion...`,
+          success: () => `Connexion au flux audio Nina.fm restaurée.`,
+          error: () => `Échec de la reconnexion au flux audio Nina.fm.`,
         },
       )
+    }
+  }
+
+  const _unlock = () => {
+    log('_unlock')
+    locked.value = false
+    if (audio.value) {
+      audio.value.play()
     }
   }
 
@@ -98,8 +110,11 @@ export const useAudioStore = defineStore('audio', () => {
 
   // Public methods
 
-  const start = () => {
+  const start = (unlock?: boolean) => {
     log('start')
+    if (unlock) {
+      _unlock()
+    }
     if (stopped.value) {
       stopped.value = false
       load(`${streamUrl}?t=${Date.now()}`)
