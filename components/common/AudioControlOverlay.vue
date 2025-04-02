@@ -8,7 +8,9 @@
   const displayLoading = computed(() => !locked.value && (loading.value || (readyToPlay.value && !playing.value)))
   const displayRefresh = computed(() => !networkIssue.value && preloadStarted.value && !loading.value && !playing.value)
 
-  const handleClick = () => (locked.value ? start() : null)
+  const handleClick = () => {
+    return locked.value ? start(true) : null
+  }
 </script>
 
 <template>
@@ -20,7 +22,7 @@
         v-else-if="locked"
         variant="ghost"
         class="absolute size-40 text-primary opacity-60 transition-opacity duration-300 ease-in-out hover:bg-transparent hover:opacity-80 [&_svg]:size-40 [&_svg_polygon]:fill-current"
-        @click="start"
+        @click="handleClick"
       >
         <CirclePlayIcon />
       </Button>
