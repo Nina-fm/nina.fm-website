@@ -92,8 +92,8 @@ export const useMetadataStore = defineStore('metadata', () => {
       }
       events.onmessage = (event) => {
         const parsedData = JSON.parse(event.data)
-        iceCastData.value = parsedData.iceCast
-        airTimeData.value = parsedData.airTime
+        iceCastData.value = parsedData.icecast
+        airTimeData.value = parsedData.airtime
       }
 
       isListeningEvents.value = true
