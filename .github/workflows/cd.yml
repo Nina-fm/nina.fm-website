@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [temp]
+    branches: [main]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,9 +33,9 @@ jobs:
             source /home/${{ secrets.USERNAME }}/.nvm/nvm.sh
             cd /var/www/html/nina.fm-website
             git fetch --all
-            git checkout temp -f
-            git reset --hard origin/temp
-            git pull origin temp
+            git checkout main -f
+            git reset --hard origin/main
+            git pull origin main
             npm install
             npm run build
             npm run pm2:restart
