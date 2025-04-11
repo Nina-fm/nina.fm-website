@@ -29,7 +29,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            source ~/.bashrc
+            source ~/_profile
             cdnvm ~/apps/nina.fm-faceb
             git checkout main -f
             git reset --hard origin/main
