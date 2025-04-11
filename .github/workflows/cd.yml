@@ -35,6 +35,6 @@ jobs:
             git fetch --all
             git checkout temp -f
             git pull origin temp
-            npm run install
+            npm install
             npm run build
             npm run pm2:restart
