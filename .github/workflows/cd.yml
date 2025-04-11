@@ -31,7 +31,8 @@ jobs:
           script: |
             export NVM_DIR=/home/${{ secrets.USERNAME }}/.nvm
             source /home/${{ secrets.USERNAME }}/.nvm/nvm.sh
-            cd /var/www/html/nina.fm-sse
+            cd /var/www/html/nina.fm-website
+            git fetch --all
             git checkout temp -f
             git pull origin temp
             npm run install
