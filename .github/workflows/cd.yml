@@ -34,6 +34,7 @@ jobs:
             cd /var/www/html/nina.fm-website
             git fetch --all
             git checkout temp -f
+            git reset --hard origin/temp
             git pull origin temp
             npm install
             npm run build

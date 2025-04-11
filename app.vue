@@ -25,7 +25,6 @@
     <VitePwaManifest />
     <NuxtRouteAnnouncer />
     <NuxtLoadingIndicator />
-    <!-- <AudioStream /> -->
     <Theme :name="current" />
     <AudioControlOverlay />
     <AudioDebugger />
