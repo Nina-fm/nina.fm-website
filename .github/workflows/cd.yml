@@ -29,9 +29,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            export NVM_DIR=/home/${{ secrets.USERNAME }}/.nvm
-            source /home/${{ secrets.USERNAME }}/.nvm/nvm.sh
-            cd /var/www/html/nina.fm-website
+            source ~/.profile
+            cdnvm /var/www/html/nina.fm-website
             git fetch --all
             git checkout main -f
             git reset --hard origin/main
