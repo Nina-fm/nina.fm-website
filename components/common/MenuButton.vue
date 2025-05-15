@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { MenuIcon, XIcon } from 'lucide-vue-next'
+  import { TelescopeIcon, XIcon } from 'lucide-vue-next'
   import type { ButtonVariants } from '~/components/ui/button'
 
   const props = withDefaults(
@@ -25,6 +25,6 @@
     @click="$emit('click')"
   >
     <XIcon v-if="props.open" />
-    <MenuIcon v-else />
+    <TelescopeIcon v-else />
   </ControlButton>
 </template>
