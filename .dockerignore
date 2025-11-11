@@ -1,0 +1,68 @@
+# Fichiers et dossiers à ignorer lors du build Docker
+
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+.nuxt
+.nitro
+.cache
+.output
+dist
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+
+# Tests
+*.test.js
+*.spec.js
+coverage
+
+# Logs
+*.log
+logs
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# PM2
+ecosystem.config.cjs
+
+# Netlify
+netlify.toml

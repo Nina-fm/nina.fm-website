@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  nina-website:
+    container_name: nina-website
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+    image: nina-website:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Variables d'environnement - À configurer sur le serveur
+      - NODE_ENV=production
+      - NUXT_PUBLIC_STREAM_URL=${NUXT_PUBLIC_STREAM_URL}
+      - NUXT_PUBLIC_STREAM_SSE_URL=${NUXT_PUBLIC_STREAM_SSE_URL}
+      - NUXT_PUBLIC_API_URL=${NUXT_PUBLIC_API_URL}
+      - NUXT_PUBLIC_API_METADATA_ENDPOINT=${NUXT_PUBLIC_API_METADATA_ENDPOINT}
+      - NUXT_PUBLIC_API_KEY=${NUXT_PUBLIC_API_KEY}
+    networks:
+      - nina-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  nina-network:
+    driver: bridge

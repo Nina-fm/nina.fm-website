@@ -1,0 +1,237 @@
+name: Deploy Nina.fm Website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Permet le déclenchement manuel
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Type check
+        run: yarn type-check || echo "No type-check script, skipping..."
+
+      - name: Run lint
+        run: yarn lint
+
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build application
+        run: yarn build
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr  
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+          flavor: |
+            latest=auto
+            prefix=
+            suffix=
+
+      - name: Version and tag
+        id: versioning
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Configuration git pour les commits automatiques
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Utiliser la version du package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "📋 Version actuelle: v$CURRENT_VERSION"
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          target: production
+          push: true
+          no-cache: true
+          build-args: |
+            NUXT_PUBLIC_STREAM_URL=${{ vars.NUXT_PUBLIC_STREAM_URL }}
+            NUXT_PUBLIC_STREAM_SSE_URL=${{ vars.NUXT_PUBLIC_STREAM_SSE_URL }}
+            NUXT_PUBLIC_API_URL=${{ vars.NUXT_PUBLIC_API_URL }}
+            NUXT_PUBLIC_API_METADATA_ENDPOINT=${{ vars.NUXT_PUBLIC_API_METADATA_ENDPOINT }}
+            NUXT_PUBLIC_API_KEY=${{ secrets.NUXT_PUBLIC_API_KEY }}
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ env.REGISTRY }}/${{ github.repository }}:v${{ steps.versioning.outputs.version }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Créer les répertoires nécessaires
+            sudo mkdir -p /var/nina/website/deploy
+            sudo chown -R nina:nina /var/nina/website
+            
+            # Créer le fichier d'environnement pour Website
+            cat > /var/nina/website/.env.prod << EOF
+            NODE_ENV=production
+            PORT=3000
+            HOST=0.0.0.0
+            NUXT_PUBLIC_STREAM_URL=${{ vars.NUXT_PUBLIC_STREAM_URL }}
+            NUXT_PUBLIC_STREAM_SSE_URL=${{ vars.NUXT_PUBLIC_STREAM_SSE_URL }}
+            NUXT_PUBLIC_API_URL=${{ vars.NUXT_PUBLIC_API_URL }}
+            NUXT_PUBLIC_API_METADATA_ENDPOINT=${{ vars.NUXT_PUBLIC_API_METADATA_ENDPOINT }}
+            NUXT_PUBLIC_API_KEY=${{ secrets.NUXT_PUBLIC_API_KEY }}
+            EOF
+
+            # Sécuriser le fichier d'environnement
+            chmod 600 /var/nina/website/.env.prod
+
+            # Créer le répertoire de déploiement
+            mkdir -p /var/nina/website/deploy
+            cd /var/nina/website/deploy
+
+            # Login Docker sur le serveur
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Pull de la nouvelle image
+            docker pull ${{ env.REGISTRY }}/${{ github.repository }}:latest
+
+            # S'assurer que le réseau existe
+            echo "🔄 Vérification du réseau..."
+            docker network create nina-network 2>/dev/null || echo "Réseau nina-network existe déjà"
+
+            # Télécharger le docker-compose.prod.yml depuis GitHub
+            curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                 -H "Accept: application/vnd.github.v3.raw" \
+                 -o docker-compose.yml \
+                 "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.prod.yml"
+
+            # Arrêter le conteneur existant s'il existe
+            docker stop nina-website 2>/dev/null || echo "Aucun conteneur nina-website à arrêter"
+            docker rm nina-website 2>/dev/null || echo "Aucun conteneur nina-website à supprimer"
+
+            # Déploiement avec docker-compose (avec fallback si .env.prod manque)
+            if [ -f /var/nina/website/.env.prod ]; then
+              docker compose --env-file /var/nina/website/.env.prod up -d
+            else
+              echo "⚠️ Fichier .env.prod manquant, déploiement sans fichier d'environnement"
+              docker compose up -d
+            fi
+
+            # Vérifier que l'application démarre correctement  
+            echo "🔍 Vérification de l'application Website..."
+            echo "📋 État des conteneurs:"
+            docker ps -a | grep nina-website || echo "Aucun conteneur nina-website trouvé"
+            
+            sleep 15
+            HEALTH_CHECK_RETRIES=6
+            for i in $(seq 1 $HEALTH_CHECK_RETRIES); do
+              echo "🔍 Tentative $i/$HEALTH_CHECK_RETRIES - Test de santé..."
+              
+              # Vérifier si le conteneur existe et tourne
+              if docker ps | grep nina-website > /dev/null; then
+                echo "✅ Conteneur nina-website en cours d'exécution"
+                
+                # Tester le health check
+                if curl -f http://localhost:3000/ > /dev/null 2>&1; then
+                  echo "✅ Déploiement Website réussi - Application opérationnelle"
+                  echo "🔍 Version Node.js dans le conteneur:"
+                  docker exec nina-website node --version
+                  break
+                else
+                  echo "⏳ Application pas encore prête, vérification des logs..."
+                  docker logs nina-website --tail 10
+                fi
+              else
+                echo "❌ Conteneur nina-website non trouvé ou arrêté"
+                echo "📋 Logs du conteneur (s'il existe):"
+                docker logs nina-website --tail 20 2>/dev/null || echo "Aucun log disponible"
+              fi
+              
+              if [ $i -eq $HEALTH_CHECK_RETRIES ]; then
+                echo "❌ Échec du déploiement - Application non accessible après $HEALTH_CHECK_RETRIES tentatives"
+                echo "📋 État final des conteneurs:"
+                docker ps -a | grep nina-website || echo "Aucun conteneur nina-website"
+                echo "📋 Logs complets:"
+                docker logs nina-website --tail 50 2>/dev/null || echo "Aucun log disponible"
+                exit 1
+              else
+                sleep 10
+              fi
+            done
+
+  cleanup:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Nettoyage Docker sur le serveur
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Nettoyage des images Docker orphelines
+            echo "🧹 Nettoyage des images Docker..."
+            docker image prune -f --filter "dangling=true"
+            
+            # Garder seulement les 3 dernières images du Website
+            docker images ${{ env.REGISTRY }}/${{ github.repository }} --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | \
+            tail -n +2 | sort -k2 -r | tail -n +4 | awk '{print $1}' | \
+            xargs -r docker rmi || echo "Aucune ancienne image à supprimer"

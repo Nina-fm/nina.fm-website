@@ -1,0 +1,49 @@
+services:
+  website:
+    image: ghcr.io/nina-fm/nina.fm-website:latest
+    container_name: nina-website
+    restart: unless-stopped
+    environment:
+      # Application
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+
+      # Nina.fm Stream Configuration
+      - NUXT_PUBLIC_STREAM_URL=${NUXT_PUBLIC_STREAM_URL}
+      - NUXT_PUBLIC_STREAM_SSE_URL=${NUXT_PUBLIC_STREAM_SSE_URL}
+
+      # Nina.fm API Configuration
+      - NUXT_PUBLIC_API_URL=${NUXT_PUBLIC_API_URL}
+      - NUXT_PUBLIC_API_METADATA_ENDPOINT=${NUXT_PUBLIC_API_METADATA_ENDPOINT}
+      - NUXT_PUBLIC_API_KEY=${NUXT_PUBLIC_API_KEY}
+
+    ports:
+      - "127.0.0.1:3000:3000"
+
+    networks:
+      - nina-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:3000/', (res) => process.exit(res.statusCode === 200 ? 0 : 1))",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  nina-network:
+    name: nina-network
+    external: true

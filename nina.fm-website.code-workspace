@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "name": "WEBSITE",
+      "path": ".",
+    },
+    // {
+    // 	"name": "MIXTAPER",
+    // 	"path": "../nina.fm-mixtaper"
+    // }
+  ],
+  "settings": {},
+}
