@@ -113,18 +113,43 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Pull Docker image
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 15m
+          script: |
+            # Login Docker
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Pull avec retry et progression
+            echo "📥 Pulling image (1.5GB)..."
+            for i in 1 2 3; do
+              if docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest; then
+                echo "✅ Pull successful"
+                exit 0
+              else
+                echo "⚠️ Pull attempt $i failed, retrying..."
+                sleep 5
+              fi
+            done
+            echo "❌ Pull failed after 3 attempts"
+            exit 1
+
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          command_timeout: 30m
+          command_timeout: 5m
           script: |
-            # Créer les répertoires nécessaires (sans sudo, nina possède déjà /var/nina)
+            # Créer les répertoires nécessaires
             mkdir -p /var/nina/website/deploy
 
-            # Créer le fichier d'environnement pour Website
+            # Créer le fichier d'environnement
             cat > /var/nina/website/.env.prod << 'EOF'
             NODE_ENV=production
             PORT=3000
@@ -136,23 +161,13 @@ jobs:
             NUXT_PUBLIC_API_KEY=${{ secrets.NUXT_PUBLIC_API_KEY }}
             EOF
 
-            # Sécuriser le fichier d'environnement
             chmod 600 /var/nina/website/.env.prod
-
-            # Aller dans le répertoire de déploiement
             cd /var/nina/website/deploy
 
-            # Login Docker sur le serveur
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-            # Pull de la nouvelle image
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-
             # S'assurer que le réseau existe
-            echo "🔄 Vérification du réseau..."
             docker network create nina-network 2>/dev/null || echo "Réseau nina-network existe déjà"
 
-            # Créer le docker-compose.yml directement (au lieu de le télécharger)
+            # Créer le docker-compose.yml
             cat > docker-compose.yml << 'COMPOSE_EOF'
             services:
               website:
@@ -190,24 +205,16 @@ jobs:
                 external: true
             COMPOSE_EOF
 
-            # Arrêter le conteneur existant s'il existe
-            docker stop nina-website 2>/dev/null || echo "Aucun conteneur nina-website à arrêter"
-            docker rm nina-website 2>/dev/null || echo "Aucun conteneur nina-website à supprimer"
+            # Arrêter conteneur existant
+            docker stop nina-website 2>/dev/null || true
+            docker rm nina-website 2>/dev/null || true
 
-            # Déploiement avec docker-compose (avec fallback si .env.prod manque)
-            echo "🚀 Démarrage du conteneur..."
-            if [ -f /var/nina/website/.env.prod ]; then
-              docker compose --env-file /var/nina/website/.env.prod up -d --wait
-            else
-              echo "⚠️ Fichier .env.prod manquant, déploiement sans fichier d'environnement"
-              docker compose up -d --wait
-            fi
+            # Déployer
+            echo "🚀 Démarrage conteneur..."
+            docker compose --env-file /var/nina/website/.env.prod up -d --wait
 
-            # Vérifier le status final
             echo "✅ Déploiement terminé"
-            echo "📋 État du conteneur:"
             docker ps | grep nina-website
-            echo "📋 Logs récents:"
             docker logs nina-website --tail 20
 
   cleanup:
