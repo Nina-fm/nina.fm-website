@@ -1,6 +1,7 @@
-export const interludeWords = ['interlude', 'intro', 'outro', 'jingle', 'annonce']
+export const interludeWords = ['interlude', 'introlude', 'outrolude', 'outlude', 'intro', 'outro', 'jingle', 'annonce']
 
 export default function isInterlude(track: Track) {
-  const regex = new RegExp(interludeWords.join('|'), 'i')
-  return regex.test(track.artist ?? '')
+  if (!track.title) return false
+
+  return interludeWords.includes(track.title.toLowerCase())
 }
