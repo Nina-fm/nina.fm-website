@@ -48,7 +48,7 @@
       <p class="[.theme-vinyl_&]:text-foreground/80">
         Cett année, Nina.fm fête ses 10 ans ! Pour l'occasion, nous avons prévu plein de surprises ! Restez à l'écoute
         et faite briller votre étoile dans le ciel de Nina.fm ! Vous pouvez aussi rejoindre notre groupe WhatsApp
-        "Les étoiles de Nina" pour tout savoir !
+        "Les&nbsp;étoiles&nbsp;de&nbsp;Nina" pour tout savoir !
       </p>
     </Card>
     <Card class="block-card flex flex-col items-stretch gap-2 text-center md:items-center">
