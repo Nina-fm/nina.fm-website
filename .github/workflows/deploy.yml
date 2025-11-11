@@ -116,12 +116,11 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Créer les répertoires nécessaires
-            sudo mkdir -p /var/nina/website/deploy
-            sudo chown -R nina:nina /var/nina/website
+            # Créer les répertoires nécessaires (sans sudo, nina possède déjà /var/nina)
+            mkdir -p /var/nina/website/deploy
 
             # Créer le fichier d'environnement pour Website
-            cat > /var/nina/website/.env.prod << EOF
+            cat > /var/nina/website/.env.prod << 'EOF'
             NODE_ENV=production
             PORT=3000
             HOST=0.0.0.0
@@ -135,8 +134,7 @@ jobs:
             # Sécuriser le fichier d'environnement
             chmod 600 /var/nina/website/.env.prod
 
-            # Créer le répertoire de déploiement
-            mkdir -p /var/nina/website/deploy
+            # Aller dans le répertoire de déploiement
             cd /var/nina/website/deploy
 
             # Login Docker sur le serveur
@@ -149,13 +147,43 @@ jobs:
             echo "🔄 Vérification du réseau..."
             docker network create nina-network 2>/dev/null || echo "Réseau nina-network existe déjà"
 
-            # Télécharger le docker-compose.prod.yml depuis GitHub
-            curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                 -H "Accept: application/vnd.github.v3.raw" \
-                 -o docker-compose.yml \
-                 "https://api.github.com/repos/nina-fm/nina.fm-website2/contents/docker-compose.prod.yml"
+            # Créer le docker-compose.yml directement (au lieu de le télécharger)
+            cat > docker-compose.yml << 'COMPOSE_EOF'
+            services:
+              website:
+                image: ghcr.io/nina-fm/nina.fm-website:latest
+                container_name: nina-website
+                restart: unless-stopped
+                environment:
+                  - NODE_ENV=production
+                  - PORT=3000
+                  - HOST=0.0.0.0
+                  - NUXT_PUBLIC_STREAM_URL=${NUXT_PUBLIC_STREAM_URL}
+                  - NUXT_PUBLIC_STREAM_SSE_URL=${NUXT_PUBLIC_STREAM_SSE_URL}
+                  - NUXT_PUBLIC_API_URL=${NUXT_PUBLIC_API_URL}
+                  - NUXT_PUBLIC_API_METADATA_ENDPOINT=${NUXT_PUBLIC_API_METADATA_ENDPOINT}
+                  - NUXT_PUBLIC_API_KEY=${NUXT_PUBLIC_API_KEY}
+                ports:
+                  - "127.0.0.1:3000:3000"
+                networks:
+                  - nina-network
+                healthcheck:
+                  test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/', (res) => process.exit(res.statusCode === 200 ? 0 : 1))"]
+                  interval: 30s
+                  timeout: 3s
+                  retries: 3
+                  start_period: 40s
+                logging:
+                  driver: "json-file"
+                  options:
+                    max-size: "10m"
+                    max-file: "3"
 
-            # Arrêter le conteneur existant s'il existe
+            networks:
+              nina-network:
+                name: nina-network
+                external: true
+            COMPOSE_EOF            # Arrêter le conteneur existant s'il existe
             docker stop nina-website 2>/dev/null || echo "Aucun conteneur nina-website à arrêter"
             docker rm nina-website 2>/dev/null || echo "Aucun conteneur nina-website à supprimer"
 
