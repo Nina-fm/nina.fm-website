@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: nina-fm/nina.fm-website
 
 jobs:
   test:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Enable Corepack
         run: corepack enable
@@ -51,7 +51,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Enable Corepack
         run: corepack enable
@@ -73,7 +73,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr  
@@ -86,12 +86,7 @@ jobs:
 
       - name: Version and tag
         id: versioning
-        if: github.ref == 'refs/heads/main'
         run: |
-          # Configuration git pour les commits automatiques
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
           # Utiliser la version du package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "📋 Version actuelle: v$CURRENT_VERSION"
@@ -111,9 +106,7 @@ jobs:
             NUXT_PUBLIC_API_URL=${{ vars.NUXT_PUBLIC_API_URL }}
             NUXT_PUBLIC_API_METADATA_ENDPOINT=${{ vars.NUXT_PUBLIC_API_METADATA_ENDPOINT }}
             NUXT_PUBLIC_API_KEY=${{ secrets.NUXT_PUBLIC_API_KEY }}
-          tags: |
-            ${{ steps.meta.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ github.repository }}:v${{ steps.versioning.outputs.version }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy to server
@@ -126,7 +119,7 @@ jobs:
             # Créer les répertoires nécessaires
             sudo mkdir -p /var/nina/website/deploy
             sudo chown -R nina:nina /var/nina/website
-            
+
             # Créer le fichier d'environnement pour Website
             cat > /var/nina/website/.env.prod << EOF
             NODE_ENV=production
@@ -150,7 +143,7 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Pull de la nouvelle image
-            docker pull ${{ env.REGISTRY }}/${{ github.repository }}:latest
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
             # S'assurer que le réseau existe
             echo "🔄 Vérification du réseau..."
@@ -160,7 +153,7 @@ jobs:
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                  -H "Accept: application/vnd.github.v3.raw" \
                  -o docker-compose.yml \
-                 "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.prod.yml"
+                 "https://api.github.com/repos/nina-fm/nina.fm-website2/contents/docker-compose.prod.yml"
 
             # Arrêter le conteneur existant s'il existe
             docker stop nina-website 2>/dev/null || echo "Aucun conteneur nina-website à arrêter"
@@ -178,7 +171,7 @@ jobs:
             echo "🔍 Vérification de l'application Website..."
             echo "📋 État des conteneurs:"
             docker ps -a | grep nina-website || echo "Aucun conteneur nina-website trouvé"
-            
+
             sleep 15
             HEALTH_CHECK_RETRIES=6
             for i in $(seq 1 $HEALTH_CHECK_RETRIES); do
@@ -230,8 +223,8 @@ jobs:
             # Nettoyage des images Docker orphelines
             echo "🧹 Nettoyage des images Docker..."
             docker image prune -f --filter "dangling=true"
-            
+
             # Garder seulement les 3 dernières images du Website
-            docker images ${{ env.REGISTRY }}/${{ github.repository }} --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | \
+            docker images ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | \
             tail -n +2 | sort -k2 -r | tail -n +4 | awk '{print $1}' | \
             xargs -r docker rmi || echo "Aucune ancienne image à supprimer"
