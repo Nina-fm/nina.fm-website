@@ -183,7 +183,9 @@ jobs:
               nina-network:
                 name: nina-network
                 external: true
-            COMPOSE_EOF            # Arrêter le conteneur existant s'il existe
+            COMPOSE_EOF
+
+            # Arrêter le conteneur existant s'il existe
             docker stop nina-website 2>/dev/null || echo "Aucun conteneur nina-website à arrêter"
             docker rm nina-website 2>/dev/null || echo "Aucun conteneur nina-website à supprimer"
 
