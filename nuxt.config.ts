@@ -55,7 +55,7 @@ export default defineNuxtConfig({
     },
   },
   devServer: {
-    port: 4000,
+    port: Number(process.env.FRONT_OUTPUT_PORT) || 3000,
   },
   vite: {
     plugins: [svgLoader()],
