@@ -119,6 +119,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 30m
           script: |
             # Créer les répertoires nécessaires (sans sudo, nina possède déjà /var/nina)
             mkdir -p /var/nina/website/deploy
@@ -194,54 +195,20 @@ jobs:
             docker rm nina-website 2>/dev/null || echo "Aucun conteneur nina-website à supprimer"
 
             # Déploiement avec docker-compose (avec fallback si .env.prod manque)
+            echo "🚀 Démarrage du conteneur..."
             if [ -f /var/nina/website/.env.prod ]; then
-              docker compose --env-file /var/nina/website/.env.prod up -d
+              docker compose --env-file /var/nina/website/.env.prod up -d --wait
             else
               echo "⚠️ Fichier .env.prod manquant, déploiement sans fichier d'environnement"
-              docker compose up -d
+              docker compose up -d --wait
             fi
 
-            # Vérifier que l'application démarre correctement  
-            echo "🔍 Vérification de l'application Website..."
-            echo "📋 État des conteneurs:"
-            docker ps -a | grep nina-website || echo "Aucun conteneur nina-website trouvé"
-
-            sleep 15
-            HEALTH_CHECK_RETRIES=6
-            for i in $(seq 1 $HEALTH_CHECK_RETRIES); do
-              echo "🔍 Tentative $i/$HEALTH_CHECK_RETRIES - Test de santé..."
-              
-              # Vérifier si le conteneur existe et tourne
-              if docker ps | grep nina-website > /dev/null; then
-                echo "✅ Conteneur nina-website en cours d'exécution"
-                
-                # Tester le health check
-                if curl -f http://localhost:3000/ > /dev/null 2>&1; then
-                  echo "✅ Déploiement Website réussi - Application opérationnelle"
-                  echo "🔍 Version Node.js dans le conteneur:"
-                  docker exec nina-website node --version
-                  break
-                else
-                  echo "⏳ Application pas encore prête, vérification des logs..."
-                  docker logs nina-website --tail 10
-                fi
-              else
-                echo "❌ Conteneur nina-website non trouvé ou arrêté"
-                echo "📋 Logs du conteneur (s'il existe):"
-                docker logs nina-website --tail 20 2>/dev/null || echo "Aucun log disponible"
-              fi
-              
-              if [ $i -eq $HEALTH_CHECK_RETRIES ]; then
-                echo "❌ Échec du déploiement - Application non accessible après $HEALTH_CHECK_RETRIES tentatives"
-                echo "📋 État final des conteneurs:"
-                docker ps -a | grep nina-website || echo "Aucun conteneur nina-website"
-                echo "📋 Logs complets:"
-                docker logs nina-website --tail 50 2>/dev/null || echo "Aucun log disponible"
-                exit 1
-              else
-                sleep 10
-              fi
-            done
+            # Vérifier le status final
+            echo "✅ Déploiement terminé"
+            echo "📋 État du conteneur:"
+            docker ps | grep nina-website
+            echo "📋 Logs récents:"
+            docker logs nina-website --tail 20
 
   cleanup:
     needs: build-and-deploy
