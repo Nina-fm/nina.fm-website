@@ -39,20 +39,19 @@ export const useMetadataStore = defineStore('metadata', () => {
     }
 
     try {
-      // Utilise l'API Nina /mixtapes avec search
-      const searchQuery = `${liveQuery.value.authors || ''} ${liveQuery.value.name || ''}`.trim()
-      const response = await $fetch<{ data: Metadata[] }>(
+      // Utilise l'API Nina /metadata avec authors et name
+      const response = await $fetch<{ data: MixtapeApiResponse | null }>(
         `${config.public.apiUrl}${config.public.apiMetadataEndpoint}`,
         {
           query: {
-            search: searchQuery,
-            limit: 1,
+            authors: liveQuery.value.authors,
+            name: liveQuery.value.name,
           },
         },
       )
 
-      // Prend le premier résultat si trouvé
-      metadata.value = response.data?.[0] || null
+      // Transformer la réponse API en format Metadata
+      metadata.value = transformMixtapeToMetadata(response.data)
     } catch (error) {
       console.error('Error fetching metadata:', error)
       metadata.value = null

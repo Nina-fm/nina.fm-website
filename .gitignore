@@ -10,4 +10,6 @@ package-lock.json
 .env
 dist
 .DS_Store
-.env*
+.env
+.env.local
+.env.*.local

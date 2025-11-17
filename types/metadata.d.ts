@@ -12,29 +12,48 @@ declare global {
   }
 
   interface Author {
-    id: number
+    id: string
     name: string
-    avatar?: string
-    avatar_url?: string
+    slug: string
     position?: number
   }
 
   interface Tag {
-    id: number
+    id: string
     name: string
+    slug: string
+    color?: string
   }
 
+  // Format Nina API (ce qui est renvoyé par /metadata)
+  interface MixtapeApiResponse {
+    id: string
+    name: string
+    slug: string
+    year: number
+    description?: string
+    comment?: string
+    tracksAsText?: string
+    coverUrl?: string
+    coverThumbnailUrl?: string
+    djs: Author[]
+    tags: Tag[]
+    createdAt: string
+    updatedAt: string
+  }
+
+  // Format utilisé dans le website (pour compatibilité avec les composants existants)
   interface Metadata {
-    id: number
+    id: string
     name: string
     year?: number
     authors?: Author[]
     authors_text?: string
     tracks?: Track[]
     tracks_text?: string
-    cover?: string
     cover_url?: string
     tags?: Tag[]
   }
 }
-export {}
+export { }
+
