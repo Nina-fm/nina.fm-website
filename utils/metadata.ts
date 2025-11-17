@@ -8,10 +8,18 @@ export function transformMixtapeToMetadata(mixtape: MixtapeApiResponse | null): 
     id: mixtape.id,
     name: mixtape.name,
     year: mixtape.year,
-    authors: mixtape.djs,
-    authors_text: mixtape.djs.map((dj) => dj.name).join(', '),
-    tracks_text: mixtape.tracksAsText || '',
-    cover_url: mixtape.coverUrl,
-    tags: mixtape.tags,
+    authors_text: mixtape.djs.join(', '),
+    tracks: mixtape.tracks.map((track) => ({
+      artist: track.artist,
+      title: track.title,
+      position: track.position,
+      start_at: track.startAt,
+    })),
+    cover_url: mixtape.coverUrl || undefined,
+    tags: mixtape.tags.map((tagName, index) => ({
+      id: `tag-${index}`,
+      name: tagName,
+      slug: tagName.toLowerCase().replace(/\s+/g, '-'),
+    })),
   }
 }

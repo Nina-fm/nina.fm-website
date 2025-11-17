@@ -6,9 +6,9 @@ declare global {
   }
 
   interface Track extends TrackBase {
-    id: number
+    id?: number
     position: number
-    start_at: number
+    start_at: string | null
   }
 
   interface Author {
@@ -25,21 +25,25 @@ declare global {
     color?: string
   }
 
+  // Format des tracks parsés retournés par Nina API
+  interface ParsedTrack {
+    position: number
+    artist: string
+    title: string
+    startAt: string | null
+  }
+
   // Format Nina API (ce qui est renvoyé par /metadata)
   interface MixtapeApiResponse {
     id: string
     name: string
     slug: string
     year: number
-    description?: string
-    comment?: string
-    tracksAsText?: string
-    coverUrl?: string
-    coverThumbnailUrl?: string
-    djs: Author[]
-    tags: Tag[]
-    createdAt: string
-    updatedAt: string
+    coverUrl: string | null
+    tracks: ParsedTrack[]
+    djs: string[]
+    tags: string[]
+    comment: string | null
   }
 
   // Format utilisé dans le website (pour compatibilité avec les composants existants)
@@ -55,5 +59,4 @@ declare global {
     tags?: Tag[]
   }
 }
-export { }
-
+export {}
