@@ -25,16 +25,23 @@
 - États : loading, playing, stopped, preloading, networkIssue
 - Notifications toast via vue-sonner pour les états de connexion
 
-### 3. Métadonnées en Temps Réel
+### 3. Métadonnées en Temps Réel via Nina API
 
-- Système SSE (Server-Sent Events) pour 3 flux :
-  - `/events` : données IceCast + AirTime (info piste courante)
-  - `/progress` : progression de lecture
-  - `/listeners` : nombre d'auditeurs
+- **API unifiée** : Utilise Nina API (`https://api.nina.fm`) pour SSE et métadonnées
+- **Système SSE** (Server-Sent Events) pour 3 flux temps réel :
+  - `/stream/events` : données IceCast + AirTime (info piste courante)
+  - `/stream/progress` : progression de lecture
+  - `/stream/listeners` : nombre d'auditeurs
+- **Endpoint métadonnées** : `/metadata` (public, pas d'auth)
+  - Paramètres : `authors` (nom DJ) et `name` (titre mixtape)
+  - Retour : `{ data: Mixtape | null }` avec cover URLs complètes
+- **Transformation des données** : `transformMixtapeToMetadata()`
+  - Mappe `MixtapeApiResponse` (API) vers `Metadata` (website)
+  - Conversions : `djs` → `authors`, `coverUrl` → `cover_url`, `tracksAsText` → `tracks_text`
+  - IDs : UUID (string) au lieu de number
 - Décodage HTML entities pour les titres
 - Parsing automatique format "Artiste - Titre"
-- Fetch API pour enrichir métadonnées mixtapes
-- Types : Track, Author, Tag, Metadata
+- Types : Track, Author (avec slug), Tag (avec slug, color), Metadata, MixtapeApiResponse
 
 ### 4. Architecture Stores Pinia
 
@@ -62,14 +69,26 @@
 
 Variables requises :
 
+```bash
+# Flux audio direct
+NUXT_PUBLIC_STREAM_URL=https://flux.nina.fm/nina.mp3
+
+# Nina API - SSE temps réel (events, progress, listeners)
+# Dev: http://localhost:4000/stream
+# Prod: https://api.nina.fm/stream
+NUXT_PUBLIC_STREAM_SSE_URL=https://api.nina.fm/stream
+
+# Nina API - Métadonnées mixtapes
+# Dev: http://localhost:4000
+# Prod: https://api.nina.fm
+NUXT_PUBLIC_API_URL=https://api.nina.fm
+NUXT_PUBLIC_API_METADATA_ENDPOINT=/metadata
+
+# Dev server port (optionnel, défaut: 3000)
+FRONT_OUTPUT_PORT=3000
 ```
-NUXT_PUBLIC_STREAM_URL - URL flux audio
-NUXT_PUBLIC_STREAM_SSE_URL - URL serveur SSE
-NUXT_PUBLIC_API_URL - URL API métadonnées
-NUXT_PUBLIC_API_METADATA_ENDPOINT - Endpoint métadonnées
-NUXT_PUBLIC_API_KEY - Clé API
-FRONT_OUTPUT_PORT - Port dev (défaut 3000)
-```
+
+**Note** : Plus besoin de `NUXT_PUBLIC_API_KEY` depuis la migration vers Nina API
 
 ### 7. PWA & Optimisations
 
@@ -103,6 +122,7 @@ FRONT_OUTPUT_PORT - Port dev (défaut 3000)
 - `isInterlude()` : Détection interludes dans tracklist
 - `parseAirTimeDate()` : Parse dates AirTime
 - `rainbowColors` : Palettes couleurs (basic, psychedelic, flashy)
+- `transformMixtapeToMetadata()` : Transformation réponse API Nina vers format website
 
 ## Règles de Développement
 
