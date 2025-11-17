@@ -4,26 +4,6 @@
       "name": "WEBSITE",
       "path": ".",
     },
-    // {
-    //   "name": "SSE",
-    //   "path": "../nina.fm-sse",
-    // },
-    // {
-    //   "name": "Face B",
-    //   "path": "../nina.fm-faceb",
-    // },
-    // {
-    //   "name": "Face B (v2)",
-    //   "path": "../nina.fm-faceb-v2",
-    // },
-    // {
-    //   "name": "API",
-    //   "path": "../nina.fm-api",
-    // },
-    // {
-    // 	"name": "MIXTAPER",
-    // 	"path": "../nina.fm-mixtaper"
-    // }
   ],
   "settings": {},
 }
