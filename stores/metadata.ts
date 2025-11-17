@@ -33,14 +33,30 @@ export const useMetadataStore = defineStore('metadata', () => {
   const isMixtape = computed(() => !!metadata.value)
 
   const fetchMetadata = async () => {
-    const fetchData: Obj | null = await $fetch(`${config.public.apiUrl}${config.public.apiMetadataEndpoint}`, {
-      query: liveQuery.value,
-      headers: {
-        Authorization: `Bearer ${config.public.apiKey}`,
-      },
-    })
+    if (!liveQuery.value?.name) {
+      metadata.value = null
+      return
+    }
 
-    metadata.value = fetchData as unknown as Metadata
+    try {
+      // Utilise l'API Nina /mixtapes avec search
+      const searchQuery = `${liveQuery.value.authors || ''} ${liveQuery.value.name || ''}`.trim()
+      const response = await $fetch<{ data: Metadata[] }>(
+        `${config.public.apiUrl}${config.public.apiMetadataEndpoint}`,
+        {
+          query: {
+            search: searchQuery,
+            limit: 1,
+          },
+        },
+      )
+
+      // Prend le premier résultat si trouvé
+      metadata.value = response.data?.[0] || null
+    } catch (error) {
+      console.error('Error fetching metadata:', error)
+      metadata.value = null
+    }
   }
 
   const updateQuery = () => {
