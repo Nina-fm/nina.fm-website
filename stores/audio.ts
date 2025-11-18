@@ -12,7 +12,7 @@ export const useAudioStore = defineStore('audio', () => {
   const { log } = useDebugStore()
   const audioElement = useAudioElement()
 
-  const streamUrl = config.public.streamUrl
+  const streamUrl = config.public.audioStreamUrl
   const checkNetworkTimeout = config.public.streamCheckNetworkTimeout
 
   const { audio, currentTime, error, load, paused, played, readyState, toggleMute, unload } = audioElement

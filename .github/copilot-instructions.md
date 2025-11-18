@@ -70,19 +70,17 @@
 Variables requises :
 
 ```bash
-# Flux audio direct
-NUXT_PUBLIC_STREAM_URL=https://flux.nina.fm/nina.mp3
+# Flux audio direct MP3
+NUXT_PUBLIC_AUDIO_STREAM_URL=https://flux.nina.fm/nina.mp3
 
-# Nina API - SSE temps réel (events, progress, listeners)
-# Dev: http://localhost:4000/stream
-# Prod: https://api.nina.fm/stream
-NUXT_PUBLIC_STREAM_SSE_URL=https://api.nina.fm/stream
-
-# Nina API - Métadonnées mixtapes
+# Nina API - Base URL
 # Dev: http://localhost:4000
 # Prod: https://api.nina.fm
 NUXT_PUBLIC_API_URL=https://api.nina.fm
-NUXT_PUBLIC_API_METADATA_ENDPOINT=/metadata
+
+# Nina API - Endpoints
+NUXT_PUBLIC_API_STREAM_ENDPOINT=/stream    # SSE temps réel (events, progress, listeners)
+NUXT_PUBLIC_API_METADATA_ENDPOINT=/metadata  # Métadonnées mixtapes
 
 # Dev server port (optionnel, défaut: 3000)
 FRONT_OUTPUT_PORT=3000

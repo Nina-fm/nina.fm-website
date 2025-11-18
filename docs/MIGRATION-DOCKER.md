@@ -76,7 +76,7 @@ cd ~/apps/nina.fm-website
 
 # Créer le fichier .env avec les variables d'environnement
 cat > .env << EOF
-NUXT_PUBLIC_STREAM_URL=your_stream_url
+NUXT_PUBLIC_AUDIO_STREAM_URL=https://flux.nina.fm/nina.mp3
 NUXT_PUBLIC_STREAM_SSE_URL=your_sse_url
 NUXT_PUBLIC_API_URL=your_api_url
 NUXT_PUBLIC_API_METADATA_ENDPOINT=/metadata/show

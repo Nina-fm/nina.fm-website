@@ -56,7 +56,7 @@ NUXT_PUBLIC_API_KEY   # Clé API Nina.fm
 **Settings → Secrets and variables → Actions → Variables**
 
 ```
-NUXT_PUBLIC_STREAM_URL              # https://stream.nina.fm/stream
+NUXT_PUBLIC_AUDIO_STREAM_URL        # https://flux.nina.fm/nina.mp3
 NUXT_PUBLIC_STREAM_SSE_URL          # https://stream.nina.fm
 NUXT_PUBLIC_API_URL                 # https://api.nina.fm
 NUXT_PUBLIC_API_METADATA_ENDPOINT   # /metadata/show
