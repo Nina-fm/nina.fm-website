@@ -4,7 +4,7 @@ import detectAutoplay from '~/utils/detectAutoplay'
 export const useBrowserStore = defineStore('browser', () => {
   const config = useRuntimeConfig()
   const { toggleMute } = useAudioStore()
-  const { liveQuery, metadata } = useMetadataStoreRefs()
+  const { metadata } = useMetadataStoreRefs()
   const { isSupported, lockOrientation } = useScreenOrientation()
 
   const wakeLock = reactive(useWakeLock())
@@ -23,23 +23,18 @@ export const useBrowserStore = defineStore('browser', () => {
   }
 
   const updateMediaSession = async () => {
-    if (
-      'mediaSession' in navigator &&
-      navigator.mediaSession.metadata &&
-      liveQuery.value?.authors &&
-      liveQuery.value.name
-    ) {
-      navigator.mediaSession.metadata.title = liveQuery.value.name
-      navigator.mediaSession.metadata.artist = liveQuery.value.authors
-      navigator.mediaSession.metadata.artwork = await getArtwork(metadata.value?.cover_url)
+    if ('mediaSession' in navigator && navigator.mediaSession.metadata && metadata.value) {
+      navigator.mediaSession.metadata.title = metadata.value.name
+      navigator.mediaSession.metadata.artist = metadata.value.authors_text || 'Nina.fm'
+      navigator.mediaSession.metadata.artwork = await getArtwork(metadata.value.cover_url)
     }
   }
 
   const initMediaSession = async () => {
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new window.MediaMetadata({
-        title: liveQuery.value?.name,
-        artist: liveQuery.value?.authors,
+        title: metadata.value?.name || 'Nina.fm',
+        artist: metadata.value?.authors_text || 'Nina.fm',
         album: config.public.sitename,
         artwork: await getArtwork(metadata.value?.cover_url),
       })
@@ -72,7 +67,7 @@ export const useBrowserStore = defineStore('browser', () => {
   }
 
   watch(
-    liveQuery,
+    metadata,
     () => {
       updateMediaSession()
     },

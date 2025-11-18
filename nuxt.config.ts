@@ -3,7 +3,7 @@ import svgLoader from 'vite-svg-loader'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   modules: [
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
@@ -50,7 +50,6 @@ export default defineNuxtConfig({
       streamCheckNetworkTimeout: 10000,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
       apiStreamEndpoint: process.env.NUXT_PUBLIC_API_STREAM_ENDPOINT,
-      apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
     },
   },
   devServer: {

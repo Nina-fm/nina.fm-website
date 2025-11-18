@@ -1,7 +1,7 @@
 /**
  * Transforme la réponse de l'API Nina en format Metadata utilisé par le website
  */
-export function transformMixtapeToMetadata(mixtape: MixtapeApiResponse | null): Metadata | null {
+export function transformMixtapeToMetadata(mixtape: MixtapeMetadataDto | MixtapeApiResponse | null): Metadata | null {
   if (!mixtape) return null
 
   return {

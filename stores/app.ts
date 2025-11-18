@@ -7,7 +7,7 @@ const metaTitleRefreshTime = 10000
 export const useAppStore = defineStore('app', () => {
   const config = useRuntimeConfig()
   const { muted, loading, locked, playing } = useAudioStoreRefs()
-  const { liveQuery } = useMetadataStoreRefs()
+  const { metadata } = useMetadataStoreRefs()
   const { theme, themeOptions, isDarkModeActive, isRainbowMode } = useThemeStoreRefs()
   const metaTitle = ref<string>(config.public.siteTitle)
   const isMobile = ref<boolean>(false)
@@ -29,11 +29,11 @@ export const useAppStore = defineStore('app', () => {
   }
 
   const updateMetaTitle = () => {
-    if (!liveQuery.value?.name) return config.public.siteTitle
+    if (!metadata.value?.name) return config.public.siteTitle
 
     metaTitle.value =
       metaTitle.value === config.public.siteTitle
-        ? `${liveQuery.value?.name} - ${liveQuery.value?.authors}`
+        ? `${metadata.value?.name} - ${metadata.value?.authors_text}`
         : config.public.siteTitle
   }
 

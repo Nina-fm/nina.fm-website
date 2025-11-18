@@ -58,5 +58,34 @@ declare global {
     cover_url?: string
     tags?: Tag[]
   }
+
+  // Nouveaux types pour les endpoints SSE Nina API
+  interface MixtapeMetadataDto {
+    id: string
+    name: string
+    slug: string
+    year: number
+    coverUrl: string | null
+    tracks: ParsedTrack[]
+    djs: string[]
+    tags: string[]
+    comment: string | null
+  }
+
+  interface TrackMetadataDto {
+    artist: string
+    title: string
+  }
+
+  interface MetadataStreamDto {
+    type: 'mixtape' | 'track' | null
+    mixtape?: MixtapeMetadataDto | null
+    track?: TrackMetadataDto | null
+  }
+
+  interface ActivityStreamDto {
+    progress: number
+    listeners: number
+  }
 }
 export {}
