@@ -47,11 +47,10 @@ export default defineNuxtConfig({
       sitename: 'Nina.fm',
       siteTitle: 'Nina.fm - H24 Musical - Ø Pub',
       streamUrl: process.env.NUXT_PUBLIC_STREAM_URL,
-      streamSseUrl: process.env.NUXT_PUBLIC_STREAM_SSE_URL,
       streamCheckNetworkTimeout: 10000,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
+      apiStreamEndpoint: process.env.NUXT_PUBLIC_API_STREAM_ENDPOINT,
       apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
-      apiKey: process.env.NUXT_PUBLIC_API_KEY,
     },
   },
   devServer: {

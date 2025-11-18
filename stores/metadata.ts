@@ -70,7 +70,7 @@ export const useMetadataStore = defineStore('metadata', () => {
 
   const listenSSEListeners = () => {
     if (!isListeningListeners.value) {
-      const events = new EventSource(`${config.public.streamSseUrl}/listeners`)
+      const events = new EventSource(`${config.public.apiUrl}${config.public.apiStreamEndpoint}/listeners`)
 
       events.onerror = () => {
         setTimeout(listenSSEListeners, 3000)
@@ -85,7 +85,7 @@ export const useMetadataStore = defineStore('metadata', () => {
 
   const listenSSEProgress = () => {
     if (!isListeningProgress.value) {
-      const events = new EventSource(`${config.public.streamSseUrl}/progress`)
+      const events = new EventSource(`${config.public.apiUrl}${config.public.apiStreamEndpoint}/progress`)
 
       events.onerror = () => {
         setTimeout(listenSSEProgress, 3000)
@@ -100,7 +100,7 @@ export const useMetadataStore = defineStore('metadata', () => {
 
   const listenSSEEvents = () => {
     if (!isListeningEvents.value) {
-      const events = new EventSource(`${config.public.streamSseUrl}/events`)
+      const events = new EventSource(`${config.public.apiUrl}${config.public.apiStreamEndpoint}/events`)
 
       events.onerror = () => {
         setTimeout(listenSSEEvents, 3000)
