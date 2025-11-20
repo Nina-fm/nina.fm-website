@@ -1,4 +1,7 @@
 <script setup lang="ts">
+  import { useAudioStore, useAudioStoreRefs } from '~/stores/audio'
+  import { useThemeStoreRefs } from '~/stores/theme'
+
   const { muted, playing } = useAudioStoreRefs()
   const { toggleMute } = useAudioStore()
   const { isDarkModeActive } = useThemeStoreRefs()

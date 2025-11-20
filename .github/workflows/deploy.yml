@@ -6,13 +6,13 @@ on:
   workflow_dispatch: # Permet le déclenchement manuel
     inputs:
       no-cache:
-        description: "Force rebuild without cache"
+        description: 'Force rebuild without cache'
         required: false
-        default: "false"
+        default: 'false'
         type: choice
         options:
-          - "false"
-          - "true"
+          - 'false'
+          - 'true'
 
 env:
   REGISTRY: ghcr.io
@@ -25,22 +25,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js and pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Enable Corepack
         run: corepack enable
 
+      - name: Install pnpm
+        run: corepack prepare pnpm@10.13.1 --activate
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Type check
-        run: yarn type-check || echo "No type-check script, skipping..."
+        run: pnpm type-check || echo "No type-check script, skipping..."
 
       - name: Run lint
-        run: yarn lint
+        run: pnpm lint
 
   build-and-deploy:
     needs: test
@@ -57,13 +60,16 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
+      - name: Setup Node.js and pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Enable Corepack
         run: corepack enable
+
+      - name: Install pnpm
+        run: corepack prepare pnpm@10.13.1 --activate
 
       - name: Get package version
         id: package-version
@@ -105,11 +111,9 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
           build-args: |
-            NUXT_PUBLIC_STREAM_URL=${{ vars.NUXT_PUBLIC_STREAM_URL }}
-            NUXT_PUBLIC_STREAM_SSE_URL=${{ vars.NUXT_PUBLIC_STREAM_SSE_URL }}
+            NUXT_PUBLIC_AUDIO_STREAM_URL=${{ vars.NUXT_PUBLIC_AUDIO_STREAM_URL }}
             NUXT_PUBLIC_API_URL=${{ vars.NUXT_PUBLIC_API_URL }}
-            NUXT_PUBLIC_API_METADATA_ENDPOINT=${{ vars.NUXT_PUBLIC_API_METADATA_ENDPOINT }}
-            NUXT_PUBLIC_API_KEY=${{ secrets.NUXT_PUBLIC_API_KEY }}
+            NUXT_PUBLIC_API_STREAM_ENDPOINT=${{ vars.NUXT_PUBLIC_API_STREAM_ENDPOINT }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -154,11 +158,9 @@ jobs:
             NODE_ENV=production
             PORT=3000
             HOST=0.0.0.0
-            NUXT_PUBLIC_STREAM_URL=${{ vars.NUXT_PUBLIC_STREAM_URL }}
-            NUXT_PUBLIC_STREAM_SSE_URL=${{ vars.NUXT_PUBLIC_STREAM_SSE_URL }}
+            NUXT_PUBLIC_AUDIO_STREAM_URL=${{ vars.NUXT_PUBLIC_AUDIO_STREAM_URL }}
             NUXT_PUBLIC_API_URL=${{ vars.NUXT_PUBLIC_API_URL }}
-            NUXT_PUBLIC_API_METADATA_ENDPOINT=${{ vars.NUXT_PUBLIC_API_METADATA_ENDPOINT }}
-            NUXT_PUBLIC_API_KEY=${{ secrets.NUXT_PUBLIC_API_KEY }}
+            NUXT_PUBLIC_API_STREAM_ENDPOINT=${{ vars.NUXT_PUBLIC_API_STREAM_ENDPOINT }}
             EOF
 
             chmod 600 /var/nina/website/.env.prod
@@ -178,11 +180,9 @@ jobs:
                   - NODE_ENV=production
                   - PORT=3000
                   - HOST=0.0.0.0
-                  - NUXT_PUBLIC_STREAM_URL=${NUXT_PUBLIC_STREAM_URL}
-                  - NUXT_PUBLIC_STREAM_SSE_URL=${NUXT_PUBLIC_STREAM_SSE_URL}
+                  - NUXT_PUBLIC_AUDIO_STREAM_URL=${NUXT_PUBLIC_AUDIO_STREAM_URL}
                   - NUXT_PUBLIC_API_URL=${NUXT_PUBLIC_API_URL}
-                  - NUXT_PUBLIC_API_METADATA_ENDPOINT=${NUXT_PUBLIC_API_METADATA_ENDPOINT}
-                  - NUXT_PUBLIC_API_KEY=${NUXT_PUBLIC_API_KEY}
+                  - NUXT_PUBLIC_API_STREAM_ENDPOINT=${NUXT_PUBLIC_API_STREAM_ENDPOINT}
                 ports:
                   - "127.0.0.1:3000:3000"
                 networks:

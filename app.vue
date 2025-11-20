@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+  import { useThemeStoreRefs } from '~/stores/theme'
   import { themes } from '~/themes'
 
-  useDaylightStore()
-  const { init: initBrowser } = useBrowserStore()
+  // Les stores sont initialisés dans le plugin 01.init-stores.client.ts
   const { current } = useThemeStoreRefs()
 
   const loadThemesCss = () => {
@@ -13,10 +13,6 @@
 
   onNuxtReady(() => {
     loadThemesCss()
-  })
-
-  onMounted(() => {
-    initBrowser()
   })
 </script>
 

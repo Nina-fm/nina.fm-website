@@ -1,4 +1,4 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 
 export const useMetadataStore = defineStore('metadata', () => {
   const config = useRuntimeConfig()

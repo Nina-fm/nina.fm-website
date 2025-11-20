@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { useVinylThemeStore, useVinylThemeStoreRefs } from '~/themes/vinyl/stores/vinylTheme'
+
   const Content = defineAsyncComponent(() => import('@/components/contents/About.vue'))
 
   const { toggleContent, closeContent } = useVinylThemeStore()

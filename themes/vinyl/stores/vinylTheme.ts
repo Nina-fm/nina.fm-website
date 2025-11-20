@@ -1,4 +1,6 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
+import { useAppStore } from '~/stores/app'
+import { useMetadataStoreRefs } from '~/stores/metadata'
 
 export const useVinylThemeStore = defineStore('vinylTheme', () => {
   const { isMixtape } = useMetadataStoreRefs()

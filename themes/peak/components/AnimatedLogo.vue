@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { usePeakThemeStoreRefs } from '~/themes/peak/stores/peakTheme'
+
   const LogoSvg = defineAsyncComponent(() => import('@/assets/svg/logo-stroke.svg'))
 
   const { isDetailsOpen, isContentOpen } = usePeakThemeStoreRefs()

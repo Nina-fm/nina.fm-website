@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { useThemeStoreRefs } from '~/stores/theme'
+
   const { isRainbowMode, themeOptions } = useThemeStoreRefs()
 
   const interval = ref<ReturnType<typeof setInterval>>()
@@ -57,8 +59,8 @@
       :class="
         cn(
           'pointer-events-none absolute inset-0 z-50 bg-transparent opacity-0 transition-opacity duration-300 ease-in-out',
-          themeOptions.rainbow.class,
-          $attrs.class,
+          themeOptions.rainbow?.class,
+          $attrs.class as string,
           { 'opacity-100': isRainbowMode },
         )
       "

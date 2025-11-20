@@ -1,4 +1,6 @@
+import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { toast } from 'vue-sonner'
+import { useDebugStore } from '~/stores/debug'
 
 const defaultState = {
   locked: false,

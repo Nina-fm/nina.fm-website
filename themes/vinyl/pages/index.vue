@@ -1,4 +1,8 @@
 <script setup lang="ts">
+  import { useAudioStoreRefs } from '~/stores/audio'
+  import { useMetadataStoreRefs } from '~/stores/metadata'
+  import { useVinylThemeStore, useVinylThemeStoreRefs } from '~/themes/vinyl/stores/vinylTheme'
+
   const { width, height } = useWindowSize()
   const { playing } = useAudioStoreRefs()
   const { listeners, progress, metadata, isMixtape } = useMetadataStoreRefs()

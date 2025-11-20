@@ -1,4 +1,5 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
+import { useDaylightStoreRefs } from '~/stores/daylight'
 import { themes } from '../themes'
 
 export const useThemeStore = defineStore('theme', () => {
@@ -33,7 +34,9 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   const toggleTheme = () => {
-    switchTheme(nextTheme.value.key)
+    if (nextTheme.value) {
+      switchTheme(nextTheme.value.key)
+    }
   }
 
   const toggleDarkMode = () => {

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { usePeakThemeStore } from '~/themes/peak/stores/peakTheme'
+
   const { toggleDetails, closeContent, closeDetails } = usePeakThemeStore()
 
   const handleKeyDown = (e: KeyboardEvent) => {

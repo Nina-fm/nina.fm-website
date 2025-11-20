@@ -4,17 +4,13 @@ import svgLoader from 'vite-svg-loader'
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  ssr: false, // Désactiver SSR pour éviter les problèmes avec Pinia et les stores audio
   modules: [
     '@nuxt/eslint',
+    '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@vite-pwa/nuxt',
-    [
-      '@pinia/nuxt',
-      {
-        autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'],
-      },
-    ],
     [
       '@vueuse/nuxt',
       {
@@ -37,8 +33,8 @@ export default defineNuxtConfig({
       prefix: 'Vinyl',
     },
   ],
-  imports: {
-    dirs: ['stores', 'themes/**/stores/*.{ts,js}'],
+  pinia: {
+    storesDirs: ['./stores/**', './themes/**/stores/**'],
   },
   css: ['@/assets/css/tailwind.css'],
   runtimeConfig: {

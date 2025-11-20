@@ -1,4 +1,7 @@
 import mime from 'mime'
+import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
+import { useAudioStore } from '~/stores/audio'
+import { useMetadataStoreRefs } from '~/stores/metadata'
 import detectAutoplay from '~/utils/detectAutoplay'
 
 export const useBrowserStore = defineStore('browser', () => {

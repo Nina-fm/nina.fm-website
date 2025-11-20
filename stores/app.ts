@@ -1,4 +1,7 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
+import { useAudioStoreRefs } from '~/stores/audio'
+import { useMetadataStoreRefs } from '~/stores/metadata'
+import { useThemeStoreRefs } from '~/stores/theme'
 
 type ClsObj = ObjectOf<boolean>
 

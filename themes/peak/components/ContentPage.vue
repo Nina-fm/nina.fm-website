@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import MenuButton from '~/components/common/MenuButton.vue'
+  import { usePeakThemeStore, usePeakThemeStoreRefs } from '~/themes/peak/stores/peakTheme'
 
   const Content = defineAsyncComponent(() => import('@/components/contents/About.vue'))
 

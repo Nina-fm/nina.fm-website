@@ -1,5 +1,8 @@
 <script lang="ts" setup>
   import { CircleMinusIcon, CirclePlusIcon } from 'lucide-vue-next'
+  import { useAudioStoreRefs } from '~/stores/audio'
+  import { useMetadataStoreRefs } from '~/stores/metadata'
+  import { usePeakThemeStore, usePeakThemeStoreRefs } from '~/themes/peak/stores/peakTheme'
 
   defineEmits<{
     (e: 'click'): void

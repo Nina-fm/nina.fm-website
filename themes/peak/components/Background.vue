@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+  import { useAudioStoreRefs } from '~/stores/audio'
+  import { useThemeStoreRefs } from '~/stores/theme'
+
   const maskLight = (await import(`../assets/images/mask.png`)).default
   const maskDark = (await import(`../assets/images/mask-night.png`)).default
   const imgLight = (await import(`../assets/images/background.jpg`)).default
