@@ -109,7 +109,6 @@ FRONT_OUTPUT_PORT=3000
 
 - Build mode cluster : `NITRO_PRESET=node_cluster`
 - PM2 pour production : `ecosystem.config.cjs`
-- Netlify : configuration dans `netlify.toml`
 - Statcounter analytics intégré
 
 ### 10. Utilitaires Clés
