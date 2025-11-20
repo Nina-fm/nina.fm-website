@@ -65,6 +65,7 @@ WORKDIR /app
 # Copy built application
 COPY --from=build --chown=nuxtjs:nodejs /app/.output ./.output
 COPY --from=build --chown=nuxtjs:nodejs /app/package.json ./package.json
+COPY --from=build --chown=nuxtjs:nodejs /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
 # Install production dependencies (skip scripts)
 RUN pnpm install --frozen-lockfile --prod --ignore-scripts
