@@ -71,9 +71,8 @@ jobs:
       - name: Install pnpm
         run: corepack prepare pnpm@10.13.1 --activate
 
-      - name: Get package version
-        id: package-version
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Version and tag
         id: versioning
