@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
+import { useFullscreen } from '~/composables/useFullscreen'
 import { useDaylightStoreRefs } from '~/stores/daylight'
 import { themes } from '../themes'
 
