@@ -6,35 +6,86 @@ declare global {
   }
 
   interface Track extends TrackBase {
-    id: number
+    id?: number
     position: number
-    start_at: number
+    start_at: string | null
   }
 
   interface Author {
-    id: number
+    id: string
     name: string
-    avatar?: string
-    avatar_url?: string
+    slug: string
     position?: number
   }
 
   interface Tag {
-    id: number
+    id: string
     name: string
+    slug: string
+    color?: string
   }
 
+  // Format des tracks parsés retournés par Nina API
+  interface ParsedTrack {
+    position: number
+    artist: string
+    title: string
+    startAt: string | null
+  }
+
+  // Format Nina API (ce qui est renvoyé par /metadata)
+  interface MixtapeApiResponse {
+    id: string
+    name: string
+    slug: string
+    year: number
+    coverUrl: string | null
+    tracks: ParsedTrack[]
+    djs: string[]
+    tags: string[]
+    comment: string | null
+  }
+
+  // Format utilisé dans le website (pour compatibilité avec les composants existants)
   interface Metadata {
-    id: number
+    id: string
     name: string
     year?: number
     authors?: Author[]
     authors_text?: string
     tracks?: Track[]
     tracks_text?: string
-    cover?: string
     cover_url?: string
     tags?: Tag[]
+  }
+
+  // Nouveaux types pour les endpoints SSE Nina API
+  interface MixtapeMetadataDto {
+    id: string
+    name: string
+    slug: string
+    year: number
+    coverUrl: string | null
+    tracks: ParsedTrack[]
+    djs: string[]
+    tags: string[]
+    comment: string | null
+  }
+
+  interface TrackMetadataDto {
+    artist: string
+    title: string
+  }
+
+  interface MetadataStreamDto {
+    type: 'mixtape' | 'track' | null
+    mixtape?: MixtapeMetadataDto | null
+    track?: TrackMetadataDto | null
+  }
+
+  interface ActivityStreamDto {
+    progress: number
+    listeners: number
   }
 }
 export {}

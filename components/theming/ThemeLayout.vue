@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { useThemeStoreRefs } from '~/stores/theme'
+
   const props = defineProps<{
     name?: string
   }>()

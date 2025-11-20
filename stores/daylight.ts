@@ -1,5 +1,5 @@
 import { getHours } from 'date-fns'
-import { acceptHMRUpdate, defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 
 enum DaylightMode {
   DAY = 'day',

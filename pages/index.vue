@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { useAppStoreRefs } from '~/stores/app'
+
   const { metaTitle } = useAppStoreRefs()
 
   watch(metaTitle, (value) => {

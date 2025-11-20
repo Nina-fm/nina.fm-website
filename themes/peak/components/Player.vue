@@ -1,5 +1,8 @@
 <script lang="ts" setup>
   import { CircleMinusIcon, CirclePlusIcon } from 'lucide-vue-next'
+  import { useAudioStoreRefs } from '~/stores/audio'
+  import { useMetadataStoreRefs } from '~/stores/metadata'
+  import { usePeakThemeStore, usePeakThemeStoreRefs } from '~/themes/peak/stores/peakTheme'
 
   defineEmits<{
     (e: 'click'): void
@@ -12,15 +15,15 @@
     listening: "À l'écoute sur Nina.fm",
   }
   const { locked, loading, playing } = useAudioStoreRefs()
-  const { isMixtape, liveQuery } = useMetadataStoreRefs()
+  const { isMixtape, metadata } = useMetadataStoreRefs()
   const { toggleDetails } = usePeakThemeStore()
   const { isDetailsOpen } = usePeakThemeStoreRefs()
 
   const shouldPlay = computed(() => !locked.value || loading.value)
   const initMsg = computed(() => (shouldPlay.value ? msg.loading : msg.locked))
   const typeText = computed(() => (shouldPlay.value ? (isMixtape.value ? msg.mixtape : msg.listening) : false))
-  const artist = computed(() => liveQuery.value?.authors)
-  const title = computed(() => liveQuery.value?.name)
+  const artist = computed(() => metadata.value?.authors_text)
+  const title = computed(() => metadata.value?.name)
 </script>
 
 <template>

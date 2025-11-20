@@ -1,5 +1,7 @@
 <script lang="ts" setup>
   import { BugIcon } from 'lucide-vue-next'
+  import { useAudioStore } from '~/stores/audio'
+  import { useDebugStore, useDebugStoreRefs } from '~/stores/debug'
 
   const { debug, logs } = useDebugStoreRefs()
   const { clearLogs } = useDebugStore()

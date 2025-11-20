@@ -3,18 +3,13 @@ import svgLoader from 'vite-svg-loader'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   modules: [
     '@nuxt/eslint',
+    '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@vite-pwa/nuxt',
-    [
-      '@pinia/nuxt',
-      {
-        autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'],
-      },
-    ],
     [
       '@vueuse/nuxt',
       {
@@ -24,8 +19,10 @@ export default defineNuxtConfig({
     '@nuxtjs/device',
   ],
   components: [
+    // UI components are handled by shadcn-nuxt auto-import
+    // Other components
     {
-      path: '@/components/',
+      path: '@/components',
       pathPrefix: false,
     },
     {
@@ -37,8 +34,8 @@ export default defineNuxtConfig({
       prefix: 'Vinyl',
     },
   ],
-  imports: {
-    dirs: ['stores', 'themes/**/stores/*.{ts,js}'],
+  pinia: {
+    storesDirs: ['./stores/**', './themes/**/stores/**'],
   },
   css: ['@/assets/css/tailwind.css'],
   runtimeConfig: {
@@ -46,12 +43,10 @@ export default defineNuxtConfig({
     public: {
       sitename: 'Nina.fm',
       siteTitle: 'Nina.fm - H24 Musical - Ø Pub',
-      streamUrl: process.env.NUXT_PUBLIC_STREAM_URL,
-      streamSseUrl: process.env.NUXT_PUBLIC_STREAM_SSE_URL,
+      audioStreamUrl: process.env.NUXT_PUBLIC_AUDIO_STREAM_URL,
       streamCheckNetworkTimeout: 10000,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
-      apiMetadataEndpoint: process.env.NUXT_PUBLIC_API_METADATA_ENDPOINT,
-      apiKey: process.env.NUXT_PUBLIC_API_KEY,
+      apiStreamEndpoint: process.env.NUXT_PUBLIC_API_STREAM_ENDPOINT,
     },
   },
   devServer: {
@@ -171,6 +166,7 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: '/',
+      globPatterns: [], // Disable default glob patterns to avoid warnings
     },
     devOptions: {
       enabled: true,

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { CirclePlayIcon, RefreshCwIcon } from 'lucide-vue-next'
+  import { useAudioStore, useAudioStoreRefs } from '~/stores/audio'
 
   const { networkIssue, loading, locked, playing, preloadStarted, readyToPlay } = useAudioStoreRefs()
   const { start, refresh } = useAudioStore()

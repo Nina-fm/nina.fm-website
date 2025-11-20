@@ -1,5 +1,6 @@
 {
   "name": "nina.fm-website",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +11,10 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "format": "prettier --write --list-different \"./*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"{assets,components,composables,pages,server,stores,themes,types,utils}/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\"",
-    "pm2:restart": "pm2 restart nina-website"
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "version:check": "changeset status"
   },
   "dependencies": {
     "@nuxtjs/device": "3.2.4",
@@ -22,7 +26,7 @@
     "html-entities": "^2.5.2",
     "lucide-vue-next": "^0.483.0",
     "mime": "^4.0.6",
-    "nuxt": "^3.16.0",
+    "nuxt": "^4.1.0",
     "reka-ui": "^2.1.0",
     "shadcn-nuxt": "1.0.3",
     "tailwind-merge": "^3.0.2",
@@ -34,13 +38,14 @@
     "vue-sonner": "^1.3.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.5",
     "@lewebsimple/nuxt3-svg": "^0.2.2",
     "@nuxt/eslint": "1.2.0",
-    "@nuxt/kit": "^3.16.0",
+    "@nuxt/kit": "^4.1.0",
     "@nuxt/ui-templates": "^1.3.4",
     "@nuxtjs/sitemap": "^7.2.9",
     "@nuxtjs/tailwindcss": "^6.13.2",
-    "@pinia/nuxt": "^0.10.1",
+    "@pinia/nuxt": "^0.11.3",
     "@types/mime": "^4.0.0",
     "@types/node": "^22.13.11",
     "@types/uniqid": "^5.3.4",
@@ -57,5 +62,5 @@
     "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^2.2.8"
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "pnpm@10.13.1"
 }

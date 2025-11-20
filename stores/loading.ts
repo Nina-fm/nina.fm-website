@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { useAudioStoreRefs } from './audio'
 
 export const useLoadingStore = defineStore('loading', () => {
-  const { isLoading: isAudioLoading } = useAudioStoreRefs()
+  const { loading: isAudioLoading } = useAudioStoreRefs()
   const loading = ref<boolean>(false)
   const isLoading = computed<boolean>(() => loading.value || isAudioLoading.value)
 

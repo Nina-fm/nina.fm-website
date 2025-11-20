@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { useVinylThemeStore, useVinylThemeStoreRefs } from '~/themes/vinyl/stores/vinylTheme'
+
   const props = defineProps<{
     title?: string
     artist?: string

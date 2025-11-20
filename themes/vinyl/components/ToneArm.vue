@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { useMetadataStoreRefs } from '~/stores/metadata'
+
   const ToneArmSvg = defineAsyncComponent(() => import('../assets/svg/tonearm.svg'))
 
   const props = defineProps<{

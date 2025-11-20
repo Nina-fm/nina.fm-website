@@ -1,5 +1,7 @@
 <script lang="ts" setup>
   import uniqid from 'uniqid'
+  import { useMetadataStoreRefs } from '~/stores/metadata'
+  import { usePeakThemeStore, usePeakThemeStoreRefs } from '~/themes/peak/stores/peakTheme'
 
   const { metadata, progress } = useMetadataStoreRefs()
   const { isDetailsOpen } = usePeakThemeStoreRefs()

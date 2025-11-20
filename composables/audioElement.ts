@@ -1,3 +1,5 @@
+import { useDebugStore } from '~/stores/debug'
+
 const networkStatusCodes = ['NETWORK_EMPTY', 'NETWORK_IDLE', 'NETWORK_LOADING', 'NETWORK_NO_SOURCE']
 const networkStatusTexts = [
   'There is no data yet. Also, readyState is HAVE_NOTHING.',

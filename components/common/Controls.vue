@@ -13,6 +13,8 @@
     VolumeOffIcon,
   } from 'lucide-vue-next'
   import type { ButtonVariants } from '~/components/ui/button'
+  import { useAudioStore, useAudioStoreRefs } from '~/stores/audio'
+  import { useThemeStore, useThemeStoreRefs } from '~/stores/theme'
 
   const props = withDefaults(
     defineProps<{
@@ -30,7 +32,7 @@
   const { toggleFullscreen, toggleRainbowMode, toggleDarkMode, toggleTheme } = useThemeStore()
   const { darkMode, isFullscreen, isRainbowMode, nextTheme, themeOptions, hasManyThemes } = useThemeStoreRefs()
 
-  const themeToggleTooltip = computed(() => `Passer au thème ${nextTheme.value.name}`)
+  const themeToggleTooltip = computed(() => `Passer au thème ${nextTheme.value?.name}`)
   const rainbowTooltip = computed(() =>
     isRainbowMode.value ? 'Quitter le mode psychédélique' : 'Passer en mode psychédélique',
   )
@@ -99,8 +101,8 @@
         :class="props.controlsClass"
         @click="toggleTheme"
       >
-        <MountainSnowIcon v-if="nextTheme.key === 'peak'" />
-        <Disc3Icon v-else-if="nextTheme.key === 'vinyl'" />
+        <MountainSnowIcon v-if="nextTheme?.key === 'peak'" />
+        <Disc3Icon v-else-if="nextTheme?.key === 'vinyl'" />
       </ControlButton>
       <ControlButton
         v-if="playing"

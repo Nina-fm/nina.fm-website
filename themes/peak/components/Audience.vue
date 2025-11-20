@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { useMetadataStoreRefs } from '~/stores/metadata'
+
   interface Star {
     styles: {
       width: string

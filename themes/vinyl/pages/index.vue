@@ -1,7 +1,11 @@
 <script setup lang="ts">
+  import { useAudioStoreRefs } from '~/stores/audio'
+  import { useMetadataStoreRefs } from '~/stores/metadata'
+  import { useVinylThemeStore, useVinylThemeStoreRefs } from '~/themes/vinyl/stores/vinylTheme'
+
   const { width, height } = useWindowSize()
   const { playing } = useAudioStoreRefs()
-  const { liveQuery, listeners, progress, metadata, isMixtape } = useMetadataStoreRefs()
+  const { listeners, progress, metadata, isMixtape } = useMetadataStoreRefs()
   const { isContentOpen, isDetailsOpen } = useVinylThemeStoreRefs()
   const { toggleDetails, closeDetails, closeContent } = useVinylThemeStore()
 
@@ -9,8 +13,8 @@
   const minDimension = computed(() => Math.min(width.value, height.value))
   const scaling = computed(() => (minDimension.value * 100) / baseHeight / 100)
 
-  const artist = computed(() => liveQuery.value?.authors)
-  const title = computed(() => liveQuery.value?.name)
+  const artist = computed(() => metadata.value?.authors_text)
+  const title = computed(() => metadata.value?.name)
   const year = computed(() => metadata.value?.year)
   const cover = computed(() => (metadata.value?.cover_url as string) ?? undefined)
   const tracks = computed(() => (metadata.value?.tracks as Track[]) ?? undefined)
