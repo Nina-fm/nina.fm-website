@@ -49,7 +49,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
       id-token: write
 
@@ -74,6 +74,66 @@ jobs:
       - name: Get package version
         id: package-version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Version and tag
+        id: versioning
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Configuration git pour les commits automatiques
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # DEBUG: Lister les fichiers dans .changeset
+          echo "🔍 DEBUG: Contenu du dossier .changeset/"
+          ls -la .changeset/ || echo "Dossier .changeset inexistant"
+
+          # Vérifier s'il y a des changesets à appliquer
+          CHANGESET_FILES=$(ls .changeset/*.md 2>/dev/null | grep -v README || echo "")
+          echo "🔍 DEBUG: Fichiers changeset trouvés: $CHANGESET_FILES"
+
+          if [ -n "$CHANGESET_FILES" ]; then
+            echo "📦 Changesets détectés, mise à jour de la version..."
+            
+            # Exécuter changeset version (génère CHANGELOG.md automatiquement)
+            echo "🔍 Exécution de changeset:version (génère package.json + CHANGELOG.md)..."
+            if ! pnpm changeset:version; then
+              echo "❌ Erreur lors de l'exécution de changeset:version"
+              exit 1
+            fi
+            
+            # Récupérer la nouvelle version (sans prefix 'v')
+            NEW_VERSION=$(node -p "require('./package.json').version")
+            CLEAN_VERSION=$(echo $NEW_VERSION | sed 's/^v//')
+            echo "🏷️ Nouvelle version: $CLEAN_VERSION"
+            
+            # Push du commit créé par changeset (il commit automatiquement)
+            echo "⬆️ Push du commit de version créé par changeset..."
+            if ! git push origin main; then
+              echo "❌ Erreur lors du push du commit"
+              exit 1
+            fi
+            
+            # Créer le tag Git (sans prefix 'v')
+            echo "🏷️ Création du tag $CLEAN_VERSION..."
+            git tag "$CLEAN_VERSION"
+            
+            # Push du tag
+            echo "⬆️ Push du tag $CLEAN_VERSION..."
+            if ! git push origin "$CLEAN_VERSION"; then
+              echo "❌ Erreur lors du push du tag"
+              exit 1
+            fi
+            
+            echo "✅ Version $CLEAN_VERSION créée, taguée et poussée avec succès"
+            echo "version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
+            echo "has_release=true" >> $GITHUB_OUTPUT
+          else
+            # Pas de changesets, utiliser la version actuelle
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            echo "📋 Aucun changeset détecté, version actuelle: v$CURRENT_VERSION"
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "has_release=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Log in to Container Registry
         uses: docker/login-action@v3
@@ -114,8 +174,25 @@ jobs:
             NUXT_PUBLIC_AUDIO_STREAM_URL=${{ vars.NUXT_PUBLIC_AUDIO_STREAM_URL }}
             NUXT_PUBLIC_API_URL=${{ vars.NUXT_PUBLIC_API_URL }}
             NUXT_PUBLIC_API_STREAM_ENDPOINT=${{ vars.NUXT_PUBLIC_API_STREAM_ENDPOINT }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.versioning.outputs.version }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}
+            org.opencontainers.image.version=${{ steps.versioning.outputs.version }}
+            org.opencontainers.image.created={{date 'YYYY-MM-DDTHH:mm:ssZ'}}
+
+      - name: Create GitHub Release
+        if: steps.versioning.outputs.has_release == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.versioning.outputs.version }}
+          name: Release ${{ steps.versioning.outputs.version }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Docker image
         uses: appleboy/ssh-action@v1.0.3
@@ -129,7 +206,7 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Pull avec retry et progression
-            echo "📥 Pulling image (1.5GB)..."
+            echo "📥 Pulling image..."
             for i in 1 2 3; do
               if docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest; then
                 echo "✅ Pull successful"
@@ -169,53 +246,26 @@ jobs:
             # S'assurer que le réseau existe
             docker network create nina-network 2>/dev/null || echo "Réseau nina-network existe déjà"
 
-            # Créer le docker-compose.yml
-            cat > docker-compose.yml << 'COMPOSE_EOF'
-            services:
-              website:
-                image: ghcr.io/nina-fm/nina.fm-website:latest
-                container_name: nina-website
-                restart: unless-stopped
-                environment:
-                  - NODE_ENV=production
-                  - PORT=3000
-                  - HOST=0.0.0.0
-                  - NUXT_PUBLIC_AUDIO_STREAM_URL=${NUXT_PUBLIC_AUDIO_STREAM_URL}
-                  - NUXT_PUBLIC_API_URL=${NUXT_PUBLIC_API_URL}
-                  - NUXT_PUBLIC_API_STREAM_ENDPOINT=${NUXT_PUBLIC_API_STREAM_ENDPOINT}
-                ports:
-                  - "127.0.0.1:3000:3000"
-                networks:
-                  - nina-network
-                healthcheck:
-                  test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/', (res) => process.exit(res.statusCode === 200 ? 0 : 1))"]
-                  interval: 30s
-                  timeout: 3s
-                  retries: 3
-                  start_period: 40s
-                logging:
-                  driver: "json-file"
-                  options:
-                    max-size: "10m"
-                    max-file: "3"
+            # Télécharger le docker-compose.prod.yml depuis GitHub
+            curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                 -H "Accept: application/vnd.github.v3.raw" \
+                 -o docker-compose.yml \
+                 "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.prod.yml"
 
-            networks:
-              nina-network:
-                name: nina-network
-                external: true
-            COMPOSE_EOF
+            # Déploiement avec docker-compose
+            docker compose --env-file /var/nina/website/.env.prod up -d --force-recreate
 
-            # Arrêter conteneur existant
-            docker stop nina-website 2>/dev/null || true
-            docker rm nina-website 2>/dev/null || true
-
-            # Déployer
-            echo "🚀 Démarrage conteneur..."
-            docker compose --env-file /var/nina/website/.env.prod up -d --wait
-
-            echo "✅ Déploiement terminé"
-            docker ps | grep nina-website
-            docker logs nina-website --tail 20
+            # Vérifier que le conteneur démarre correctement
+            echo "🔍 Vérification du conteneur..."
+            sleep 10
+            if docker ps | grep nina-website; then
+              echo "✅ Déploiement réussi - Website opérationnel"
+              docker logs nina-website --tail 20
+            else
+              echo "❌ Le conteneur nina-website n'est pas en cours d'exécution"
+              docker logs nina-website --tail 50
+              exit 1
+            fi
 
   cleanup:
     needs: build-and-deploy
