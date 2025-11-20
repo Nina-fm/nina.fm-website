@@ -4,7 +4,6 @@ import svgLoader from 'vite-svg-loader'
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  ssr: false, // Désactiver SSR pour éviter les problèmes avec Pinia et les stores audio
   modules: [
     '@nuxt/eslint',
     '@pinia/nuxt',
@@ -20,8 +19,10 @@ export default defineNuxtConfig({
     '@nuxtjs/device',
   ],
   components: [
+    // UI components are handled by shadcn-nuxt auto-import
+    // Other components
     {
-      path: '@/components/',
+      path: '@/components',
       pathPrefix: false,
     },
     {
@@ -165,6 +166,7 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: '/',
+      globPatterns: [], // Disable default glob patterns to avoid warnings
     },
     devOptions: {
       enabled: true,
