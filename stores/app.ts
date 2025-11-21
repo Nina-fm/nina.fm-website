@@ -41,7 +41,7 @@ export const useAppStore = defineStore('app', () => {
   }
 
   const setBodyClasses = () => {
-    if (process.client) {
+    if (import.meta.client) {
       document.body.className = cn(classes.value)
     }
   }

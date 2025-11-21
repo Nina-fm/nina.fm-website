@@ -10,6 +10,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "format": "prettier --write --list-different \"./*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"{assets,components,composables,pages,server,stores,themes,types,utils}/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\"",
     "changeset": "changeset",
     "changeset:version": "changeset version",
