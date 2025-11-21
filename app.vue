@@ -1,18 +1,30 @@
 <script lang="ts" setup>
   import { useThemeStoreRefs } from '~/stores/theme'
-  import { themes } from '~/themes'
 
   // Les stores sont initialisés dans le plugin 01.init-stores.client.ts
   const { current } = useThemeStoreRefs()
 
-  const loadThemesCss = () => {
-    Object.keys(themes).map((theme) => {
-      import(`./themes/${theme}/assets/css/${theme}.css`)
-    })
+  const loadThemeCss = async (themeKey: string) => {
+    try {
+      await import(`./themes/${themeKey}/assets/css/${themeKey}.css`)
+    } catch (error) {
+      console.error(`Failed to load CSS for theme ${themeKey}:`, error)
+    }
+  }
+
+  const loadCurrentThemeCss = () => {
+    loadThemeCss(current.value)
   }
 
   onNuxtReady(() => {
-    loadThemesCss()
+    loadCurrentThemeCss()
+  })
+
+  // Recharger le CSS quand le thème change
+  watch(current, (newTheme, oldTheme) => {
+    if (newTheme !== oldTheme) {
+      loadThemeCss(newTheme)
+    }
   })
 </script>
 

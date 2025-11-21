@@ -9,7 +9,9 @@ enum DaylightMode {
 export const useDaylightStore = defineStore('daylight', () => {
   const daylight = ref<DaylightMode>()
   const intervalId = ref<NodeJS.Timer | null>(null)
-  const isDay = ref<boolean>(true)
+  // Initialiser avec une valeur basée sur l'heure UTC pour éviter le flash côté SSR
+  const currentHour = getHours(new Date())
+  const isDay = ref<boolean>(currentHour > 7 && currentHour < 20)
   const isNight = computed(() => !isDay.value)
 
   const updateDaylight = () => {

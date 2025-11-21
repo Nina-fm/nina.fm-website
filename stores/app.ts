@@ -41,7 +41,9 @@ export const useAppStore = defineStore('app', () => {
   }
 
   const setBodyClasses = () => {
-    document.body.className = cn(classes.value)
+    if (process.client) {
+      document.body.className = cn(classes.value)
+    }
   }
 
   watch(
@@ -49,6 +51,7 @@ export const useAppStore = defineStore('app', () => {
     () => {
       setBodyClasses()
     },
+    { immediate: true },
   )
 
   onNuxtReady(() => {
