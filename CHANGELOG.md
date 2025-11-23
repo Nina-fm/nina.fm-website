@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.0.2
+
+### Patch Changes
+
+- b59ff7c: fix: track mode and vinyl theme
+
 ## 2.0.1
 
 ### Patch Changes
