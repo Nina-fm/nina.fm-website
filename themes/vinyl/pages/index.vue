@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { useWindowSize } from '@vueuse/core'
   import { useAudioStoreRefs } from '~/stores/audio'
   import { useMetadataStoreRefs } from '~/stores/metadata'
   import { useVinylThemeStore, useVinylThemeStoreRefs } from '~/themes/vinyl/stores/vinylTheme'

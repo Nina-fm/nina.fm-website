@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-  defineProps<{
+  const props = defineProps<{
     title?: string
     artist?: string
     year?: number | string
     tracks?: Track[]
     isMixtape?: boolean
   }>()
+
+  const isSingleTrack = computed(() => (props.tracks?.length ?? 0) === 1)
 </script>
 
 <template>
@@ -28,9 +30,9 @@
     </div>
     <div v-if="artist" class="flex flex-col items-center gap-0">
       <span class="text-xs">
-        Une mixtape
-        <span v-if="year" class="inline-flex">de {{ year }}</span>
-        signée
+        {{ isSingleTrack ? 'Un morceau' : 'Une mixtape' }}
+        <span v-if="year && !isSingleTrack" class="inline-flex">de {{ year }}</span>
+        {{ isSingleTrack ? 'de' : 'signée' }}
       </span>
       <span class="font-cursive text-3xl text-primary">{{ artist }}</span>
     </div>

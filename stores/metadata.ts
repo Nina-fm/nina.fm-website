@@ -8,8 +8,9 @@ export const useMetadataStore = defineStore('metadata', () => {
   const metadata = ref<Metadata | null>(null)
   const progress = ref<number>(0)
   const listeners = ref<number>(0)
+  const type = ref<'mixtape' | 'track' | null>(null)
 
-  const isMixtape = computed(() => !!metadata.value)
+  const isMixtape = computed(() => type.value === 'mixtape')
 
   /**
    * Écoute le SSE /stream/metadata pour les changements de piste (mixtape ou track)
@@ -29,9 +30,15 @@ export const useMetadataStore = defineStore('metadata', () => {
         if (data.type === 'mixtape' && data.mixtape) {
           // Transformer MixtapeMetadataDto en Metadata (format website)
           metadata.value = transformMixtapeToMetadata(data.mixtape)
+          type.value = 'mixtape'
         } else if (data.type === 'track' && data.track) {
-          // Track simple (Artist - Title)
-          metadata.value = null // Pas de métadonnées enrichies
+          // Track simple (Artist - Title) - créer un objet Metadata minimal
+          metadata.value = {
+            id: '',
+            authors_text: data.track.artist,
+            name: data.track.title,
+          }
+          type.value = 'track'
         } else {
           // Format inconnu
           metadata.value = null
