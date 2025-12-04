@@ -4,6 +4,42 @@
       "name": "WEBSITE",
       "path": ".",
     },
+    {
+      "name": "API",
+      "path": "../nina.fm-api",
+    },
   ],
   "settings": {},
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Dev Fullstack WEBSITE",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["run", "dev:stack"],
+        "options": {
+          "cwd": "${workspaceFolder:WEBSITE}",
+        },
+      },
+      {
+        "label": "Dev WEBSITE",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["run", "dev"],
+        "options": {
+          "cwd": "${workspaceFolder:WEBSITE}",
+        },
+      },
+      {
+        "label": "Dev API",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["run", "dev:api"],
+        "options": {
+          "cwd": "${workspaceFolder:API}",
+        },
+      },
+    ],
+  },
 }
