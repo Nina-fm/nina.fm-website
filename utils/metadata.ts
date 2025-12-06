@@ -1,3 +1,5 @@
+import { formatDjs } from '~/utils/formatDjs'
+
 /**
  * Transforme la réponse de l'API Nina en format Metadata utilisé par le website
  */
@@ -8,7 +10,7 @@ export function transformMixtapeToMetadata(mixtape: MixtapeMetadataDto | Mixtape
     id: mixtape.id,
     name: mixtape.name,
     year: mixtape.year,
-    authors_text: mixtape.djs.join(', '),
+    authors_text: formatDjs(mixtape.djs),
     tracks: mixtape.tracks.map((track) => ({
       artist: track.artist,
       title: track.title,
