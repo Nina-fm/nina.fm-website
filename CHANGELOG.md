@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.0.3
+
+### Patch Changes
+
+- 56cc992: Fix: use the djs formatting logic
+
 ## 2.0.2
 
 ### Patch Changes
