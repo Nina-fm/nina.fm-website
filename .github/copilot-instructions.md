@@ -78,15 +78,16 @@ NUXT_PUBLIC_AUDIO_STREAM_URL=https://flux.nina.fm/nina.mp3
 # Prod: https://api.nina.fm
 NUXT_PUBLIC_API_URL=https://api.nina.fm
 
-# Nina API - Endpoints
-NUXT_PUBLIC_API_STREAM_ENDPOINT=/stream    # SSE temps réel (events, progress, listeners)
-NUXT_PUBLIC_API_METADATA_ENDPOINT=/metadata  # Métadonnées mixtapes
+# Nina API - Endpoint SSE
+NUXT_PUBLIC_API_STREAM_ENDPOINT=/stream    # SSE temps réel (metadata, progress, listeners)
 
 # Dev server port (optionnel, défaut: 3000)
 FRONT_OUTPUT_PORT=3000
 ```
 
-**Note** : Plus besoin de `NUXT_PUBLIC_API_KEY` depuis la migration vers Nina API
+**Notes** :
+- Plus besoin de `NUXT_PUBLIC_API_KEY` depuis la migration vers Nina API
+- Plus besoin de `NUXT_PUBLIC_API_METADATA_ENDPOINT` : utilise `/stream/metadata` via SSE
 
 ### 7. PWA & Optimisations
 

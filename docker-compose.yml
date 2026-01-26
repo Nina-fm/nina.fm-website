@@ -13,11 +13,7 @@ services:
     environment:
       # Variables d'environnement - À configurer sur le serveur
       - NODE_ENV=production
-      - NUXT_PUBLIC_STREAM_URL=${NUXT_PUBLIC_STREAM_URL}
-      - NUXT_PUBLIC_STREAM_SSE_URL=${NUXT_PUBLIC_STREAM_SSE_URL}
       - NUXT_PUBLIC_API_URL=${NUXT_PUBLIC_API_URL}
-      - NUXT_PUBLIC_API_METADATA_ENDPOINT=${NUXT_PUBLIC_API_METADATA_ENDPOINT}
-      - NUXT_PUBLIC_API_KEY=${NUXT_PUBLIC_API_KEY}
     networks:
       - nina-network
     healthcheck:

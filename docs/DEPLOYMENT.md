@@ -48,7 +48,7 @@ L'architecture suit le même pattern que le Mixtaper :
 SERVER_HOST           # IP ou domaine du serveur (ex: 1.2.3.4)
 SERVER_USER           # Utilisateur SSH (ex: nina)
 SSH_PRIVATE_KEY       # Clé SSH privée pour se connecter
-NUXT_PUBLIC_API_KEY   # Clé API Nina.fm
+VERSIONING_TOKEN      # Token GitHub pour push de tags (utilise GITHUB_TOKEN par défaut)
 ```
 
 ### Variables à ajouter dans GitHub
@@ -57,9 +57,8 @@ NUXT_PUBLIC_API_KEY   # Clé API Nina.fm
 
 ```
 NUXT_PUBLIC_AUDIO_STREAM_URL        # https://flux.nina.fm/nina.mp3
-NUXT_PUBLIC_STREAM_SSE_URL          # https://stream.nina.fm
 NUXT_PUBLIC_API_URL                 # https://api.nina.fm
-NUXT_PUBLIC_API_METADATA_ENDPOINT   # /metadata/show
+NUXT_PUBLIC_API_STREAM_ENDPOINT     # /stream
 ```
 
 ## 🚀 Étapes de migration
