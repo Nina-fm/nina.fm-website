@@ -1,17 +1,10 @@
 <script setup lang="ts">
-/**
- * Composant invisible pour initialiser le browser store
- * Client-only avec onMounted - aucun risque SSR
- */
-
-const browserStore = useBrowserStore()
-
-// onMounted s'exécute uniquement côté client après le render complet
-onMounted(() => {
-  console.log('[BrowserInitializer] Initialisation des features browser')
-  // Le store s'initialise automatiquement via son propre onMounted
-  // On n'a rien à faire, juste l'instancier ici déclenche son init
-})
+  /**
+   * Composant invisible pour initialiser le browser store
+   * Client-only avec onMounted - aucun risque SSR
+   * Le onMounted du store browser.ts se déclenche automatiquement
+   */
+  useBrowserStore()
 </script>
 
 <template>
