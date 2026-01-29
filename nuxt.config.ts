@@ -112,13 +112,8 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
+    disable: true, // Désactivé temporairement - problème de Service Worker
     registerWebManifestInRouteRules: true,
-    strategies: 'injectManifest', // Contrôle total du SW
-    srcDir: 'public',
-    filename: 'sw.ts',
-    injectManifest: {
-      globPatterns: ['**/*.{js,css,html,png,svg,ico,jpg,jpeg,webp}'],
-    },
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,
