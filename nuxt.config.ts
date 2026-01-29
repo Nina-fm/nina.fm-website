@@ -112,8 +112,8 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
+    disable: true, // Désactivé - problèmes persistants avec browser store init
     registerWebManifestInRouteRules: true,
-    strategies: 'generateSW', // Stratégie par défaut, simple et fiable
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,

@@ -38,6 +38,5 @@
     <AudioDebugger />
     <Notifier />
     <Rainbow />
-    <BrowserInitializer />
   </div>
 </template>
