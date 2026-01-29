@@ -8,9 +8,16 @@ export const useBrowserStore = defineStore('browser', () => {
   const config = useRuntimeConfig()
   const { toggleMute } = useAudioStore()
   const { metadata } = useMetadataStoreRefs()
-  const { isSupported, lockOrientation } = useScreenOrientation()
 
-  const wakeLock = reactive(useWakeLock())
+  // Client-only composables
+  const screenOrientation = import.meta.client
+    ? useScreenOrientation()
+    : { isSupported: ref(false), lockOrientation: () => Promise.resolve() }
+  const { isSupported, lockOrientation } = screenOrientation
+
+  const wakeLock = import.meta.client
+    ? reactive(useWakeLock())
+    : reactive({ isSupported: false, request: () => Promise.resolve() })
   const canAutoplay = ref<boolean>(true)
 
   const getArtwork = async (filepath?: unknown) => {
