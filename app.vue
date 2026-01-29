@@ -1,8 +1,12 @@
 <script lang="ts" setup>
+  import { useBrowserStore } from '~/stores/browser'
   import { useThemeStoreRefs } from '~/stores/theme'
 
   // Les stores sont initialisés dans le plugin 01.init-stores.client.ts
   const { current } = useThemeStoreRefs()
+
+  // Initialize browser features (Media Session, WakeLock, etc.)
+  useBrowserStore()
 
   const loadThemeCss = async (themeKey: string) => {
     try {

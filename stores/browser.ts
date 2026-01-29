@@ -53,16 +53,20 @@ export const useBrowserStore = defineStore('browser', () => {
 
   const initMediaSession = async () => {
     if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new window.MediaMetadata({
-        title: metadata.value?.name || 'Nina.fm',
-        artist: metadata.value?.authors_text || 'Nina.fm',
-        album: config.public.sitename,
-        artwork: await getArtwork(metadata.value?.cover_url),
-      })
+      try {
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+          title: metadata.value?.name || 'Nina.fm',
+          artist: metadata.value?.authors_text || 'Nina.fm',
+          album: config.public.sitename,
+          artwork: await getArtwork(metadata.value?.cover_url),
+        })
 
-      navigator.mediaSession.setActionHandler('play', () => toggleMute(false))
-      navigator.mediaSession.setActionHandler('pause', () => toggleMute(true))
-      navigator.mediaSession.setActionHandler('stop', () => toggleMute(true))
+        navigator.mediaSession.setActionHandler('play', () => toggleMute(false))
+        navigator.mediaSession.setActionHandler('pause', () => toggleMute(true))
+        navigator.mediaSession.setActionHandler('stop', () => toggleMute(true))
+      } catch (error) {
+        console.error('Failed to initialize Media Session:', error)
+      }
     }
   }
 
@@ -86,6 +90,11 @@ export const useBrowserStore = defineStore('browser', () => {
     initWakeLock()
     initOrientation()
   }
+
+  // Initialize when component mounts
+  onMounted(() => {
+    init()
+  })
 
   watch(
     metadata,
