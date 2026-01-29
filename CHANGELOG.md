@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.1
+
+### Patch Changes
+
+- 96d9283: Fix media session artwork
+
 ## 2.1.0
 
 ### Minor Changes
