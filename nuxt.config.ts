@@ -112,6 +112,7 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
+    disable: true,
     registerWebManifestInRouteRules: true,
     manifest: {
       name: `Nina.fm`,
