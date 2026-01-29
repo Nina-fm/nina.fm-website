@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.2
+
+### Patch Changes
+
+- 97d41e8: Fix useScreenOrientation ssr
+
 ## 2.1.1
 
 ### Patch Changes
