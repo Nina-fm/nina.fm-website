@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.8
+
+### Patch Changes
+
+- 6b76182: Fix SW
+
 ## 2.1.7
 
 ### Patch Changes
