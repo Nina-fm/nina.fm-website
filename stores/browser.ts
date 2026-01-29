@@ -14,15 +14,33 @@ export const useBrowserStore = defineStore('browser', () => {
   const canAutoplay = ref<boolean>(true)
 
   const getArtwork = async (filepath?: unknown) => {
-    const file = typeof filepath !== 'string' || !filepath ? `/artwork.png` : `${filepath}`
-    const type = mime.getType(file)
-    const src = await convertImageToBase64(file)
-    return [
-      {
-        src,
-        ...(type !== null ? { type } : {}),
-      },
-    ]
+    try {
+      // Fallback to default artwork
+      const defaultArtwork = `${window.location.origin}/artwork.png`
+      const file = typeof filepath !== 'string' || !filepath ? defaultArtwork : filepath
+
+      // MediaSession API accepte les URLs directes sans conversion base64
+      // Utiliser directement l'URL est plus performant et évite les problèmes CORS
+      const type = mime.getType(file)
+
+      return [
+        {
+          src: file,
+          sizes: '512x512',
+          ...(type !== null ? { type } : {}),
+        },
+      ]
+    } catch (error) {
+      console.error('Failed to get artwork:', error)
+      // Fallback sur l'artwork par défaut
+      return [
+        {
+          src: `${window.location.origin}/artwork.png`,
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ]
+    }
   }
 
   const updateMediaSession = async () => {
