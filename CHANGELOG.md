@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.7
+
+### Patch Changes
+
+- b9e1bd1: fix: disable PWA to resolve service worker cache issues
+
 ## 2.1.6
 
 ### Patch Changes
