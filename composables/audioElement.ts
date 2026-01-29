@@ -16,7 +16,7 @@ const readyStatusTexts = [
   'Enough data is available—and the download rate is high enough—that the media can be played through to the end without interruption.',
 ]
 
-const blankSound = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA='
+// const blankSound = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAFRWAAABAAgAZGF0YQAAAAA='
 
 const defaultState = {
   buffered: 0,
