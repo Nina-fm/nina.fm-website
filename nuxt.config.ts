@@ -112,8 +112,8 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
-    disable: true, // Désactivé temporairement - problème de Service Worker
     registerWebManifestInRouteRules: true,
+    strategies: 'generateSW', // Stratégie par défaut, simple et fiable
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,
