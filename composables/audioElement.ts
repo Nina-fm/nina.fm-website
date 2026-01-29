@@ -32,6 +32,8 @@ const defaultState = {
   preload: 'auto' /* "none" | "metadata" | "auto" | "undefined" | "empty" */,
   readyState: 0,
   volume: 1,
+  stalled: false,
+  waiting: false,
 }
 
 export const useAudioElement = () => {
@@ -163,12 +165,14 @@ export const useAudioElement = () => {
 
   const unload = () => {
     log('unload')
-    audio.value?.pause()
-    _removeEventListeners()
     if (audio.value) {
-      audio.value.src = blankSound
-      audio.value.load()
+      audio.value.pause()
+      // Force clear the buffer by seeking to end and setting blank source
+      audio.value.currentTime = 0
+      audio.value.removeAttribute('src')
+      audio.value.load() // This empties the buffer
     }
+    _removeEventListeners()
     audio.value?.remove()
     audio.value = null
     resetState()
