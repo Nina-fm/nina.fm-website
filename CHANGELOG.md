@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.0
+
+### Minor Changes
+
+- a02ab70: Fix connectivity + media session artwork
+
 ## 2.0.3
 
 ### Patch Changes
