@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.5
+
+### Patch Changes
+
+- b7acbdd: Fix PWA SW rebuild after invalidation
+
 ## 2.1.4
 
 ### Patch Changes
