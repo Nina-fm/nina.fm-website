@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.9
+
+### Patch Changes
+
+- 00b589a: Restore PWA with generateSW strategy and client-only browser initializer. Fixes Service Worker 503 errors and useScreenOrientation SSR crash by using a proper Vue component lifecycle instead of plugins.
+
 ## 2.1.8
 
 ### Patch Changes
