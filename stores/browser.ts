@@ -9,16 +9,13 @@ export const useBrowserStore = defineStore('browser', () => {
   const { toggleMute } = useAudioStore()
   const { metadata } = useMetadataStoreRefs()
 
-  // Client-only composables
-  const screenOrientation = import.meta.client
-    ? useScreenOrientation()
-    : { isSupported: ref(false), lockOrientation: () => Promise.resolve() }
-  const { isSupported, lockOrientation } = screenOrientation
-
-  const wakeLock = import.meta.client
-    ? reactive(useWakeLock())
-    : reactive({ isSupported: false, request: () => Promise.resolve() })
+  // Client-only refs
+  const isSupported = ref(false)
   const canAutoplay = ref<boolean>(true)
+
+  // Client-only composables - will be initialized in onMounted
+  let lockOrientation: ((orientation: 'portrait-primary') => Promise<void>) | null = null
+  let wakeLock: ReturnType<typeof useWakeLock> | null = null
 
   const getArtwork = async (filepath?: unknown) => {
     try {
@@ -78,11 +75,13 @@ export const useBrowserStore = defineStore('browser', () => {
   }
 
   const initWakeLock = async () => {
-    await wakeLock.request('screen')
+    if (import.meta.client && wakeLock) {
+      await wakeLock.request('screen')
+    }
   }
 
   const initOrientation = async () => {
-    if (isSupported.value) {
+    if (import.meta.client && isSupported.value && lockOrientation) {
       await lockOrientation('portrait-primary')
     }
   }
@@ -93,6 +92,14 @@ export const useBrowserStore = defineStore('browser', () => {
   }
 
   const init = () => {
+    // Initialize client-only features
+    if (import.meta.client) {
+      const screenOrientation = useScreenOrientation()
+      isSupported.value = screenOrientation.isSupported.value
+      lockOrientation = screenOrientation.lockOrientation
+      wakeLock = useWakeLock()
+    }
+
     initMediaSession()
     initWakeLock()
     initOrientation()
