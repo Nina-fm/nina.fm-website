@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.4
+
+### Patch Changes
+
+- 6d14960: Fix PWA cache
+
 ## 2.1.3
 
 ### Patch Changes
