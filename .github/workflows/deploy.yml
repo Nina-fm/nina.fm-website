@@ -245,6 +245,11 @@ jobs:
             # S'assurer que le réseau existe
             docker network create nina-network 2>/dev/null || echo "Réseau nina-network existe déjà"
 
+            # Forcer l'arrêt des conteneurs existants (manuels ou compose)
+            echo "🛑 Arrêt des conteneurs existants..."
+            docker stop nina-website 2>/dev/null || echo "Aucun conteneur nina-website à arrêter"
+            docker rm nina-website 2>/dev/null || echo "Aucun conteneur nina-website à supprimer"
+
             # Télécharger le docker-compose.prod.yml depuis GitHub
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                  -H "Accept: application/vnd.github.v3.raw" \
