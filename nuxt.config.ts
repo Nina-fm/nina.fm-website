@@ -112,7 +112,6 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
-    disable: true, // TEMPORAIRE : désactivé pour forcer la suppression du SW cassé
     registerWebManifestInRouteRules: true,
     manifest: {
       name: `Nina.fm`,
