@@ -166,7 +166,9 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: '/',
-      globPatterns: [], // Disable default glob patterns to avoid warnings
+      cleanupOutdatedCaches: true,
+      skipWaiting: true,
+      clientsClaim: true,
     },
     devOptions: {
       enabled: true,
