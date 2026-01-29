@@ -112,8 +112,13 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
-    disable: true,
     registerWebManifestInRouteRules: true,
+    strategies: 'injectManifest', // Contrôle total du SW
+    srcDir: 'public',
+    filename: 'sw.ts',
+    injectManifest: {
+      globPatterns: ['**/*.{js,css,html,png,svg,ico,jpg,jpeg,webp}'],
+    },
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,
@@ -170,9 +175,23 @@ export default defineNuxtConfig({
       cleanupOutdatedCaches: true,
       skipWaiting: true,
       clientsClaim: true,
+      // Stratégie réseau pour les assets critiques
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/api\.nina\.fm\/.*/i,
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'api-cache',
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 300, // 5 minutes
+            },
+          },
+        },
+      ],
     },
     devOptions: {
-      enabled: true,
+      enabled: false, // Désactivé en dev pour éviter les conflits
       type: 'module',
     },
   },

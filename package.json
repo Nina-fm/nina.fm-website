@@ -61,7 +61,9 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "^5.8.2",
     "vite-svg-loader": "^5.1.0",
-    "vue-tsc": "^2.2.8"
+    "vue-tsc": "^2.2.8",
+    "workbox-core": "^7.4.0",
+    "workbox-precaching": "^7.4.0"
   },
   "packageManager": "pnpm@10.13.1"
 }
