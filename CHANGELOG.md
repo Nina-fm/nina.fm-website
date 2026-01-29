@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.3
+
+### Patch Changes
+
+- f2a9d42: Fix 500 on prod
+
 ## 2.1.2
 
 ### Patch Changes
