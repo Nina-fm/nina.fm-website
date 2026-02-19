@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.1.10
+
+### Patch Changes
+
+- 21e9edc: Add label to skip diun checks
+
 ## 2.1.9
 
 ### Patch Changes
