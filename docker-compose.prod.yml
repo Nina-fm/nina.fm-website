@@ -3,6 +3,8 @@ services:
     image: ghcr.io/nina-fm/nina.fm-website:latest
     container_name: nina-website
     restart: unless-stopped
+    labels:
+      - diun.enable=false
     environment:
       # Application
       - NODE_ENV=production
