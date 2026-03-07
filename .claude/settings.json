@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // empty' 2>/dev/null); if [ -n \"$FILE\" ] && [[ \"$FILE\" == *.ts || \"$FILE\" == *.vue ]]; then pnpm eslint --fix \"$FILE\" 2>&1 | tail -5; fi",
+            "description": "Auto-fix ESLint sur le fichier modifié uniquement"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'git commit'; then pnpm lint 2>&1 | tail -20; fi",
+            "description": "Lint avant git commit"
+          }
+        ]
+      }
+    ]
+  }
+}
