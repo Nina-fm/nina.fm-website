@@ -6,6 +6,8 @@
   "scripts": {
     "build": "NITRO_PRESET=node_cluster nuxt build",
     "dev": "nuxt dev",
+    "dev:api": "cd ../nina.fm-api && pnpm start:dev",
+    "dev:stack": "concurrently -k -n API,Front -c bgWhite,bgBlack \"pnpm dev:api\" \"pnpm dev\"",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -14,7 +16,6 @@
     "format": "prettier --write --list-different \"./*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"{assets,components,composables,pages,server,stores,themes,types,utils}/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\"",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "changeset:publish": "changeset publish",
     "version:check": "changeset status"
   },
   "dependencies": {
@@ -54,6 +55,7 @@
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
+    "concurrently": "^9.2.1",
     "npm-run-all": "^4.1.5",
     "pinia": "^3.0.1",
     "prettier": "^3.5.3",
