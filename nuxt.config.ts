@@ -136,6 +136,22 @@ export default defineNuxtConfig({
         { src: '/maskable_icon_x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
         { src: '/maskable_icon_x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
       ],
+      screenshots: [
+        {
+          src: '/preview.png',
+          sizes: '1200x627',
+          type: 'image/png',
+          // @ts-expect-error — form_factor est valide dans la spec mais pas encore dans les types
+          form_factor: 'wide',
+          label: 'Nina.fm — Vue desktop',
+        },
+        {
+          src: '/preview-night.png',
+          sizes: '1200x627',
+          type: 'image/png',
+          label: 'Nina.fm — Vue nuit',
+        },
+      ],
     },
     workbox: {
       cleanupOutdatedCaches: true,
