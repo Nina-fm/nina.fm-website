@@ -112,8 +112,8 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
-    disable: true, // Désactivé - problèmes persistants avec browser store init
     registerWebManifestInRouteRules: true,
+    strategies: 'generateSW',
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,
@@ -168,25 +168,9 @@ export default defineNuxtConfig({
     workbox: {
       navigateFallback: '/',
       cleanupOutdatedCaches: true,
-      skipWaiting: true,
-      clientsClaim: true,
-      // Stratégie réseau pour les assets critiques
-      runtimeCaching: [
-        {
-          urlPattern: /^https:\/\/api\.nina\.fm\/.*/i,
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'api-cache',
-            expiration: {
-              maxEntries: 10,
-              maxAgeSeconds: 300, // 5 minutes
-            },
-          },
-        },
-      ],
     },
     devOptions: {
-      enabled: false, // Désactivé en dev pour éviter les conflits
+      enabled: false,
       type: 'module',
     },
   },
