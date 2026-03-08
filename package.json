@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "NITRO_PRESET=node_cluster nuxt build",
+    "build": "nuxt build",
     "dev": "nuxt dev",
     "dev:api": "cd ../nina.fm-api && pnpm start:dev",
     "dev:stack": "concurrently -k -n API,Front -c bgWhite,bgBlack \"pnpm dev:api\" \"pnpm dev\"",
