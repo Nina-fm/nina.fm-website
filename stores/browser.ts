@@ -87,7 +87,11 @@ export const useBrowserStore = defineStore('browser', () => {
 
   const initOrientation = async () => {
     if (isSupported.value && lockOrientation) {
-      await lockOrientation('portrait-primary')
+      try {
+        await lockOrientation('portrait-primary')
+      } catch {
+        // L'API peut être supportée mais échouer sur certains appareils (desktop, etc.)
+      }
     }
   }
 
