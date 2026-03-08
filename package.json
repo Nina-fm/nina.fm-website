@@ -19,7 +19,7 @@
     "version:check": "changeset status"
   },
   "dependencies": {
-    "@nuxtjs/device": "3.2.4",
+    "@nuxtjs/device": "4.0.0",
     "@tanstack/vue-table": "^8.21.2",
     "@vueuse/nuxt": "14.2.1",
     "class-variance-authority": "^0.7.1",
@@ -30,14 +30,14 @@
     "mime": "^4.0.6",
     "nuxt": "^4.3.1",
     "reka-ui": "^2.9.0",
-    "shadcn-nuxt": "1.0.3",
+    "shadcn-nuxt": "2.4.3",
     "tailwind-merge": "^3.5.0",
     "tailwindcss-animate": "^1.0.7",
     "uniqid": "^5.4.0",
     "vaul-vue": "^0.4.0",
     "vue": "^3.5.29",
-    "vue-router": "^4.5.0",
-    "vue-sonner": "^1.3.0"
+    "vue-router": "^5.0.3",
+    "vue-sonner": "^2.0.9"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
@@ -62,7 +62,7 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^5.8.2",
     "vite-svg-loader": "^5.1.1",
-    "vue-tsc": "^2.2.8"
+    "vue-tsc": "^3.2.5"
   },
   "packageManager": "pnpm@10.13.1"
 }
