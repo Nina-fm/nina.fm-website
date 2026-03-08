@@ -139,6 +139,9 @@ export default defineNuxtConfig({
     },
     workbox: {
       cleanupOutdatedCaches: true,
+      // Désactiver navigateFallback — Nuxt SSR gère les navigations côté serveur,
+      // le SW ne doit pas intercepter les requêtes de navigation
+      navigateFallback: '',
     },
     devOptions: {
       enabled: false,
