@@ -112,8 +112,8 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
-    disable: true, // Désactivé - problèmes persistants avec browser store init
     registerWebManifestInRouteRules: true,
+    strategies: 'generateSW',
     manifest: {
       name: `Nina.fm`,
       short_name: `Nina.fm`,
@@ -121,72 +121,46 @@ export default defineNuxtConfig({
       theme_color: '#222222',
       background_color: '#FFFFFF',
       icons: [
+        { src: '/maskable_icon_x48.png', sizes: '48x48', type: 'image/png', purpose: 'any' },
+        { src: '/maskable_icon_x48.png', sizes: '48x48', type: 'image/png', purpose: 'maskable' },
+        { src: '/maskable_icon_x72.png', sizes: '72x72', type: 'image/png', purpose: 'any' },
+        { src: '/maskable_icon_x72.png', sizes: '72x72', type: 'image/png', purpose: 'maskable' },
+        { src: '/maskable_icon_x96.png', sizes: '96x96', type: 'image/png', purpose: 'any' },
+        { src: '/maskable_icon_x96.png', sizes: '96x96', type: 'image/png', purpose: 'maskable' },
+        { src: '/maskable_icon_x128.png', sizes: '128x128', type: 'image/png', purpose: 'any' },
+        { src: '/maskable_icon_x128.png', sizes: '128x128', type: 'image/png', purpose: 'maskable' },
+        { src: '/maskable_icon_x192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/maskable_icon_x192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+        { src: '/maskable_icon_x384.png', sizes: '384x384', type: 'image/png', purpose: 'any' },
+        { src: '/maskable_icon_x384.png', sizes: '384x384', type: 'image/png', purpose: 'maskable' },
+        { src: '/maskable_icon_x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: '/maskable_icon_x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+      ],
+      screenshots: [
         {
-          src: '/maskable_icon_x48.png',
-          sizes: '48x48',
+          src: '/preview.png',
+          sizes: '1200x627',
           type: 'image/png',
-          purpose: 'maskable any',
+          // @ts-expect-error — form_factor est valide dans la spec mais pas encore dans les types
+          form_factor: 'wide',
+          label: 'Nina.fm — Vue desktop',
         },
         {
-          src: '/maskable_icon_x72.png',
-          sizes: '72x72',
+          src: '/preview-night.png',
+          sizes: '1200x627',
           type: 'image/png',
-          purpose: 'maskable any',
-        },
-        {
-          src: '/maskable_icon_x96.png',
-          sizes: '96x96',
-          type: 'image/png',
-          purpose: 'maskable any',
-        },
-        {
-          src: '/maskable_icon_x128.png',
-          sizes: '128x128',
-          type: 'image/png',
-          purpose: 'maskable any',
-        },
-        {
-          src: '/maskable_icon_x192.png',
-          sizes: '192x192',
-          type: 'image/png',
-          purpose: 'maskable any',
-        },
-        {
-          src: '/maskable_icon_x384.png',
-          sizes: '384x384',
-          type: 'image/png',
-          purpose: 'maskable any',
-        },
-        {
-          src: '/maskable_icon_x512.png',
-          sizes: '512x512',
-          type: 'image/png',
-          purpose: 'maskable any',
+          label: 'Nina.fm — Vue nuit',
         },
       ],
     },
     workbox: {
-      navigateFallback: '/',
       cleanupOutdatedCaches: true,
-      skipWaiting: true,
-      clientsClaim: true,
-      // Stratégie réseau pour les assets critiques
-      runtimeCaching: [
-        {
-          urlPattern: /^https:\/\/api\.nina\.fm\/.*/i,
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'api-cache',
-            expiration: {
-              maxEntries: 10,
-              maxAgeSeconds: 300, // 5 minutes
-            },
-          },
-        },
-      ],
+      // Désactiver navigateFallback — Nuxt SSR gère les navigations côté serveur,
+      // le SW ne doit pas intercepter les requêtes de navigation
+      navigateFallback: '',
     },
     devOptions: {
-      enabled: false, // Désactivé en dev pour éviter les conflits
+      enabled: false,
       type: 'module',
     },
   },
