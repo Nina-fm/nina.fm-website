@@ -1,11 +1,7 @@
 import type { Updater } from '@tanstack/vue-table'
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
 import type { Ref } from 'vue'
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+export { cn } from '~/lib/utils/cn'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {

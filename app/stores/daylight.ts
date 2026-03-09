@@ -1,5 +1,6 @@
 import { getHours } from 'date-fns'
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
+import { DAYLIGHT_POLL_INTERVAL, isDayTime } from '~/lib/constants/daylight'
 
 enum DaylightMode {
   DAY = 'day',
@@ -11,18 +12,18 @@ export const useDaylightStore = defineStore('daylight', () => {
   const intervalId = ref<NodeJS.Timer | null>(null)
   // Initialiser avec une valeur basée sur l'heure UTC pour éviter le flash côté SSR
   const currentHour = getHours(new Date())
-  const isDay = ref<boolean>(currentHour > 7 && currentHour < 20)
+  const isDay = ref<boolean>(isDayTime(currentHour))
   const isNight = computed(() => !isDay.value)
 
   const updateDaylight = () => {
     const currentHour = getHours(new Date())
-    isDay.value = currentHour > 7 && currentHour < 20
+    isDay.value = isDayTime(currentHour)
     daylight.value = isDay.value ? DaylightMode.DAY : DaylightMode.NIGHT
   }
 
   onNuxtReady(() => {
     updateDaylight()
-    intervalId.value = setInterval(() => updateDaylight(), 10000)
+    intervalId.value = setInterval(() => updateDaylight(), DAYLIGHT_POLL_INTERVAL)
   })
 
   return {
