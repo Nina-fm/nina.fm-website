@@ -1,10 +1,10 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
+import { SseClient } from '~/lib/sse/SseClient'
+import { transformMixtapeToMetadata } from '~/lib/metadata/transformMixtapeToMetadata'
 
 export const useMetadataStore = defineStore('metadata', () => {
   const config = useRuntimeConfig()
 
-  const isListeningMetadata = ref<boolean>(false)
-  const isListeningActivity = ref<boolean>(false)
   const metadata = ref<Metadata | null>(null)
   const progress = ref<number>(0)
   const listeners = ref<number>(0)
@@ -16,64 +16,40 @@ export const useMetadataStore = defineStore('metadata', () => {
    * Écoute le SSE /stream/metadata pour les changements de piste (mixtape ou track)
    * Émet uniquement quand la piste change (~30min-2h)
    */
-  const listenSSEMetadata = () => {
-    if (!isListeningMetadata.value) {
-      const events = new EventSource(`${config.public.apiUrl}${config.public.apiStreamEndpoint}/metadata`)
-
-      events.onerror = () => {
-        setTimeout(listenSSEMetadata, 3000)
-      }
-
-      events.onmessage = (event) => {
-        const data: MetadataStreamDto = JSON.parse(event.data)
-
-        if (data.type === 'mixtape' && data.mixtape) {
-          // Transformer MixtapeMetadataDto en Metadata (format website)
-          metadata.value = transformMixtapeToMetadata(data.mixtape)
-          type.value = 'mixtape'
-        } else if (data.type === 'track' && data.track) {
-          // Track simple (Artist - Title) - créer un objet Metadata minimal
-          metadata.value = {
-            id: '',
-            authors_text: data.track.artist,
-            name: data.track.title,
-          }
-          type.value = 'track'
-        } else {
-          // Format inconnu
-          metadata.value = null
+  const metadataClient = new SseClient<MetadataStreamDto>(
+    `${config.public.apiUrl}${config.public.apiStreamEndpoint}/metadata`,
+    (data) => {
+      if (data.type === 'mixtape' && data.mixtape) {
+        metadata.value = transformMixtapeToMetadata(data.mixtape)
+        type.value = 'mixtape'
+      } else if (data.type === 'track' && data.track) {
+        metadata.value = {
+          id: '',
+          authors_text: data.track.artist,
+          name: data.track.title,
         }
+        type.value = 'track'
+      } else {
+        metadata.value = null
       }
-
-      isListeningMetadata.value = true
-    }
-  }
+    },
+  )
 
   /**
    * Écoute le SSE /stream/activity pour progress + listeners
    * Émet toutes les 3s, sans query DB
    */
-  const listenSSEActivity = () => {
-    if (!isListeningActivity.value) {
-      const events = new EventSource(`${config.public.apiUrl}${config.public.apiStreamEndpoint}/activity`)
-
-      events.onerror = () => {
-        setTimeout(listenSSEActivity, 3000)
-      }
-
-      events.onmessage = (event) => {
-        const data: ActivityStreamDto = JSON.parse(event.data)
-        progress.value = data.progress
-        listeners.value = data.listeners
-      }
-
-      isListeningActivity.value = true
-    }
-  }
+  const activityClient = new SseClient<ActivityStreamDto>(
+    `${config.public.apiUrl}${config.public.apiStreamEndpoint}/activity`,
+    (data) => {
+      progress.value = data.progress
+      listeners.value = data.listeners
+    },
+  )
 
   onNuxtReady(() => {
-    listenSSEMetadata()
-    listenSSEActivity()
+    metadataClient.connect()
+    activityClient.connect()
   })
 
   return {
