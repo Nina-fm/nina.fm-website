@@ -1,1 +1,1 @@
-export { basicColors, flashyColors, psychedelicColors } from '~/lib/utils/rainbowColors'
+export { basicColors, flashyColors, psychedelicColors } from '~/lib/theme/rainbowColors'

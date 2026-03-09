@@ -1,6 +1,6 @@
 import { getHours } from 'date-fns'
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
-import { DAYLIGHT_POLL_INTERVAL, isDayTime } from '~/lib/constants/daylight'
+import { DAYLIGHT_POLL_INTERVAL, isDayTime } from '~/lib/theme/daylight'
 
 enum DaylightMode {
   DAY = 'day',

@@ -1,1 +1,1 @@
-export { formatDjs } from '~/lib/utils/formatDjs'
+export { formatDjs } from '~/lib/metadata/formatDjs'

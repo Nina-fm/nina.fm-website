@@ -8,7 +8,7 @@ import {
   RECONNECT_STOP_START_DELAY,
   RECONNECT_SUCCESS_CHECK_DELAY,
   VISIBILITY_RESTORE_DELAY,
-} from '~/lib/constants/audio'
+} from '~/lib/audio/constants'
 import { useDebugStore } from '~/stores/debug'
 
 const defaultState = {

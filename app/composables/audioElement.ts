@@ -4,7 +4,7 @@ import {
   networkStatusTexts,
   readyStatusCodes,
   readyStatusTexts,
-} from '~/lib/constants/audioElement'
+} from '~/lib/audio/element'
 import { useDebugStore } from '~/stores/debug'
 
 const defaultState = defaultAudioElementState

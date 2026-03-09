@@ -1,1 +1,1 @@
-export { transformMixtapeToMetadata } from '~/lib/utils/transformMixtapeToMetadata'
+export { transformMixtapeToMetadata } from '~/lib/metadata/transformMixtapeToMetadata'
