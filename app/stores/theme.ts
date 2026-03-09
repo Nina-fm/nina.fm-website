@@ -1,5 +1,6 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { useFullscreen } from '~/composables/useFullscreen'
+import { cycleDarkMode, getNextInCycle } from '~/lib/theme/cycling'
 import { useDaylightStoreRefs } from '~/stores/daylight'
 import { themes } from '../themes'
 
@@ -24,11 +25,7 @@ export const useThemeStore = defineStore('theme', () => {
   )
   const publicThemes = computed(() => publicThemesNames.value.map((key) => themes[key]))
   const hasManyThemes = computed(() => publicThemes.value.length > 1)
-  const nextTheme = computed(() => {
-    const index = publicThemesNames.value.indexOf(current.value)
-    const next = index >= publicThemes.value.length - 1 ? 0 : index + 1
-    return publicThemes.value[next]
-  })
+  const nextTheme = computed(() => getNextInCycle(publicThemes.value, themes[current.value]))
 
   const switchTheme = (key: ThemeKey) => {
     current.value = key
@@ -41,9 +38,7 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   const toggleDarkMode = () => {
-    if (darkMode.value === 'auto') darkMode.value = true
-    else if (darkMode.value === true) darkMode.value = false
-    else darkMode.value = 'auto'
+    darkMode.value = cycleDarkMode(darkMode.value)
   }
 
   const toggleRainbowMode = () => (isRainbowMode.value = !isRainbowMode.value)
