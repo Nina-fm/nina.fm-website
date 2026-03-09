@@ -23,15 +23,15 @@ export default defineNuxtConfig({
     // UI components are handled by shadcn-nuxt auto-import
     // Other components
     {
-      path: '@/components',
+      path: './app/components',
       pathPrefix: false,
     },
     {
-      path: '@/themes/peak/components/',
+      path: './app/themes/peak/components/',
       prefix: 'Peak',
     },
     {
-      path: '@/themes/vinyl/components/',
+      path: './app/themes/vinyl/components/',
       prefix: 'Vinyl',
     },
   ],
