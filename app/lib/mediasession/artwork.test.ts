@@ -49,4 +49,10 @@ describe('getArtwork', () => {
     const result = getArtwork('https://api.nina.fm/covers/mix', ORIGIN)
     result.forEach((entry) => expect(entry.type).toBe('image/png'))
   })
+
+  it('should resolve a relative URL to an absolute URL using origin', () => {
+    const result = getArtwork('/api/cover/covers/mix.jpg', ORIGIN)
+    expect(result).toHaveLength(COVER_ARTWORK_SIZES.length)
+    result.forEach((entry) => expect(entry.src).toBe('https://nina.fm/api/cover/covers/mix.jpg'))
+  })
 })
