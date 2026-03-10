@@ -1,3 +1,5 @@
+import { useBrowserStore } from '~/stores/browser'
+
 /**
  * Plugin client-only pour initialiser le browser store.
  * onNuxtReady garantit l'exécution après hydratation complète.
