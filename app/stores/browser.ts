@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { detectAutoplay } from '~/lib/browser/detectAutoplay'
 import { getArtwork } from '~/lib/mediasession/artwork'
+import { toCoverProxyUrl } from '~/lib/mediasession/coverProxy'
 import { useAudioStore } from '~/stores/audio'
 import { useMetadataStoreRefs } from '~/stores/metadata'
 
@@ -17,7 +18,8 @@ export const useBrowserStore = defineStore('browser', () => {
   let lockOrientation: ((orientation: 'portrait-primary') => Promise<void>) | null = null
   let wakeLock: ReturnType<typeof useWakeLock> | null = null
 
-  const _getArtwork = (filepath?: unknown): MediaImage[] => getArtwork(filepath, window.location.origin)
+  const _getArtwork = (filepath?: unknown): MediaImage[] =>
+    getArtwork(toCoverProxyUrl(filepath, config.public.apiUrl as string), window.location.origin)
 
   const updateMediaSession = () => {
     if (!('mediaSession' in navigator) || !metadata.value) return
