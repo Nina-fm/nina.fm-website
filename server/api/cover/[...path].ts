@@ -10,7 +10,10 @@
  */
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
-  const apiUrl = config.public.apiUrl as string
+  const apiUrl = config.public.apiUrl as string | undefined
+  if (!apiUrl) {
+    throw createError({ statusCode: 500, statusMessage: 'API URL not configured' })
+  }
 
   const path = getRouterParam(event, 'path')
   if (!path) {
@@ -21,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
   let response: Response
   try {
-    response = await fetch(targetUrl)
+    response = await fetch(targetUrl, { signal: AbortSignal.timeout(5000) })
   } catch {
     throw createError({ statusCode: 502, statusMessage: 'Failed to reach cover origin' })
   }
@@ -35,10 +38,14 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Not an image' })
   }
 
+  if (!response.body) {
+    throw createError({ statusCode: 502, statusMessage: 'Empty response from cover origin' })
+  }
+
   setResponseHeaders(event, {
     'content-type': contentType,
     'cache-control': 'public, max-age=3600',
   })
 
-  return sendStream(event, response.body!)
+  return sendStream(event, response.body)
 })

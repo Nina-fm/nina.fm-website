@@ -8,7 +8,7 @@
  * @param coverUrl - URL de la cover (depuis les métadonnées API)
  * @param apiUrl   - URL de base de l'API (ex: https://api.nina.fm), passé explicitement pour la testabilité
  */
-export function toCoverProxyUrl(coverUrl: unknown, apiUrl: string): unknown {
+export function toCoverProxyUrl<T>(coverUrl: T, apiUrl: string): T | string {
   if (typeof coverUrl !== 'string' || !coverUrl) return coverUrl
   const base = apiUrl.replace(/\/$/, '')
   if (!coverUrl.startsWith(base)) return coverUrl
