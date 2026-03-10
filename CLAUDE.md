@@ -23,6 +23,8 @@ pnpm changeset        # Créer un changeset
 
 Utiliser **toujours** `pnpm`. Jamais `npm` ou `yarn`.
 
+> Les conventions TypeScript, tests et architecture globales sont dans `../CLAUDE.md`.
+
 ## Architecture
 
 ### Structure des dossiers
@@ -136,18 +138,6 @@ import { Play, Pause, Volume2 } from 'lucide-vue-next'
 ```
 
 ## Conventions Clés
-
-### TypeScript Strict
-
-`strict: true` dans tsconfig. Zéro `any`.
-
-```typescript
-// ✅ Error handling
-} catch (error: unknown) {
-  const message = error instanceof Error ? error.message : 'Erreur inconnue'
-  console.error(message)
-}
-```
 
 ### Pattern Composant Vue 3
 
