@@ -10,7 +10,13 @@ export const networkStatusTexts = [
 ]
 
 /** HTMLMediaElement.readyState code names */
-export const readyStatusCodes = ['HAVE_NOTHING', 'HAVE_METADATA', 'HAVE_CURRENT_DATA', 'HAVE_FUTURE_DATA', 'HAVE_ENOUGH_DATA']
+export const readyStatusCodes = [
+  'HAVE_NOTHING',
+  'HAVE_METADATA',
+  'HAVE_CURRENT_DATA',
+  'HAVE_FUTURE_DATA',
+  'HAVE_ENOUGH_DATA',
+]
 
 /** HTMLMediaElement.readyState human-readable descriptions */
 export const readyStatusTexts = [
