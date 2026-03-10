@@ -1,5 +1,17 @@
 # nina.fm-website
 
+## 2.2.3
+
+### Patch Changes
+
+- 5a61854: fix: résoudre les URLs relatives en absolues dans getArtwork pour CarPlay
+
+  Les head units CarPlay reçoivent l'URL du artwork telle quelle sans connaître l'origine de la page. Une URL relative `/api/cover/...` était donc non-résolvable par le système CarPlay. `getArtwork` préfixe maintenant l'origin sur toute URL commençant par `/`.
+
+- 5a61854: fix: proxy les covers via Nuxt server pour le MediaSession voiture
+
+  Les head units (CarPlay, Android Auto…) fetchent les artworks MediaSession depuis leur propre OS et ne peuvent pas atteindre le domaine API directement. Les covers sont maintenant proxifiées via `/api/cover/[...path]` pour être toujours accessibles depuis le domaine public du site.
+
 ## 2.2.2
 
 ### Patch Changes
