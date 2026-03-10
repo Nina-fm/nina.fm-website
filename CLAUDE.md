@@ -36,8 +36,8 @@ pages/
   index.vue           ← Page principale (player radio)
 components/
   ui/                 ← Primitives Shadcn/Reka UI uniquement
-  common/             ← Composants vraiment cross-feature (layout, overlays...)
-  [feature]/          ← Composants par domaine : audio/, player/, metadata/, theming/...
+  common/             ← Composants cross-feature (overlays, debugger...)
+  [feature]/          ← Composants par domaine fonctionnel : audio/, theming/, contents/, brand/...
 themes/
   peak/               ← Thème Peak (composants + stores spécifiques)
     components/       ← Auto-importés avec préfixe `Peak`
