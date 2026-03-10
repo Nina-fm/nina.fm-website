@@ -38,7 +38,7 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ['./app/stores/**', './app/themes/**/stores/**'],
   },
-  css: ['@/assets/css/tailwind.css', 'vue-sonner/style.css'],
+  css: ['@/assets/css/tailwind.css'],
   runtimeConfig: {
     env: process.env.NODE_ENV,
     public: {
