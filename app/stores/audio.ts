@@ -51,29 +51,31 @@ export const useAudioStore = defineStore('audio', () => {
       reconnecting.value = true
       reconnectAttempts.value = attempt
       log(`Reconnect attempt ${attempt}/${max} in ${delay}ms`)
-      toast.loading('Reconnexion en cours...', { id: 'reconnecting', duration: Infinity })
+      if (!locked.value) toast.loading('Reconnexion en cours...', { id: 'reconnecting', duration: Infinity })
     },
     onMaxAttemptsReached: () => {
       reconnecting.value = false
       log('Max reconnect attempts reached')
-      toast.dismiss('reconnecting')
-      toast.error('Impossible de reconnecter au flux audio. Veuillez recharger la page.', {
-        duration: 10000,
-        action: {
-          label: 'Réessayer',
-          onClick: () => {
-            _resetManager()
-            _attemptReconnect()
+      if (!locked.value) {
+        toast.dismiss('reconnecting')
+        toast.error('Impossible de reconnecter au flux audio. Veuillez recharger la page.', {
+          duration: 10000,
+          action: {
+            label: 'Réessayer',
+            onClick: () => {
+              _resetManager()
+              _attemptReconnect()
+            },
           },
-        },
-      })
+        })
+      }
     },
     onSuccess: () => {
       reconnecting.value = false
       reconnectAttempts.value = 0
       log('Reconnect successful!')
       toast.dismiss('reconnecting')
-      setTimeout(() => toast.success('Connexion au flux audio restaurée', { duration: 3000 }), 100)
+      if (!locked.value) setTimeout(() => toast.success('Connexion au flux audio restaurée', { duration: 3000 }), 100)
     },
   })
 
@@ -216,7 +218,7 @@ export const useAudioStore = defineStore('audio', () => {
     log('Browser back online')
     if (!stopped.value && initialized.value) {
       networkDown.value = true
-      toast.loading('Réseau rétabli. Reconnexion...', { id: 'reconnecting', duration: Infinity })
+      if (!locked.value) toast.loading('Réseau rétabli. Reconnexion...', { id: 'reconnecting', duration: Infinity })
       _resetManager()
       _attemptReconnect()
     }
@@ -232,7 +234,8 @@ export const useAudioStore = defineStore('audio', () => {
         audio.value.removeAttribute('src')
         audio.value.load()
       }
-      toast.loading('Connexion perdue. En attente du réseau...', { id: 'reconnecting', duration: Infinity })
+      if (!locked.value)
+        toast.loading('Connexion perdue. En attente du réseau...', { id: 'reconnecting', duration: Infinity })
     }
   }
 
