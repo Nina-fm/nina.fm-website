@@ -2,42 +2,42 @@ import { describe, expect, it } from 'vitest'
 import { cycleDarkMode, getNextInCycle } from './cycling'
 
 describe('getNextInCycle', () => {
-  it('returns undefined for empty array', () => {
+  it('should return undefined when array is empty', () => {
     expect(getNextInCycle([], 'a')).toBeUndefined()
   })
 
-  it('returns the only item for single-element array', () => {
+  it('should return the only item when array has a single element', () => {
     expect(getNextInCycle(['a'], 'a')).toBe('a')
   })
 
-  it('returns next item', () => {
+  it('should return next item when current is not last', () => {
     expect(getNextInCycle(['a', 'b', 'c'], 'a')).toBe('b')
     expect(getNextInCycle(['a', 'b', 'c'], 'b')).toBe('c')
   })
 
-  it('wraps around to first item from last', () => {
+  it('should wrap around to first item when current is last', () => {
     expect(getNextInCycle(['a', 'b', 'c'], 'c')).toBe('a')
   })
 
-  it('returns first item when current is not in the array', () => {
+  it('should return first item when current is not in the array', () => {
     expect(getNextInCycle(['a', 'b', 'c'], 'x' as 'a')).toBe('a')
   })
 })
 
 describe('cycleDarkMode', () => {
-  it("cycles 'auto' → true", () => {
+  it("should return true when current is 'auto'", () => {
     expect(cycleDarkMode('auto')).toBe(true)
   })
 
-  it('cycles true → false', () => {
+  it('should return false when current is true', () => {
     expect(cycleDarkMode(true)).toBe(false)
   })
 
-  it("cycles false → 'auto'", () => {
+  it("should return 'auto' when current is false", () => {
     expect(cycleDarkMode(false)).toBe('auto')
   })
 
-  it('completes a full cycle', () => {
+  it('should complete a full cycle through all states', () => {
     const result = [cycleDarkMode('auto'), cycleDarkMode(true), cycleDarkMode(false)]
     expect(result).toEqual([true, false, 'auto'])
   })

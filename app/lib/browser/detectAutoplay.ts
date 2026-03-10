@@ -23,11 +23,14 @@ let canplay = false
 export function forceDetectAutoplay(timeout?: number): Promise<boolean> {
   return new Promise(function (r) {
     const video = document.createElement('video')
-    video.src = URL.createObjectURL(AUDIO!)
+    if (!AUDIO) {
+      r(false)
+      return
+    }
+    video.src = URL.createObjectURL(AUDIO)
     video.playsInline = true
     const ret = video.play()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let timer: any
+    let timer: ReturnType<typeof setTimeout> | undefined
 
     const end = function (can: boolean) {
       clearTimeout(timer)
