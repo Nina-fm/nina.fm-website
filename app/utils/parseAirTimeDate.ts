@@ -1,1 +1,2 @@
-export { parseAirTimeDate as default } from '~/lib/metadata/parseAirTimeDate'
+import { parseAirTimeDate } from '~/lib/metadata/parseAirTimeDate'
+export default parseAirTimeDate

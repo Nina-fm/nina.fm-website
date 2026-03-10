@@ -2,31 +2,31 @@ import { describe, expect, it } from 'vitest'
 import { formatDjs } from './formatDjs'
 
 describe('formatDjs', () => {
-  it('returns empty string for undefined', () => {
+  it('should return empty string when djs is undefined', () => {
     expect(formatDjs(undefined)).toBe('')
   })
 
-  it('returns empty string for empty array', () => {
+  it('should return empty string when djs is an empty array', () => {
     expect(formatDjs([])).toBe('')
   })
 
-  it('returns single DJ name as-is', () => {
+  it('should return the DJ name as-is when there is only one', () => {
     expect(formatDjs(['120'])).toBe('120')
   })
 
-  it('joins two DJs with &', () => {
+  it('should join two DJs with &', () => {
     expect(formatDjs(['120', 'Fuji'])).toBe('120 & Fuji')
   })
 
-  it('joins three DJs with comma and &', () => {
+  it('should join three DJs with comma and &', () => {
     expect(formatDjs(['Hagi', 'Siam', 'Chapelier'])).toBe('Hagi, Siam & Chapelier')
   })
 
-  it('joins four DJs correctly', () => {
+  it('should join four DJs with commas and &', () => {
     expect(formatDjs(['A', 'B', 'C', 'D'])).toBe('A, B, C & D')
   })
 
-  it('handles empty string entries', () => {
+  it('should return empty string when the single entry is an empty string', () => {
     expect(formatDjs([''])).toBe('')
   })
 })

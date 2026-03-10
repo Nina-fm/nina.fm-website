@@ -1,4 +1,4 @@
-/** Hour (inclusive) after which it is considered daytime */
+/** Hour (exclusive) after which it is considered daytime */
 export const DAY_START_HOUR = 7
 
 /** Hour (exclusive) after which it is considered nighttime */

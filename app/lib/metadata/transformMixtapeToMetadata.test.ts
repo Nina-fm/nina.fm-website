@@ -17,23 +17,23 @@ const mockMixtape = {
 }
 
 describe('transformMixtapeToMetadata', () => {
-  it('returns null for null input', () => {
+  it('should return null when input is null', () => {
     expect(transformMixtapeToMetadata(null)).toBeNull()
   })
 
-  it('maps id, name, year correctly', () => {
+  it('should map id, name and year correctly', () => {
     const result = transformMixtapeToMetadata(mockMixtape)
     expect(result?.id).toBe('mix-1')
     expect(result?.name).toBe('Test Mix')
     expect(result?.year).toBe(2024)
   })
 
-  it('formats DJs with &', () => {
+  it('should format DJs with &', () => {
     const result = transformMixtapeToMetadata(mockMixtape)
     expect(result?.authors_text).toBe('DJ One & DJ Two')
   })
 
-  it('maps tracks with renamed fields', () => {
+  it('should map tracks with renamed fields', () => {
     const result = transformMixtapeToMetadata(mockMixtape)
     expect(result?.tracks).toHaveLength(2)
     expect(result?.tracks?.[0]).toMatchObject({
@@ -44,17 +44,17 @@ describe('transformMixtapeToMetadata', () => {
     })
   })
 
-  it('maps cover_url from coverUrl', () => {
+  it('should map cover_url from coverUrl', () => {
     const result = transformMixtapeToMetadata(mockMixtape)
     expect(result?.cover_url).toBe('https://example.com/cover.jpg')
   })
 
-  it('sets cover_url to undefined when coverUrl is null', () => {
+  it('should set cover_url to undefined when coverUrl is null', () => {
     const result = transformMixtapeToMetadata({ ...mockMixtape, coverUrl: null })
     expect(result?.cover_url).toBeUndefined()
   })
 
-  it('maps tags with generated id and slug', () => {
+  it('should map tags with generated id and slug', () => {
     const result = transformMixtapeToMetadata(mockMixtape)
     expect(result?.tags?.[0]).toMatchObject({ id: 'tag-0', name: 'Electronic', slug: 'electronic' })
     expect(result?.tags?.[1]).toMatchObject({ id: 'tag-1', name: 'Deep House', slug: 'deep-house' })
