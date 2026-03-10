@@ -35,13 +35,26 @@ export const useAudioStore = defineStore('audio', () => {
   const stopped = ref(defaultState.stopped)
   const networkDown = ref(false)
 
+  // Reactive mirrors of manager state — kept in sync via callbacks + direct updates
+  const reconnecting = ref(false)
+  const reconnectAttempts = ref(0)
+
+  const _resetManager = () => {
+    reconnectManager.reset()
+    reconnecting.value = false
+    reconnectAttempts.value = 0
+  }
+
   // Reconnect manager — owns attempt count + delay strategy
   const reconnectManager = new AudioReconnectManager({
     onAttempt: (attempt, max, delay) => {
+      reconnecting.value = true
+      reconnectAttempts.value = attempt
       log(`Reconnect attempt ${attempt}/${max} in ${delay}ms`)
       toast.loading('Reconnexion en cours...', { id: 'reconnecting', duration: Infinity })
     },
     onMaxAttemptsReached: () => {
+      reconnecting.value = false
       log('Max reconnect attempts reached')
       toast.dismiss('reconnecting')
       toast.error('Impossible de reconnecter au flux audio. Veuillez recharger la page.', {
@@ -49,22 +62,20 @@ export const useAudioStore = defineStore('audio', () => {
         action: {
           label: 'Réessayer',
           onClick: () => {
-            reconnectManager.reset()
+            _resetManager()
             _attemptReconnect()
           },
         },
       })
     },
     onSuccess: () => {
+      reconnecting.value = false
+      reconnectAttempts.value = 0
       log('Reconnect successful!')
       toast.dismiss('reconnecting')
       setTimeout(() => toast.success('Connexion au flux audio restaurée', { duration: 3000 }), 100)
     },
   })
-
-  // Reactive mirrors of manager state (for components / watchers)
-  const reconnecting = computed(() => reconnectManager.reconnecting)
-  const reconnectAttempts = computed(() => reconnectManager.attempts)
 
   let reconnectTimeoutId: ReturnType<typeof setTimeout> | null = null
   let heartbeatIntervalId: ReturnType<typeof setInterval> | null = null
@@ -142,7 +153,7 @@ export const useAudioStore = defineStore('audio', () => {
     _clearReconnectTimeout()
     toast.dismiss('reconnecting')
     networkDown.value = false
-    reconnectManager.reset()
+    _resetManager()
   }
 
   const _isReconnectSuccessful = () => playing.value || (readyToPlay.value && !paused.value)
@@ -181,6 +192,7 @@ export const useAudioStore = defineStore('audio', () => {
       setTimeout(() => {
         start()
         reconnectManager.markReconnectDone()
+        reconnecting.value = false
         setTimeout(_checkReconnectResult, RECONNECT_SUCCESS_CHECK_DELAY)
       }, RECONNECT_STOP_START_DELAY)
     }, delay)
@@ -205,7 +217,7 @@ export const useAudioStore = defineStore('audio', () => {
     if (!stopped.value && initialized.value) {
       networkDown.value = true
       toast.loading('Réseau rétabli. Reconnexion...', { id: 'reconnecting', duration: Infinity })
-      reconnectManager.reset()
+      _resetManager()
       _attemptReconnect()
     }
   }
@@ -270,7 +282,7 @@ export const useAudioStore = defineStore('audio', () => {
     loadStarted.value = defaultState.loadStarted
     preloadStarted.value = defaultState.preloadStarted
     stopped.value = defaultState.stopped
-    reconnectManager.reset()
+    _resetManager()
   }
 
   // Public methods

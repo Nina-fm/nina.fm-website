@@ -47,13 +47,13 @@ afterEach(() => {
 })
 
 describe('SseClient — connect()', () => {
-  it('creates an EventSource with the provided URL', () => {
+  it('should create an EventSource with the provided URL when connect is called', () => {
     const client = new SseClient('https://api.nina.fm/sse', vi.fn())
     client.connect()
     expect(MockEventSource.last().url).toBe('https://api.nina.fm/sse')
   })
 
-  it('does not create a second EventSource if already connected', () => {
+  it('should not create a second EventSource when already connected', () => {
     const client = new SseClient('https://api.nina.fm/sse', vi.fn())
     client.connect()
     client.connect()
@@ -62,7 +62,7 @@ describe('SseClient — connect()', () => {
 })
 
 describe('SseClient — message handling', () => {
-  it('calls onMessage with parsed JSON data', () => {
+  it('should call onMessage with parsed data when message is valid JSON', () => {
     const handler = vi.fn()
     const client = new SseClient<{ name: string }>('https://api.nina.fm/sse', handler)
     client.connect()
@@ -70,7 +70,7 @@ describe('SseClient — message handling', () => {
     expect(handler).toHaveBeenCalledWith({ name: 'Nina.fm' })
   })
 
-  it('silently ignores malformed JSON', () => {
+  it('should silently ignore malformed JSON without calling onMessage', () => {
     const handler = vi.fn()
     const client = new SseClient('https://api.nina.fm/sse', handler)
     client.connect()
@@ -80,7 +80,7 @@ describe('SseClient — message handling', () => {
 })
 
 describe('SseClient — reconnect on error', () => {
-  it('closes the EventSource on error and reconnects after delay', () => {
+  it('should close EventSource on error and reconnect after delay', () => {
     const client = new SseClient('https://api.nina.fm/sse', vi.fn(), { reconnectDelay: 3000 })
     client.connect()
     const first = MockEventSource.last()
@@ -95,7 +95,7 @@ describe('SseClient — reconnect on error', () => {
 })
 
 describe('SseClient — disconnect()', () => {
-  it('closes the EventSource', () => {
+  it('should close the EventSource when disconnect is called', () => {
     const client = new SseClient('https://api.nina.fm/sse', vi.fn())
     client.connect()
     const es = MockEventSource.last()
@@ -103,7 +103,7 @@ describe('SseClient — disconnect()', () => {
     expect(es.readyState).toBe(MockEventSource.CLOSED)
   })
 
-  it('cancels a pending reconnect timer', () => {
+  it('should cancel pending reconnect timer when disconnect is called before delay', () => {
     const client = new SseClient('https://api.nina.fm/sse', vi.fn(), { reconnectDelay: 3000 })
     client.connect()
     MockEventSource.last().simulateError()

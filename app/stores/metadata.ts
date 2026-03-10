@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
-import { SseClient } from '~/lib/sse/SseClient'
 import { transformMixtapeToMetadata } from '~/lib/metadata/transformMixtapeToMetadata'
+import { SseClient } from '~/lib/sse/SseClient'
 
 export const useMetadataStore = defineStore('metadata', () => {
   const config = useRuntimeConfig()
@@ -50,6 +50,11 @@ export const useMetadataStore = defineStore('metadata', () => {
   onNuxtReady(() => {
     metadataClient.connect()
     activityClient.connect()
+  })
+
+  onScopeDispose(() => {
+    metadataClient.disconnect()
+    activityClient.disconnect()
   })
 
   return {

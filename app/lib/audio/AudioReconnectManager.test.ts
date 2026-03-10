@@ -1,6 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { MAX_RECONNECT_ATTEMPTS, RECONNECT_DELAYS } from './constants'
+import { describe, expect, it, vi } from 'vitest'
 import { AudioReconnectManager } from './AudioReconnectManager'
+import { MAX_RECONNECT_ATTEMPTS, RECONNECT_DELAYS } from './constants'
 
 function makeManager() {
   const callbacks = {
@@ -13,20 +13,20 @@ function makeManager() {
 }
 
 describe('AudioReconnectManager — initial state', () => {
-  it('starts with 0 attempts and not reconnecting', () => {
+  it('should start with 0 attempts and not reconnecting when created', () => {
     const { manager } = makeManager()
     expect(manager.attempts).toBe(0)
     expect(manager.reconnecting).toBe(false)
   })
 
-  it('exposes MAX_RECONNECT_ATTEMPTS via maxAttempts', () => {
+  it('should expose MAX_RECONNECT_ATTEMPTS via maxAttempts', () => {
     const { manager } = makeManager()
     expect(manager.maxAttempts).toBe(MAX_RECONNECT_ATTEMPTS)
   })
 })
 
 describe('AudioReconnectManager — attempt()', () => {
-  it('returns the first reconnect delay and increments attempts', () => {
+  it('should return first reconnect delay and increment attempts when called', () => {
     const { manager, callbacks } = makeManager()
     const delay = manager.attempt()
     expect(delay).toBe(RECONNECT_DELAYS[0])
@@ -34,7 +34,7 @@ describe('AudioReconnectManager — attempt()', () => {
     expect(callbacks.onAttempt).toHaveBeenCalledWith(1, MAX_RECONNECT_ATTEMPTS, RECONNECT_DELAYS[0])
   })
 
-  it('returns null and does not increment when already reconnecting', () => {
+  it('should return null and not increment attempts when already reconnecting', () => {
     const { manager } = makeManager()
     manager.attempt()
     const second = manager.attempt()
@@ -42,7 +42,7 @@ describe('AudioReconnectManager — attempt()', () => {
     expect(manager.attempts).toBe(1)
   })
 
-  it('progresses through RECONNECT_DELAYS as attempts increase', () => {
+  it('should progress through RECONNECT_DELAYS as attempts increase', () => {
     const { manager } = makeManager()
     const delays: (number | null)[] = []
     for (let i = 0; i < RECONNECT_DELAYS.length; i++) {
@@ -53,7 +53,7 @@ describe('AudioReconnectManager — attempt()', () => {
     expect(delays).toEqual(RECONNECT_DELAYS)
   })
 
-  it('caps delay at the last RECONNECT_DELAYS value after exhausting the list', () => {
+  it('should cap delay at last RECONNECT_DELAYS value when list is exhausted', () => {
     const { manager } = makeManager()
     // Burn through all defined delays
     for (let i = 0; i < RECONNECT_DELAYS.length; i++) {
@@ -64,7 +64,7 @@ describe('AudioReconnectManager — attempt()', () => {
     expect(delay).toBe(RECONNECT_DELAYS[RECONNECT_DELAYS.length - 1])
   })
 
-  it('calls onMaxAttemptsReached and returns null when limit is reached', () => {
+  it('should call onMaxAttemptsReached and return null when limit is reached', () => {
     const { manager, callbacks } = makeManager()
     for (let i = 0; i < MAX_RECONNECT_ATTEMPTS; i++) {
       manager.attempt()
@@ -77,7 +77,7 @@ describe('AudioReconnectManager — attempt()', () => {
 })
 
 describe('AudioReconnectManager — succeed()', () => {
-  it('calls onSuccess and resets state', () => {
+  it('should call onSuccess and reset state when succeed is called', () => {
     const { manager, callbacks } = makeManager()
     manager.attempt()
     manager.markReconnectDone()
@@ -89,7 +89,7 @@ describe('AudioReconnectManager — succeed()', () => {
 })
 
 describe('AudioReconnectManager — reset()', () => {
-  it('clears attempts and reconnecting flag', () => {
+  it('should clear attempts and reconnecting flag when reset is called', () => {
     const { manager } = makeManager()
     manager.attempt()
     manager.reset()
@@ -97,7 +97,7 @@ describe('AudioReconnectManager — reset()', () => {
     expect(manager.reconnecting).toBe(false)
   })
 
-  it('allows new attempts after reset', () => {
+  it('should allow new attempts after reset', () => {
     const { manager } = makeManager()
     for (let i = 0; i < MAX_RECONNECT_ATTEMPTS; i++) {
       manager.attempt()
