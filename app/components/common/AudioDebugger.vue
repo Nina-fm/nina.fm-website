@@ -45,8 +45,8 @@
               v-for="log in logs"
               :key="log.timestamp"
               class="whitespace-nowrap text-sm before:mr-2 before:content-['▶︎']"
-              v-html="log.message"
-            ></pre>
+              >{{ log.message }}</pre
+            >
             <div ref="bottomEl" class="h-0" />
           </div>
         </div>
