@@ -39,7 +39,7 @@ export const useFullscreen = () => {
   })
 
   return {
-    isFullscreen: readonly(isFullscreen),
+    isFullscreen,
     toggle,
   }
 }
