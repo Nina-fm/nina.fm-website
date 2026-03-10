@@ -1,5 +1,14 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { toast } from 'vue-sonner'
+import {
+  HEARTBEAT_INTERVAL,
+  MAX_RECONNECT_ATTEMPTS,
+  RECONNECT_DELAYS,
+  RECONNECT_DOUBLE_CHECK_DELAY,
+  RECONNECT_STOP_START_DELAY,
+  RECONNECT_SUCCESS_CHECK_DELAY,
+  VISIBILITY_RESTORE_DELAY,
+} from '~/lib/audio/constants'
 import { useDebugStore } from '~/stores/debug'
 
 const defaultState = {
@@ -30,15 +39,6 @@ export const useAudioStore = defineStore('audio', () => {
   const networkDown = ref(false)
   const reconnecting = ref(defaultState.reconnecting)
   const reconnectAttempts = ref(defaultState.reconnectAttempts)
-
-  // Reconnection config
-  const MAX_RECONNECT_ATTEMPTS = 10
-  const RECONNECT_DELAYS = [2000, 5000, 10000, 15000, 20000] // Progressive delays (faster initial retry)
-  const HEARTBEAT_INTERVAL = 5000 // Check every 5s if stream is alive
-  const RECONNECT_STOP_START_DELAY = 1000 // Delay between stop and start
-  const RECONNECT_SUCCESS_CHECK_DELAY = 2000 // Delay before checking if reconnect worked
-  const RECONNECT_DOUBLE_CHECK_DELAY = 2000 // Additional delay for double-checking
-  const VISIBILITY_RESTORE_DELAY = 1000 // Delay after page becomes visible
 
   let reconnectTimeoutId: ReturnType<typeof setTimeout> | null = null
   let heartbeatIntervalId: ReturnType<typeof setInterval> | null = null
