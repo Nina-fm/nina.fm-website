@@ -29,12 +29,15 @@ Utiliser **toujours** `pnpm`. Jamais `npm` ou `yarn`.
 
 ### Structure des dossiers
 
+> Organiser par feature (domaine fonctionnel), pas par type technique — voir `../CLAUDE.md`.
+
 ```
 pages/
   index.vue           ← Page principale (player radio)
 components/
-  ui/                 ← Primitives Shadcn/Reka UI
-  [feature]/          ← Composants par domaine (audio/, player/, metadata/...)
+  ui/                 ← Primitives Shadcn/Reka UI uniquement
+  common/             ← Composants vraiment cross-feature (layout, overlays...)
+  [feature]/          ← Composants par domaine : audio/, player/, metadata/, theming/...
 themes/
   peak/               ← Thème Peak (composants + stores spécifiques)
     components/       ← Auto-importés avec préfixe `Peak`
