@@ -17,6 +17,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: nina-fm/nina.fm-website
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
   test:
@@ -28,7 +29,7 @@ jobs:
       - name: Setup Node.js and pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Enable Corepack
         run: corepack enable
@@ -63,7 +64,7 @@ jobs:
       - name: Setup Node.js and pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Enable Corepack
         run: corepack enable
