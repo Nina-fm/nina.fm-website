@@ -1,5 +1,5 @@
 # Dockerfile multi-stage pour Nina.fm Website
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 # Enable corepack and pnpm
 RUN corepack enable && corepack prepare pnpm@10.13.1 --activate
@@ -51,7 +51,7 @@ COPY . .
 RUN pnpm build
 
 # Production stage
-FROM node:20-alpine AS production
+FROM node:22-alpine AS production
 
 # Enable corepack
 RUN corepack enable && corepack prepare pnpm@10.13.1 --activate
