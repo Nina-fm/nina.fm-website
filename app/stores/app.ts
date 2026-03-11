@@ -46,17 +46,18 @@ export const useAppStore = defineStore('app', () => {
     }
   }
 
-  watch(
-    () => classes.value,
-    () => {
-      setBodyClasses()
-    },
-    { immediate: true },
-  )
+  watchEffect(() => {
+    setBodyClasses()
+  })
+
+  let metaTitleInterval: ReturnType<typeof setInterval> | null = null
 
   onNuxtReady(() => {
-    setInterval(updateMetaTitle, metaTitleRefreshTime)
-    setBodyClasses()
+    metaTitleInterval = setInterval(updateMetaTitle, metaTitleRefreshTime)
+  })
+
+  onScopeDispose(() => {
+    if (metaTitleInterval) clearInterval(metaTitleInterval)
   })
 
   return {

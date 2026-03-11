@@ -8,30 +8,30 @@ export const usePeakThemeStore = defineStore('peakTheme', () => {
   const isDetailsOpen = ref<boolean>(false)
   const isContentOpen = ref<boolean>(false)
 
-  const toggleDetails = () => (isDetailsOpen.value = !isDetailsOpen.value)
-  const openDetails = () => (isDetailsOpen.value = true)
-  const closeDetails = () => (isDetailsOpen.value = false)
-  const toggleContent = () => (isContentOpen.value = !isContentOpen.value)
-  const openContent = () => (isContentOpen.value = true)
-  const closeContent = () => (isContentOpen.value = false)
+  const openDetails = () => {
+    isDetailsOpen.value = true
+    isContentOpen.value = false
+    setClasses({ details: true, content: false })
+  }
+  const closeDetails = () => {
+    isDetailsOpen.value = false
+    setClasses({ details: false })
+  }
+  const toggleDetails = () => (isDetailsOpen.value ? closeDetails() : openDetails())
 
-  // Specific behaviors
-  watch(isContentOpen, (value) => {
-    if (value) isDetailsOpen.value = false
-  })
-  watch(isDetailsOpen, (value) => {
-    if (value) isContentOpen.value = false
-  })
+  const openContent = () => {
+    isContentOpen.value = true
+    isDetailsOpen.value = false
+    setClasses({ content: true, details: false })
+  }
+  const closeContent = () => {
+    isContentOpen.value = false
+    setClasses({ content: false })
+  }
+  const toggleContent = () => (isContentOpen.value ? closeContent() : openContent())
+
   watch(isMixtape, (value) => {
-    if (!value) isDetailsOpen.value = false
-  })
-
-  // Update app classes depending on refs
-  watch(isContentOpen, (value) => {
-    setClasses({ content: value })
-  })
-  watch(isDetailsOpen, (value) => {
-    setClasses({ details: value })
+    if (!value) closeDetails()
   })
 
   return {

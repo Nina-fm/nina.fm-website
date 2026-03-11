@@ -3,6 +3,7 @@ import { toast } from 'vue-sonner'
 import { AudioReconnectManager } from '~/lib/audio/AudioReconnectManager'
 import {
   HEARTBEAT_INTERVAL,
+  RECONNECT_DELAYS,
   RECONNECT_DOUBLE_CHECK_DELAY,
   RECONNECT_STOP_START_DELAY,
   RECONNECT_SUCCESS_CHECK_DELAY,
@@ -82,6 +83,7 @@ export const useAudioStore = defineStore('audio', () => {
   let reconnectTimeoutId: ReturnType<typeof setTimeout> | null = null
   let heartbeatIntervalId: ReturnType<typeof setInterval> | null = null
   let lastCurrentTime = 0
+  let networkCheckReady = false
 
   // Computed
 
@@ -101,7 +103,7 @@ export const useAudioStore = defineStore('audio', () => {
   // Watchers
 
   watch(networkIssue, (value) => {
-    if (!!value && !networkDown.value && initialized.value && !reconnectManager.reconnecting) {
+    if (!!value && !networkDown.value && initialized.value && networkCheckReady && !reconnectManager.reconnecting) {
       log('networkIssue detected', value)
       networkDown.value = true
       _attemptReconnect()
@@ -120,6 +122,11 @@ export const useAudioStore = defineStore('audio', () => {
     _setupNetworkListeners()
     _startHeartbeat()
     start()
+    // Grace period : laisser le temps à l'audio de charger normalement
+    // avant d'activer la détection de panne réseau
+    setTimeout(() => {
+      networkCheckReady = true
+    }, RECONNECT_DELAYS[0])
   })
 
   onBeforeMount(() => {
