@@ -3,7 +3,7 @@ import { toast } from 'vue-sonner'
 import { AudioReconnectManager } from '~/lib/audio/AudioReconnectManager'
 import {
   HEARTBEAT_INTERVAL,
-  RECONNECT_DELAYS,
+  NETWORK_CHECK_GRACE_DELAY,
   RECONNECT_DOUBLE_CHECK_DELAY,
   RECONNECT_STOP_START_DELAY,
   RECONNECT_SUCCESS_CHECK_DELAY,
@@ -126,7 +126,7 @@ export const useAudioStore = defineStore('audio', () => {
     // avant d'activer la détection de panne réseau
     setTimeout(() => {
       networkCheckReady = true
-    }, RECONNECT_DELAYS[0])
+    }, NETWORK_CHECK_GRACE_DELAY)
   })
 
   onBeforeMount(() => {

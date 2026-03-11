@@ -2,6 +2,7 @@
   import { useMetadataStoreRefs } from '~/stores/metadata'
 
   interface Star {
+    id: number
     styles: {
       width: string
       height: string
@@ -24,6 +25,8 @@
 
   const getRandom = (min: number, max: number) => Math.floor(Math.random() * (max + 1 - min) + min)
 
+  let _nextStarId = 0
+
   const getRandomStyles = (): Star => {
     const { sizes, positions } = params
     const size = getRandom(sizes.min, sizes.max)
@@ -31,6 +34,7 @@
     const step = (size - range + 2) * (100 / range)
     const opacity = step + 50 * ((100 - step) / 100)
     return {
+      id: _nextStarId++,
       styles: {
         width: `${size}px`,
         height: `${size}px`,
@@ -53,16 +57,17 @@
   watch(count, () => updateStars())
   onMounted(() => updateStars())
 
-  // Lazy tooltip management: Tooltip components only mount on first hover
+  // Lazy tooltip management: Tooltip components only mount on first hover.
+  // Keyed by star.id (stable identity) to avoid stale state on count fluctuations.
   const mountedStars = reactive(new Set<number>())
   const openStars = reactive(new Set<number>())
 
-  const onStarEnter = (index: number) => {
-    mountedStars.add(index)
-    openStars.add(index)
+  const onStarEnter = (id: number) => {
+    mountedStars.add(id)
+    openStars.add(id)
   }
-  const onStarLeave = (index: number) => {
-    openStars.delete(index)
+  const onStarLeave = (id: number) => {
+    openStars.delete(id)
   }
 </script>
 
@@ -70,14 +75,14 @@
   <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full" color="transparent">
     <TooltipProvider>
       <div
-        v-for="(star, index) in stars"
-        :key="index"
+        v-for="star in stars"
+        :key="star.id"
         class="absolute left-0 top-0"
         :style="{ left: star.styles.left, top: star.styles.top }"
-        @mouseenter="onStarEnter(index)"
-        @mouseleave="onStarLeave(index)"
+        @mouseenter="onStarEnter(star.id)"
+        @mouseleave="onStarLeave(star.id)"
       >
-        <Tooltip v-if="mountedStars.has(index)" :open="openStars.has(index)">
+        <Tooltip v-if="mountedStars.has(star.id)" :open="openStars.has(star.id)">
           <TooltipTrigger as-child>
             <div class="p-3 transition-transform duration-200 ease-in-out hover:scale-[2]">
               <div

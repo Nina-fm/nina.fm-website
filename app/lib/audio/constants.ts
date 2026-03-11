@@ -18,3 +18,6 @@ export const RECONNECT_DOUBLE_CHECK_DELAY = 2000
 
 /** Delay after page becomes visible again before attempting reconnect */
 export const VISIBILITY_RESTORE_DELAY = 1000
+
+/** Grace period before activating network issue detection (lets audio load normally first) */
+export const NETWORK_CHECK_GRACE_DELAY = 2000
