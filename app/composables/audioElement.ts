@@ -79,9 +79,24 @@ export const useAudioElement = () => {
   }
 
   const _audioEvents = [
-    'abort', 'canplay', 'canplaythrough', 'emptied', 'ended', 'error',
-    'loadeddata', 'loadedmetadata', 'loadstart', 'pause', 'play', 'playing',
-    'progress', 'suspend', 'timeupdate', 'volumechange', 'stalled', 'waiting',
+    'abort',
+    'canplay',
+    'canplaythrough',
+    'emptied',
+    'ended',
+    'error',
+    'loadeddata',
+    'loadedmetadata',
+    'loadstart',
+    'pause',
+    'play',
+    'playing',
+    'progress',
+    'suspend',
+    'timeupdate',
+    'volumechange',
+    'stalled',
+    'waiting',
   ] as const
 
   const _handleAudioEvent = () => updateState()
