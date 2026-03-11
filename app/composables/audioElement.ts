@@ -78,76 +78,47 @@ export const useAudioElement = () => {
     _set('volume', volume, audio.value?.volume)
   }
 
-  const _addEventListeners = () => {
+  const _audioEvents = [
+    'abort', 'canplay', 'canplaythrough', 'emptied', 'ended', 'error',
+    'loadeddata', 'loadedmetadata', 'loadstart', 'pause', 'play', 'playing',
+    'progress', 'suspend', 'timeupdate', 'volumechange', 'stalled', 'waiting',
+  ] as const
+
+  const _handleAudioEvent = () => updateState()
+
+  const _addEventListeners = (el: HTMLAudioElement) => {
     log('_addEventListeners')
-    if (audio.value) {
-      audio.value.addEventListener('abort', () => updateState())
-      audio.value.addEventListener('canplay', () => updateState())
-      audio.value.addEventListener('canplaythrough', () => updateState())
-      audio.value.addEventListener('emptied', () => updateState())
-      audio.value.addEventListener('ended', () => updateState())
-      audio.value.addEventListener('error', () => updateState())
-      audio.value.addEventListener('loadeddata', () => updateState())
-      audio.value.addEventListener('loadedmetadata', () => updateState())
-      audio.value.addEventListener('loadstart', () => updateState())
-      audio.value.addEventListener('pause', () => updateState())
-      audio.value.addEventListener('play', () => updateState())
-      audio.value.addEventListener('playing', () => updateState())
-      audio.value.addEventListener('progress', () => updateState())
-      audio.value.addEventListener('suspend', () => updateState())
-      audio.value.addEventListener('timeupdate', () => updateState())
-      audio.value.addEventListener('volumechange', () => updateState())
-      audio.value.addEventListener('stalled', () => updateState())
-      audio.value.addEventListener('waiting', () => updateState())
-    }
+    _audioEvents.forEach((event) => el.addEventListener(event, _handleAudioEvent))
   }
 
-  const _removeEventListeners = () => {
+  const _removeEventListeners = (el: HTMLAudioElement) => {
     log('_removeEventListeners')
-    if (audio.value) {
-      audio.value.removeEventListener('abort', () => updateState())
-      audio.value.removeEventListener('canplay', () => updateState())
-      audio.value.removeEventListener('canplaythrough', () => updateState())
-      audio.value.removeEventListener('emptied', () => updateState())
-      audio.value.removeEventListener('ended', () => updateState())
-      audio.value.removeEventListener('error', () => updateState())
-      audio.value.removeEventListener('loadeddata', () => updateState())
-      audio.value.removeEventListener('loadedmetadata', () => updateState())
-      audio.value.removeEventListener('loadstart', () => updateState())
-      audio.value.removeEventListener('pause', () => updateState())
-      audio.value.removeEventListener('play', () => updateState())
-      audio.value.removeEventListener('playing', () => updateState())
-      audio.value.removeEventListener('progress', () => updateState())
-      audio.value.removeEventListener('suspend', () => updateState())
-      audio.value.removeEventListener('timeupdate', () => updateState())
-      audio.value.removeEventListener('volumechange', () => updateState())
-      audio.value.removeEventListener('stalled', () => updateState())
-      audio.value.removeEventListener('waiting', () => updateState())
-    }
+    _audioEvents.forEach((event) => el.removeEventListener(event, _handleAudioEvent))
   }
 
   const load = (url: string) => {
     log('load', url)
     unload()
-    audio.value = new Audio()
-    audio.value.autoplay = true
-    audio.value.src = url
-    audio.value.load()
-    _addEventListeners()
+    const el = new Audio()
+    el.autoplay = true
+    el.src = url
+    _addEventListeners(el)
+    audio.value = el
+    el.load()
   }
 
   const unload = () => {
     log('unload')
     if (audio.value) {
-      audio.value.pause()
-      // Force clear the buffer by seeking to end and setting blank source
-      audio.value.currentTime = 0
-      audio.value.removeAttribute('src')
-      audio.value.load() // This empties the buffer
+      const el = audio.value
+      audio.value = null
+      _removeEventListeners(el)
+      el.pause()
+      el.currentTime = 0
+      el.removeAttribute('src')
+      el.load()
+      el.remove()
     }
-    _removeEventListeners()
-    audio.value?.remove()
-    audio.value = null
     resetState()
   }
 

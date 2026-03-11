@@ -9,25 +9,30 @@ export const useVinylThemeStore = defineStore('vinylTheme', () => {
   const isJaquetteTurnedBack = ref<boolean>(false)
   const isContentOpen = ref<boolean>(false)
 
-  const toggleDetails = () => (isDetailsOpen.value = !isDetailsOpen.value)
-  const openDetails = () => (isDetailsOpen.value = true)
-  const closeDetails = () => (isDetailsOpen.value = false)
+  const openDetails = () => {
+    isDetailsOpen.value = true
+    setClasses({ details: true })
+  }
+  const closeDetails = () => {
+    isDetailsOpen.value = false
+    setClasses({ details: false })
+  }
+  const toggleDetails = () => (isDetailsOpen.value ? closeDetails() : openDetails())
+
+  const openContent = () => {
+    isContentOpen.value = true
+    setClasses({ content: true })
+  }
+  const closeContent = () => {
+    isContentOpen.value = false
+    setClasses({ content: false })
+  }
+  const toggleContent = () => (isContentOpen.value ? closeContent() : openContent())
+
   const toggleJaquette = () => (isJaquetteTurnedBack.value = !isJaquetteTurnedBack.value)
-  const toggleContent = () => (isContentOpen.value = !isContentOpen.value)
-  const openContent = () => (isContentOpen.value = true)
-  const closeContent = () => (isContentOpen.value = false)
 
-  // Specific behaviors
   watch(isMixtape, (value) => {
-    if (!value) isDetailsOpen.value = false
-  })
-
-  // Update app classes depending on refs
-  watch(isContentOpen, (value) => {
-    setClasses({ content: value })
-  })
-  watch(isDetailsOpen, (value) => {
-    setClasses({ details: value })
+    if (!value) closeDetails()
   })
 
   return {
