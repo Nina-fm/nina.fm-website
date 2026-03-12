@@ -230,7 +230,7 @@ jobs:
             mkdir -p /var/nina/website/deploy
 
             # Créer le fichier d'environnement
-            cat > /var/nina/website/.env.prod << 'EOF'
+            cat > /var/nina/website/.env << 'EOF'
             NODE_ENV=production
             PORT=3000
             HOST=0.0.0.0
@@ -239,7 +239,7 @@ jobs:
             NUXT_PUBLIC_API_STREAM_ENDPOINT=${{ vars.NUXT_PUBLIC_API_STREAM_ENDPOINT }}
             EOF
 
-            chmod 600 /var/nina/website/.env.prod
+            chmod 600 /var/nina/website/.env
             cd /var/nina/website/deploy
 
             # S'assurer que le réseau existe
@@ -254,10 +254,10 @@ jobs:
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                  -H "Accept: application/vnd.github.v3.raw" \
                  -o docker-compose.yml \
-                 "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.prod.yml"
+                 "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.yml"
 
             # Déploiement avec docker-compose
-            docker compose --env-file /var/nina/website/.env.prod up -d --force-recreate
+            docker compose --env-file /var/nina/website/.env up -d --force-recreate
 
             # Vérifier que le conteneur démarre correctement
             echo "🔍 Vérification du conteneur..."
