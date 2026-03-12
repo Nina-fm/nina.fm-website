@@ -254,7 +254,7 @@ jobs:
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                  -H "Accept: application/vnd.github.v3.raw" \
                  -o docker-compose.yml \
-                 "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.prod.yml"
+                 "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.yml"
 
             # Déploiement avec docker-compose
             docker compose --env-file /var/nina/website/.env.prod up -d --force-recreate
