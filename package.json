@@ -11,7 +11,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "format": "prettier --write --list-different \"./*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"app/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"server/**/*.{js,ts}\"",
+    "format": "prettier --write .",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
