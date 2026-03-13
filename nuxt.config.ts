@@ -54,6 +54,7 @@ export default defineNuxtConfig({
     port: Number(process.env.FRONT_OUTPUT_PORT) || 3000,
   },
   vite: {
+    // @ts-expect-error — incompatibilité de types vite entre vite-svg-loader et nuxt (versions dans le dep tree)
     plugins: [svgLoader()],
   },
   eslint: {},
@@ -142,7 +143,6 @@ export default defineNuxtConfig({
           src: '/preview.png',
           sizes: '1200x627',
           type: 'image/png',
-          // @ts-expect-error — form_factor est valide dans la spec mais pas encore dans les types
           form_factor: 'wide',
           label: 'Nina.fm — Vue desktop',
         },
