@@ -1,5 +1,11 @@
 # nina.fm-website
 
+## 2.2.5
+
+### Patch Changes
+
+- ae5b88a: Ajoute un hook pre-push husky (pnpm lint && pnpm type-check) et corrige les erreurs de type préexistantes dans nuxt.config.ts
+
 ## 2.2.4
 
 ### Patch Changes
