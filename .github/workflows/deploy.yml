@@ -113,15 +113,17 @@ jobs:
               exit 1
             fi
             
-            # Créer le tag Git (sans prefix 'v')
+            # Créer le tag Git (sans prefix 'v') — skip si déjà existant
             echo "🏷️ Création du tag $CLEAN_VERSION..."
-            git tag "$CLEAN_VERSION"
-            
-            # Push du tag
-            echo "⬆️ Push du tag $CLEAN_VERSION..."
-            if ! git push origin "$CLEAN_VERSION"; then
-              echo "❌ Erreur lors du push du tag"
-              exit 1
+            if git ls-remote --tags origin "$CLEAN_VERSION" | grep -q "$CLEAN_VERSION"; then
+              echo "⚠️ Tag $CLEAN_VERSION déjà présent sur le remote, skip"
+            else
+              git tag "$CLEAN_VERSION"
+              echo "⬆️ Push du tag $CLEAN_VERSION..."
+              if ! git push origin "$CLEAN_VERSION"; then
+                echo "❌ Erreur lors du push du tag"
+                exit 1
+              fi
             fi
             
             echo "✅ Version $CLEAN_VERSION créée, taguée et poussée avec succès"
