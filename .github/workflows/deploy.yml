@@ -17,6 +17,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: nina-fm/nina.fm-website
+  HUSKY: '0'
 
 jobs:
   test:
