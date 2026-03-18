@@ -6,12 +6,9 @@ services:
     labels:
       - diun.enable=false
     environment:
-      # Application
       - NODE_ENV=production
       - PORT=3000
       - HOST=0.0.0.0
-
-      # Nina.fm Configuration
       - NUXT_PUBLIC_AUDIO_STREAM_URL=${NUXT_PUBLIC_AUDIO_STREAM_URL}
       - NUXT_PUBLIC_API_URL=${NUXT_PUBLIC_API_URL}
       - NUXT_PUBLIC_API_STREAM_ENDPOINT=${NUXT_PUBLIC_API_STREAM_ENDPOINT}

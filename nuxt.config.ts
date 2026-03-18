@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   srcDir: 'app',
   devtools: { enabled: true },
+
   modules: [
     '@nuxt/eslint',
     '@pinia/nuxt',
@@ -19,6 +20,9 @@ export default defineNuxtConfig({
     ],
     '@nuxtjs/device',
   ],
+
+  css: ['@/assets/css/tailwind.css'],
+
   components: [
     // UI components are handled by shadcn-nuxt auto-import
     // Other components
@@ -35,10 +39,11 @@ export default defineNuxtConfig({
       prefix: 'Vinyl',
     },
   ],
+
   pinia: {
     storesDirs: ['./app/stores/**', './app/themes/**/stores/**'],
   },
-  css: ['@/assets/css/tailwind.css'],
+
   runtimeConfig: {
     env: process.env.NODE_ENV,
     public: {
@@ -50,18 +55,19 @@ export default defineNuxtConfig({
       apiStreamEndpoint: process.env.NUXT_PUBLIC_API_STREAM_ENDPOINT,
     },
   },
-  devServer: {
-    port: Number(process.env.FRONT_OUTPUT_PORT) || 3000,
-  },
+
   vite: {
     // @ts-expect-error — incompatibilité de types vite entre vite-svg-loader et nuxt (versions dans le dep tree)
     plugins: [svgLoader()],
   },
+
   eslint: {},
+
   typescript: {
     strict: true,
     shim: false,
   },
+
   app: {
     // head
     head: {
@@ -113,6 +119,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   pwa: {
     registerWebManifestInRouteRules: true,
     strategies: 'generateSW',
@@ -165,6 +172,7 @@ export default defineNuxtConfig({
       type: 'module',
     },
   },
+
   shadcn: {
     /**
      * Prefix for all the imported component
