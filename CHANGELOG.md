@@ -1,5 +1,12 @@
 # nina.fm-website
 
+## 2.2.6
+
+### Patch Changes
+
+- fddd995: Exclude browser-only files from coverage (use browser APIs unavailable in node env)
+- 8cc2c86: Configure Vitest coverage (v8, 80% thresholds) and enable in CI
+
 ## 2.2.5
 
 ### Patch Changes
