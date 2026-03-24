@@ -20,15 +20,15 @@ env:
   HUSKY: '0'
 
 jobs:
-  test:
-    uses: nina-fm/nina.fm-apps-workspace/.github/workflows/node-test.yml@main
+  validate:
+    uses: nina-fm/nina.fm-apps-workspace/.github/workflows/node-validate.yml@main
     with:
       node-version: '22'
       type-check: true
       lint-strict: false
 
   release:
-    needs: test
+    needs: validate
     permissions:
       contents: write
     uses: nina-fm/nina.fm-apps-workspace/.github/workflows/release.yml@main
