@@ -1,4 +1,4 @@
 ---
-"nina.fm-website": patch
+"nina.fm-mixtaper": patch
 ---
-Configure Vitest coverage (v8, 80% thresholds) and enable in CI
+Install @vitest/coverage-v8, calibrate thresholds, enable tests in CI
