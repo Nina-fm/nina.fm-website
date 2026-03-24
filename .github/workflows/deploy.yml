@@ -43,6 +43,9 @@ jobs:
       - name: Type check
         run: pnpm type-check || echo "No type-check script, skipping..."
 
+      - name: Run tests
+        run: pnpm test:coverage
+
       - name: Run lint
         run: pnpm lint
 
