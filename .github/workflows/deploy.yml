@@ -143,6 +143,7 @@ jobs:
             mkdir -p /var/nina/website/deploy
 
             cat > /var/nina/website/.env << EOF
+            DOCKER_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             NODE_ENV=production
             PORT=3000
             HOST=0.0.0.0
