@@ -3,7 +3,7 @@ name: Deploy Nina.fm Website
 on:
   push:
     branches: [main]
-  workflow_dispatch: # Permet le déclenchement manuel
+  workflow_dispatch:
     inputs:
       no-cache:
         description: 'Force rebuild without cache'
@@ -16,41 +16,28 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: nina-fm/nina.fm-website
+  IMAGE_NAME: ${{ github.repository }}
   HUSKY: '0'
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+  validate:
+    uses: nina-fm/nina.fm-apps-workspace/.github/workflows/node-validate.yml@main
+    with:
+      node-version: '22'
+      type-check: true
+      lint-strict: false
 
-      - name: Setup Node.js and pnpm
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install pnpm
-        run: corepack prepare pnpm@10.13.1 --activate
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Type check
-        run: pnpm type-check || echo "No type-check script, skipping..."
-
-      - name: Run tests
-        run: pnpm test:coverage
-
-      - name: Run lint
-        run: pnpm lint
+  release:
+    needs: validate
+    permissions:
+      contents: write
+    uses: nina-fm/nina.fm-apps-workspace/.github/workflows/release.yml@main
+    with:
+      skip-ci: true
+    secrets: inherit
 
   build-and-deploy:
-    needs: test
+    needs: release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -61,87 +48,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
-          token: ${{ secrets.VERSIONING_TOKEN }}
-
-      - name: Setup Node.js and pnpm
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install pnpm
-        run: corepack prepare pnpm@10.13.1 --activate
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Version and tag
-        id: versioning
-        if: github.ref == 'refs/heads/main'
-        run: |
-          # Configuration git pour les commits automatiques
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-          # DEBUG: Lister les fichiers dans .changeset
-          echo "🔍 DEBUG: Contenu du dossier .changeset/"
-          ls -la .changeset/ || echo "Dossier .changeset inexistant"
-
-          # Vérifier s'il y a des changesets à appliquer
-          CHANGESET_FILES=$(ls .changeset/*.md 2>/dev/null | grep -v README || echo "")
-          echo "🔍 DEBUG: Fichiers changeset trouvés: $CHANGESET_FILES"
-
-          if [ -n "$CHANGESET_FILES" ]; then
-            echo "📦 Changesets détectés, mise à jour de la version..."
-            
-            # Exécuter changeset version (génère CHANGELOG.md automatiquement)
-            echo "🔍 Exécution de changeset:version (génère package.json + CHANGELOG.md)..."
-            if ! pnpm changeset:version; then
-              echo "❌ Erreur lors de l'exécution de changeset:version"
-              exit 1
-            fi
-            
-            # Récupérer la nouvelle version (sans prefix 'v')
-            NEW_VERSION=$(node -p "require('./package.json').version")
-            CLEAN_VERSION=$(echo $NEW_VERSION | sed 's/^v//')
-            echo "🏷️ Nouvelle version: $CLEAN_VERSION"
-            
-            # Push du commit créé par changeset (il commit automatiquement)
-            echo "⬆️ Push du commit de version créé par changeset..."
-            if ! git push origin main; then
-              echo "❌ Erreur lors du push du commit"
-              exit 1
-            fi
-            
-            # Créer le tag Git (sans prefix 'v') — skip si déjà existant
-            echo "🏷️ Création du tag $CLEAN_VERSION..."
-            if git ls-remote --tags origin "$CLEAN_VERSION" | grep -q "$CLEAN_VERSION"; then
-              echo "⚠️ Tag $CLEAN_VERSION déjà présent sur le remote, skip"
-            else
-              git tag "$CLEAN_VERSION"
-              echo "⬆️ Push du tag $CLEAN_VERSION..."
-              if ! git push origin "$CLEAN_VERSION"; then
-                echo "❌ Erreur lors du push du tag"
-                exit 1
-              fi
-            fi
-            
-            echo "✅ Version $CLEAN_VERSION créée, taguée et poussée avec succès"
-            echo "version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
-            echo "has_release=true" >> $GITHUB_OUTPUT
-          else
-            # Pas de changesets, utiliser la version actuelle
-            CURRENT_VERSION=$(node -p "require('./package.json').version")
-            echo "📋 Aucun changeset détecté, version actuelle: v$CURRENT_VERSION"
-            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-            echo "has_release=false" >> $GITHUB_OUTPUT
-          fi
+          ref: refs/heads/main
 
       - name: Log in to Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -149,12 +59,12 @@ jobs:
 
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr  
+            type=ref,event=pr
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
           flavor: |
@@ -166,7 +76,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
@@ -181,18 +91,18 @@ jobs:
             NUXT_PUBLIC_API_STREAM_ENDPOINT=${{ vars.NUXT_PUBLIC_API_STREAM_ENDPOINT }}
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.versioning.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.release.outputs.version }}
           labels: |
             ${{ steps.meta.outputs.labels }}
-            org.opencontainers.image.version=${{ steps.versioning.outputs.version }}
+            org.opencontainers.image.version=${{ needs.release.outputs.version }}
             org.opencontainers.image.created={{date 'YYYY-MM-DDTHH:mm:ssZ'}}
 
       - name: Create GitHub Release
-        if: steps.versioning.outputs.has_release == 'true'
-        uses: softprops/action-gh-release@v1
+        if: needs.release.outputs.has_release == 'true'
+        uses: softprops/action-gh-release@v2.5.0
         with:
-          tag_name: ${{ steps.versioning.outputs.version }}
-          name: Release ${{ steps.versioning.outputs.version }}
+          tag_name: ${{ needs.release.outputs.version }}
+          name: Release ${{ needs.release.outputs.version }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
@@ -207,10 +117,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           command_timeout: 15m
           script: |
-            # Login Docker
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Pull avec retry et progression
             echo "📥 Pulling image..."
             for i in 1 2 3; do
               if docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest; then
@@ -232,11 +140,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           command_timeout: 5m
           script: |
-            # Créer les répertoires nécessaires
             mkdir -p /var/nina/website/deploy
 
-            # Créer le fichier d'environnement
-            cat > /var/nina/website/.env << 'EOF'
+            cat > /var/nina/website/.env << EOF
+            DOCKER_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             NODE_ENV=production
             PORT=3000
             HOST=0.0.0.0
@@ -244,38 +151,38 @@ jobs:
             NUXT_PUBLIC_API_URL=${{ vars.NUXT_PUBLIC_API_URL }}
             NUXT_PUBLIC_API_STREAM_ENDPOINT=${{ vars.NUXT_PUBLIC_API_STREAM_ENDPOINT }}
             EOF
-
             chmod 600 /var/nina/website/.env
-            cd /var/nina/website/deploy
 
-            # S'assurer que le réseau existe
+            cd /var/nina/website/deploy
             docker network create nina-network 2>/dev/null || echo "Réseau nina-network existe déjà"
 
-            # Forcer l'arrêt des conteneurs existants (manuels ou compose)
-            echo "🛑 Arrêt des conteneurs existants..."
             docker stop nina-website 2>/dev/null || echo "Aucun conteneur nina-website à arrêter"
             docker rm nina-website 2>/dev/null || echo "Aucun conteneur nina-website à supprimer"
 
-            # Télécharger le docker-compose.prod.yml depuis GitHub
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                  -H "Accept: application/vnd.github.v3.raw" \
                  -o docker-compose.yml \
                  "https://api.github.com/repos/${{ github.repository }}/contents/docker-compose.yml"
 
-            # Déploiement avec docker-compose
             docker compose --env-file /var/nina/website/.env up -d --force-recreate
 
-            # Vérifier que le conteneur démarre correctement
-            echo "🔍 Vérification du conteneur..."
-            sleep 10
-            if docker ps | grep nina-website; then
-              echo "✅ Déploiement réussi - Website opérationnel"
-              docker logs nina-website --tail 20
-            else
-              echo "❌ Le conteneur nina-website n'est pas en cours d'exécution"
-              docker logs nina-website --tail 50
-              exit 1
-            fi
+            echo "🔍 Health check..."
+            HEALTH_CHECK_RETRIES=12
+            for i in $(seq 1 $HEALTH_CHECK_RETRIES); do
+              if curl -sf http://localhost:3000/ > /dev/null 2>&1; then
+                echo "✅ Déploiement réussi - Website opérationnel"
+                docker logs nina-website --tail 20
+                break
+              else
+                echo "⏳ Tentative $i/$HEALTH_CHECK_RETRIES - Website pas encore prêt..."
+                if [ $i -eq $HEALTH_CHECK_RETRIES ]; then
+                  echo "❌ Échec du déploiement - Website non accessible après $HEALTH_CHECK_RETRIES tentatives"
+                  docker logs nina-website --tail 50
+                  exit 1
+                fi
+                sleep 5
+              fi
+            done
 
   cleanup:
     needs: build-and-deploy
@@ -288,11 +195,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Nettoyage des images Docker orphelines
-            echo "🧹 Nettoyage des images Docker..."
             docker image prune -f --filter "dangling=true"
-
-            # Garder seulement les 3 dernières images du Website
             docker images ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | \
             tail -n +2 | sort -k2 -r | tail -n +4 | awk '{print $1}' | \
             xargs -r docker rmi || echo "Aucune ancienne image à supprimer"
