@@ -186,17 +186,8 @@ jobs:
 
   cleanup:
     needs: build-and-deploy
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Nettoyage Docker sur le serveur
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker image prune -f --filter "dangling=true"
-            docker images ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | \
-            tail -n +2 | sort -k2 -r | tail -n +4 | awk '{print $1}' | \
-            xargs -r docker rmi || echo "Aucune ancienne image à supprimer"
+    if: always() && needs.build-and-deploy.result != 'skipped'
+    uses: nina-fm/nina.fm-apps-workspace/.github/workflows/cleanup.yml@main
+    with:
+      image-name: ghcr.io/${{ github.repository }}
+    secrets: inherit
