@@ -184,7 +184,7 @@ jobs:
               fi
             done
 
-  cleanup:
+  post-deploy:
     needs: build-and-deploy
     if: always() && needs.build-and-deploy.result != 'skipped'
     uses: nina-fm/nina.fm-apps-workspace/.github/workflows/cleanup.yml@main
