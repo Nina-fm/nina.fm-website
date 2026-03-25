@@ -20,15 +20,15 @@ env:
   HUSKY: '0'
 
 jobs:
-  validate:
+  ci:
     uses: nina-fm/nina.fm-apps-workspace/.github/workflows/node-validate.yml@main
     with:
       node-version: '22'
       type-check: true
       lint-strict: false
 
-  release:
-    needs: validate
+  versioning:
+    needs: ci
     permissions:
       contents: write
     uses: nina-fm/nina.fm-apps-workspace/.github/workflows/release.yml@main
@@ -37,7 +37,7 @@ jobs:
     secrets: inherit
 
   build-and-deploy:
-    needs: release
+    needs: versioning
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -91,18 +91,18 @@ jobs:
             NUXT_PUBLIC_API_STREAM_ENDPOINT=${{ vars.NUXT_PUBLIC_API_STREAM_ENDPOINT }}
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.release.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.versioning.outputs.version }}
           labels: |
             ${{ steps.meta.outputs.labels }}
-            org.opencontainers.image.version=${{ needs.release.outputs.version }}
+            org.opencontainers.image.version=${{ needs.versioning.outputs.version }}
             org.opencontainers.image.created={{date 'YYYY-MM-DDTHH:mm:ssZ'}}
 
       - name: Create GitHub Release
-        if: needs.release.outputs.has_release == 'true'
+        if: needs.versioning.outputs.has_release == 'true'
         uses: softprops/action-gh-release@v2.5.0
         with:
-          tag_name: ${{ needs.release.outputs.version }}
-          name: Release ${{ needs.release.outputs.version }}
+          tag_name: ${{ needs.versioning.outputs.version }}
+          name: Release ${{ needs.versioning.outputs.version }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
