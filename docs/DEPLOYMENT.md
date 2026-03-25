@@ -65,7 +65,7 @@ NUXT_PUBLIC_API_STREAM_ENDPOINT     # /stream
 
 ### 1. Configuration GitHub (une fois)
 
-1. Aller sur `https://github.com/Nina-fm/nina.fm-website2/settings/secrets/actions`
+1. Aller sur `https://github.com/nina-fm/nina.fm-website2/settings/secrets/actions`
 2. Ajouter les secrets listés ci-dessus
 3. Ajouter les variables listées ci-dessus
 
