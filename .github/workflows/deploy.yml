@@ -6,13 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       no-cache:
-        description: 'Force rebuild without cache'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'false'
-          - 'true'
+        description: 'Rebuild Docker image without cache'
+        type: boolean
+        default: false
 
 env:
   REGISTRY: ghcr.io
