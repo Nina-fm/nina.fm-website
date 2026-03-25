@@ -16,7 +16,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: nina-fm/nina.fm-website
+  IMAGE_NAME: ${{ github.repository }}
   HUSKY: '0'
 
 jobs:
