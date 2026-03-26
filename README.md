@@ -1,4 +1,4 @@
-# Nina.fm Website
+# 📻  Nina.fm - Website
 
 ![Nuxt](https://img.shields.io/badge/NuxtJS-020420?logo=nuxt&color=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&color=black)
