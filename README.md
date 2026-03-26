@@ -6,76 +6,45 @@
 [![Coverage](https://codecov.io/gh/nina-fm/nina.fm-website/graph/badge.svg?token=AO0UHDQ9FY)](https://codecov.io/gh/nina-fm/nina.fm-website)
 [![Deploy](https://github.com/nina-fm/nina.fm-website/actions/workflows/deploy.yml/badge.svg)](https://github.com/nina-fm/nina.fm-website/actions/workflows/deploy.yml)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Site web public de Nina.fm. Diffuse la webradio en temps réel via SSE avec un player thémé (Peak / Vinyl).
 
-## Setup
+## Stack
 
-Make sure to install dependencies:
+- **[Nuxt 4](https://nuxt.com/)** + Vue 3 — SSR activé
+- **[Pinia](https://pinia.vuejs.org/)** — état global (audio, métadonnées, thème…)
+- **[Tailwind CSS](https://tailwindcss.com/)** — styling
+- **SuperTokens** — authentification
+- **SSE** — métadonnées en temps réel depuis `nina.fm-api`
+
+## Démarrage rapide
 
 ```bash
-# npm
-npm install
+# Infrastructure (depuis le workspace)
+make dev
 
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
+cp .env.example .env
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+# → http://localhost:3000
 ```
 
-## Production
-
-Build the application for production:
+## Scripts
 
 ```bash
-# npm
-npm run build
+pnpm dev          # Développement avec hot-reload
+pnpm build        # Build production
+pnpm preview      # Aperçu du build
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+pnpm lint && pnpm lint:fix && pnpm format
+pnpm changeset
 ```
 
-Locally preview production build:
+## Variables d'environnement
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+NUXT_PUBLIC_API_URL=http://localhost:4000
+NUXT_PUBLIC_AUDIO_STREAM_URL=http://...       # Flux audio IceCast
+NUXT_PUBLIC_API_STREAM_ENDPOINT=http://...    # SSE métadonnées
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Voir `.env.example` pour la liste complète.
