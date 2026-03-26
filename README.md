@@ -1,5 +1,11 @@
 # Nina.fm Website
 
+![Nuxt](https://img.shields.io/badge/Nuxt-00DC82?logo=nuxt.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+[![Coverage](https://codecov.io/gh/nina-fm/nina.fm-website/graph/badge.svg?token=AO0UHDQ9FY)](https://codecov.io/gh/nina-fm/nina.fm-website)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+[![Deploy](https://github.com/nina-fm/nina.fm-website/actions/workflows/deploy.yml/badge.svg)](https://github.com/nina-fm/nina.fm-website/actions/workflows/deploy.yml)
+
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup

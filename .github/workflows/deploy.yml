@@ -22,6 +22,8 @@ jobs:
       node-version: '22'
       type-check: true
       lint-strict: false
+      codecov-enabled: true
+    secrets: inherit
 
   versioning:
     needs: ci
