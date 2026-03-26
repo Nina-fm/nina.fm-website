@@ -1,6 +1,6 @@
 # Nina.fm Website
 
-![Nuxt](https://img.shields.io/badge/Nuxt-020420?logo=nuxt&color=black)
+![Nuxt](https://img.shields.io/badge/NuxtJS-020420?logo=nuxt&color=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&color=black)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&color=black)
 [![Coverage](https://codecov.io/gh/nina-fm/nina.fm-website/graph/badge.svg?token=AO0UHDQ9FY)](https://codecov.io/gh/nina-fm/nina.fm-website)
