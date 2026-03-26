@@ -1,4 +1,4 @@
-name: Deploy Nina.fm Website
+name: Deploy Prod
 
 on:
   push:
