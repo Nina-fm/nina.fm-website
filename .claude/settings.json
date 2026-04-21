@@ -14,6 +14,16 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "Read|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); tool=$(echo \"$input\" | jq -r '.tool_name // empty'); block=false; if [ \"$tool\" = \"Read\" ]; then file=$(echo \"$input\" | jq -r '.tool_input.file_path // empty'); base=\"${file##*/}\"; [[ \"$base\" =~ ^\\.env ]] && block=true; elif [ \"$tool\" = \"Glob\" ]; then pat=$(echo \"$input\" | jq -r '.tool_input.pattern // empty'); echo \"$pat\" | grep -qE '(^|/)\\.env' && block=true; fi; [ \"$block\" = true ] && echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Fichiers .env bloques par hook de securite\"}}'",
+            "statusMessage": "Vérification accès .env..."
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {
